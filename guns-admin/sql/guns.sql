@@ -344,7 +344,7 @@ INSERT INTO `test` VALUES ('1', '123');
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id1',
   `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   `account` varchar(45) DEFAULT NULL COMMENT '账号',
   `password` varchar(45) DEFAULT NULL COMMENT '密码',
