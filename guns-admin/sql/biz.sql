@@ -20,9 +20,9 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`value` varchar(255) DEFAULT NULL,
+	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -119,8 +119,8 @@ CREATE TABLE `wb_match` (
 	`match_province` VARCHAR (20) NOT NULL COMMENT '比赛省份',
 	`match_city` VARCHAR (20) NOT NULL COMMENT '比赛市',
 	`match_area` VARCHAR (20) NOT NULL COMMENT '比赛区',
-	`match_start_time` TIMESTAMP  DEFAULT NULL COMMENT '球赛开始时间',
-	`match_end_time` TIMESTAMP  DEFAULT NULL COMMENT '球赛结束时间',
+	`match_start_time` datetime  DEFAULT NULL COMMENT '球赛开始时间',
+	`match_end_time` datetime  DEFAULT NULL COMMENT '球赛结束时间',
 	`match_park_id` BIGINT (11) NOT NULL COMMENT '球场id',
 	`match_status` VARCHAR (10) DEFAULT NULL COMMENT '比赛状态(待定)',
 	`create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
