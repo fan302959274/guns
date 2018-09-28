@@ -1,7 +1,7 @@
 package com.stylefeng.guns.common.persistence.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.stylefeng.guns.common.persistence.model.Relation;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.stylefeng.guns.common.persistence.model.Relation;
  * </p>
  *
  * @author stylefeng
- * @since 2017-07-11
+ * @since 2018-09-28
  */
 public interface RelationMapper extends BaseMapper<Relation> {
 

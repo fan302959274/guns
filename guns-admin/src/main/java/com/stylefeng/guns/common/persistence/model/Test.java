@@ -1,7 +1,10 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
+import java.io.Serializable;
 
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
 
 /**
@@ -10,12 +13,13 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2017-07-11
+ * @since 2018-09-28
  */
 public class Test extends Model<Test> {
 
     private static final long serialVersionUID = 1L;
 
+	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
 	private String value;
 

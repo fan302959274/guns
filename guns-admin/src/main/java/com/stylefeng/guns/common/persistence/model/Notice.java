@@ -1,11 +1,12 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -13,7 +14,7 @@ import java.util.Date;
  * </p>
  *
  * @author stylefeng
- * @since 2017-07-11
+ * @since 2018-09-28
  */
 public class Notice extends Model<Notice> {
 
