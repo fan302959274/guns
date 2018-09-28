@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.common.persistence.dao.PkTeamMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.PkTeam">
+		<id column="id" property="id" />
+		<result column="team_name" property="teamName" />
+		<result column="team_level" property="teamLevel" />
+		<result column="team_member_num" property="teamMemberNum" />
+		<result column="team_win_num" property="teamWinNum" />
+		<result column="team_debt_num" property="teamDebtNum" />
+		<result column="team_draw_num" property="teamDrawNum" />
+		<result column="team_point" property="teamPoint" />
+		<result column="team_province" property="teamProvince" />
+		<result column="team_city" property="teamCity" />
+		<result column="team_area" property="teamArea" />
+		<result column="team_member_desc" property="teamMemberDesc" />
+		<result column="team_owner_id" property="teamOwnerId" />
+		<result column="team_status" property="teamStatus" />
+		<result column="create_date" property="createDate" />
+		<result column="update_date" property="updateDate" />
+		<result column="creator" property="creator" />
+		<result column="updator" property="updator" />
+		<result column="is_deleted" property="isDeleted" />
+	</resultMap>
+
+</mapper>
