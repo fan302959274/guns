@@ -33,8 +33,8 @@ INSERT INTO `test` VALUES ('1', 'qwe');
 
 
 
-
 -- 1、队员表
+DROP TABLE IF EXISTS `wb_member`;
 CREATE TABLE `wb_member` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`member_name` VARCHAR (100) DEFAULT NULL COMMENT '队员名称',
@@ -56,6 +56,7 @@ CREATE TABLE `wb_member` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '队员表';
 
 -- 2、附件表
+DROP TABLE IF EXISTS `wb_attachment`;
 CREATE TABLE `wb_attachment` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`attachment_name` VARCHAR (50) NOT NULL COMMENT '附件名称',
@@ -72,6 +73,7 @@ CREATE TABLE `wb_attachment` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '队员附件表';
 
 -- 3、球队表
+DROP TABLE IF EXISTS `wb_team`;
 CREATE TABLE `wb_team` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`team_name` VARCHAR (50) NOT NULL COMMENT '球队名称',
@@ -96,6 +98,7 @@ CREATE TABLE `wb_team` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '球队表';
 
 -- 4、球队队员表
+DROP TABLE IF EXISTS `wb_team_member`;
 CREATE TABLE `wb_team_member` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`team_id` BIGINT (11) NOT NULL COMMENT '球队id',
@@ -104,6 +107,7 @@ CREATE TABLE `wb_team_member` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '球队队员表';
 
 -- 5、比赛表
+DROP TABLE IF EXISTS `wb_match`;
 CREATE TABLE `wb_match` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`match_name` VARCHAR (50) NOT NULL COMMENT '比赛名称',
@@ -128,8 +132,8 @@ CREATE TABLE `wb_match` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '比赛表';
 
 
-
 -- 6、球场表
+DROP TABLE IF EXISTS `wb_park`;
 CREATE TABLE `wb_park` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`park_name` VARCHAR (50) NOT NULL COMMENT '球场名称',
