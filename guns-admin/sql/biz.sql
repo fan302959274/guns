@@ -34,8 +34,8 @@ INSERT INTO `test` VALUES ('1', 'qwe');
 
 
 -- 1、队员表
-DROP TABLE IF EXISTS `wb_member`;
-CREATE TABLE `wb_member` (
+DROP TABLE IF EXISTS `pk_member`;
+CREATE TABLE `pk_member` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`member_name` VARCHAR (100) DEFAULT NULL COMMENT '队员名称',
 	`member_sex` VARCHAR (1) DEFAULT NULL COMMENT '队员性别0:男;1:女',
@@ -56,8 +56,8 @@ CREATE TABLE `wb_member` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '队员表';
 
 -- 2、附件表
-DROP TABLE IF EXISTS `wb_attachment`;
-CREATE TABLE `wb_attachment` (
+DROP TABLE IF EXISTS `pk_attachment`;
+CREATE TABLE `pk_attachment` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`attachment_name` VARCHAR (50) NOT NULL COMMENT '附件名称',
 	`attachment_osskey` VARCHAR (100) DEFAULT NULL COMMENT '附件osskey',
@@ -73,8 +73,8 @@ CREATE TABLE `wb_attachment` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '队员附件表';
 
 -- 3、球队表
-DROP TABLE IF EXISTS `wb_team`;
-CREATE TABLE `wb_team` (
+DROP TABLE IF EXISTS `pk_team`;
+CREATE TABLE `pk_team` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`team_name` VARCHAR (50) NOT NULL COMMENT '球队名称',
 	`team_level` VARCHAR (20) NOT NULL COMMENT '球队级别',
@@ -98,8 +98,8 @@ CREATE TABLE `wb_team` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '球队表';
 
 -- 4、球队队员表
-DROP TABLE IF EXISTS `wb_team_member`;
-CREATE TABLE `wb_team_member` (
+DROP TABLE IF EXISTS `pk_team_member`;
+CREATE TABLE `pk_team_member` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`team_id` BIGINT (11) NOT NULL COMMENT '球队id',
 	`member_id` BIGINT (11) NOT NULL COMMENT '队员id',
@@ -107,8 +107,8 @@ CREATE TABLE `wb_team_member` (
 ) ENGINE = INNODB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8 COMMENT = '球队队员表';
 
 -- 5、比赛表
-DROP TABLE IF EXISTS `wb_match`;
-CREATE TABLE `wb_match` (
+DROP TABLE IF EXISTS `pk_match`;
+CREATE TABLE `pk_match` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`match_name` VARCHAR (50) NOT NULL COMMENT '比赛名称',
 	`match_time` INTEGER DEFAULT NULL COMMENT '比赛时间',
@@ -133,8 +133,8 @@ CREATE TABLE `wb_match` (
 
 
 -- 6、球场表
-DROP TABLE IF EXISTS `wb_park`;
-CREATE TABLE `wb_park` (
+DROP TABLE IF EXISTS `pk_park`;
+CREATE TABLE `pk_park` (
 	`id` BIGINT (11) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`park_name` VARCHAR (50) NOT NULL COMMENT '球场名称',
 	`park_province` VARCHAR (20) NOT NULL COMMENT '球场省份',
