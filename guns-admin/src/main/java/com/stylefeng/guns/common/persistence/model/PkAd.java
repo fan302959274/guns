@@ -12,14 +12,14 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 球场表
+ * 广告表
  * </p>
  *
  * @author stylefeng
  * @since 2018-09-29
  */
-@TableName("pk_park")
-public class PkPark extends Model<PkPark> {
+@TableName("pk_ad")
+public class PkAd extends Model<PkAd> {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,35 +29,35 @@ public class PkPark extends Model<PkPark> {
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
     /**
-     * 球场名称
+     * 广告主标题
      */
-	@TableField("park_name")
-	private String parkName;
+	@TableField("ad_main_head")
+	private String adMainHead;
     /**
-     * 球场省份
+     * 广告副标题
      */
-	@TableField("park_province")
-	private String parkProvince;
+	@TableField("ad_sub_head")
+	private String adSubHead;
     /**
-     * 球场市
+     * 开始时间
      */
-	@TableField("park_city")
-	private String parkCity;
+	@TableField("ad_start_time")
+	private Date adStartTime;
     /**
-     * 球场区
+     * 结束时间
      */
-	@TableField("park_area")
-	private String parkArea;
+	@TableField("ad_end_time")
+	private Date adEndTime;
     /**
-     * 球场简介
+     * 广告链接
      */
-	@TableField("park_desc")
-	private String parkDesc;
+	@TableField("ad_url")
+	private String adUrl;
     /**
-     * 球场可用时间
+     * 广告状态:0:预上线;1:已上线
      */
-	@TableField("park_business_time")
-	private String parkBusinessTime;
+	@TableField("ad_status")
+	private String adStatus;
     /**
      * 创建时间
      */
@@ -91,52 +91,52 @@ public class PkPark extends Model<PkPark> {
 		this.id = id;
 	}
 
-	public String getParkName() {
-		return parkName;
+	public String getAdMainHead() {
+		return adMainHead;
 	}
 
-	public void setParkName(String parkName) {
-		this.parkName = parkName;
+	public void setAdMainHead(String adMainHead) {
+		this.adMainHead = adMainHead;
 	}
 
-	public String getParkProvince() {
-		return parkProvince;
+	public String getAdSubHead() {
+		return adSubHead;
 	}
 
-	public void setParkProvince(String parkProvince) {
-		this.parkProvince = parkProvince;
+	public void setAdSubHead(String adSubHead) {
+		this.adSubHead = adSubHead;
 	}
 
-	public String getParkCity() {
-		return parkCity;
+	public Date getAdStartTime() {
+		return adStartTime;
 	}
 
-	public void setParkCity(String parkCity) {
-		this.parkCity = parkCity;
+	public void setAdStartTime(Date adStartTime) {
+		this.adStartTime = adStartTime;
 	}
 
-	public String getParkArea() {
-		return parkArea;
+	public Date getAdEndTime() {
+		return adEndTime;
 	}
 
-	public void setParkArea(String parkArea) {
-		this.parkArea = parkArea;
+	public void setAdEndTime(Date adEndTime) {
+		this.adEndTime = adEndTime;
 	}
 
-	public String getParkDesc() {
-		return parkDesc;
+	public String getAdUrl() {
+		return adUrl;
 	}
 
-	public void setParkDesc(String parkDesc) {
-		this.parkDesc = parkDesc;
+	public void setAdUrl(String adUrl) {
+		this.adUrl = adUrl;
 	}
 
-	public String getParkBusinessTime() {
-		return parkBusinessTime;
+	public String getAdStatus() {
+		return adStatus;
 	}
 
-	public void setParkBusinessTime(String parkBusinessTime) {
-		this.parkBusinessTime = parkBusinessTime;
+	public void setAdStatus(String adStatus) {
+		this.adStatus = adStatus;
 	}
 
 	public Date getCreateDate() {
@@ -186,14 +186,14 @@ public class PkPark extends Model<PkPark> {
 
 	@Override
 	public String toString() {
-		return "PkPark{" +
+		return "PkAd{" +
 			"id=" + id +
-			", parkName=" + parkName +
-			", parkProvince=" + parkProvince +
-			", parkCity=" + parkCity +
-			", parkArea=" + parkArea +
-			", parkDesc=" + parkDesc +
-			", parkBusinessTime=" + parkBusinessTime +
+			", adMainHead=" + adMainHead +
+			", adSubHead=" + adSubHead +
+			", adStartTime=" + adStartTime +
+			", adEndTime=" + adEndTime +
+			", adUrl=" + adUrl +
+			", adStatus=" + adStatus +
 			", createDate=" + createDate +
 			", updateDate=" + updateDate +
 			", creator=" + creator +

@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-09-28
+ * @since 2018-09-29
  */
 @TableName("pk_attachment")
 public class PkAttachment extends Model<PkAttachment> {
@@ -39,12 +39,17 @@ public class PkAttachment extends Model<PkAttachment> {
 	@TableField("attachment_osskey")
 	private String attachmentOsskey;
     /**
-     * 附件类型1:队员附件;2:球队附件;3:球场附件
+     * 附件链接
+     */
+	@TableField("attachment_url")
+	private String attachmentUrl;
+    /**
+     * 附件类型1:队员附件;2:球队附件;3:球场附件;4:广告附件
      */
 	@TableField("attachment_type")
 	private String attachmentType;
     /**
-     * 关联主键:队员id|球队id|球场id
+     * 关联主键:队员id|球队id|球场id|广告id
      */
 	@TableField("attachment_key")
 	private String attachmentKey;
@@ -100,6 +105,14 @@ public class PkAttachment extends Model<PkAttachment> {
 
 	public void setAttachmentOsskey(String attachmentOsskey) {
 		this.attachmentOsskey = attachmentOsskey;
+	}
+
+	public String getAttachmentUrl() {
+		return attachmentUrl;
+	}
+
+	public void setAttachmentUrl(String attachmentUrl) {
+		this.attachmentUrl = attachmentUrl;
 	}
 
 	public String getAttachmentType() {
@@ -177,6 +190,7 @@ public class PkAttachment extends Model<PkAttachment> {
 			"id=" + id +
 			", attachmentName=" + attachmentName +
 			", attachmentOsskey=" + attachmentOsskey +
+			", attachmentUrl=" + attachmentUrl +
 			", attachmentType=" + attachmentType +
 			", attachmentKey=" + attachmentKey +
 			", attachmentSuffix=" + attachmentSuffix +
