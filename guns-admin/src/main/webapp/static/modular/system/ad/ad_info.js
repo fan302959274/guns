@@ -3,26 +3,18 @@
  */
 var AdInfoDlg = {
     adInfoData : {},
-    zTreeInstance : null,
     validateFields: {
-        simplename: {
+        adMainHead: {
             validators: {
                 notEmpty: {
-                    message: '部门名称不能为空'
+                    message: '广告标题不能为空'
                 }
             }
         },
-        fullname: {
+        adSubHead: {
             validators: {
                 notEmpty: {
-                    message: '部门全称不能为空'
-                }
-            }
-        },
-        pName: {
-            validators: {
-                notEmpty: {
-                    message: '上级名称不能为空'
+                    message: '广告副标题不能为空'
                 }
             }
         }
@@ -65,47 +57,10 @@ AdInfoDlg.close = function() {
 }
 
 /**
- * 点击部门ztree列表的选项时
- *
- * @param e
- * @param treeId
- * @param treeNode
- * @returns
- */
-AdInfoDlg.onClickAd = function(e, treeId, treeNode) {
-    $("#pName").attr("value", AdInfoDlg.zTreeInstance.getSelectedVal());
-    $("#pid").attr("value", treeNode.id);
-}
-
-/**
- * 显示部门选择的树
- *
- * @returns
- */
-AdInfoDlg.showAdSelectTree = function() {
-    var pName = $("#pName");
-    var pNameOffset = $("#pName").offset();
-    $("#parentAdMenu").css({
-        left : pNameOffset.left + "px",
-        top : pNameOffset.top + pName.outerHeight() + "px"
-    }).slideDown("fast");
-
-    $("body").bind("mousedown", onBodyDown);
-}
-
-/**
- * 隐藏部门选择的树
- */
-AdInfoDlg.hideAdSelectTree = function() {
-    $("#parentAdMenu").fadeOut("fast");
-    $("body").unbind("mousedown", onBodyDown);// mousedown当鼠标按下就可以触发，不用弹起
-}
-
-/**
  * 收集数据
  */
 AdInfoDlg.collectData = function() {
-    this.set('id').set('simplename').set('fullname').set('tips').set('num').set('pid');
+    this.set('id').set('adMainHead').set('adSubHead').set('adStartTime').set('adEndTime').set('adUrl').set('adStatus');
 }
 
 /**
@@ -175,8 +130,5 @@ function onBodyDown(event) {
 $(function() {
     Feng.initValidator("adInfoForm", AdInfoDlg.validateFields);
 
-    var ztree = new $ZTree("parentAdMenuTree", "/ad/tree");
-    ztree.bindOnClick(AdInfoDlg.onClickAd);
-    ztree.init();
-    AdInfoDlg.zTreeInstance = ztree;
+
 });

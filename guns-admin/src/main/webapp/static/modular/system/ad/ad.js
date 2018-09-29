@@ -1,5 +1,5 @@
 /**
- * 部门管理初始化
+ * 广告管理初始化
  */
 var Ad = {
     id: "AdTable",	//表格id
@@ -14,11 +14,13 @@ var Ad = {
 Ad.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: 'id', field: 'id', align: 'center', valign: 'middle',width:'50px'},
-        {title: '部门简称', field: 'simplename', align: 'center', valign: 'middle', sortable: true},
-        {title: '部门全称', field: 'fullname', align: 'center', valign: 'middle', sortable: true},
-        {title: '排序', field: 'num', align: 'center', valign: 'middle', sortable: true},
-        {title: '备注', field: 'tips', align: 'center', valign: 'middle', sortable: true}];
+        {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
+        {title: '广告标题', field: 'adMainHead', align: 'center', valign: 'middle', sortable: true},
+        {title: '广告副标题', field: 'adSubHead', align: 'center', valign: 'middle', sortable: true},
+        {title: '开始时间', field: 'adStartTime', align: 'center', valign: 'middle', sortable: true},
+        {title: '结束时间', field: 'adEndTime', align: 'center', valign: 'middle', sortable: true},
+        {title: '广告链接', field: 'adUrl', align: 'center', valign: 'middle', sortable: true},
+        {title: '广告状态', field: 'adStatus', align: 'center', valign: 'middle', sortable: true}];
 };
 
 /**
@@ -26,22 +28,22 @@ Ad.initColumn = function () {
  */
 Ad.check = function () {
     var selected = $('#' + this.id).bootstrapTreeTable('getSelections');
-    if(selected.length == 0){
+    if (selected.length == 0) {
         Feng.info("请先选中表格中的某一记录！");
         return false;
-    }else{
+    } else {
         Ad.seItem = selected[0];
         return true;
     }
 };
 
 /**
- * 点击添加部门
+ * 点击添加广告
  */
 Ad.openAddAd = function () {
     var index = layer.open({
         type: 2,
-        title: '添加部门',
+        title: '添加广告',
         area: ['800px', '420px'], //宽高
         fix: false, //不固定
         maxmin: true,
@@ -51,13 +53,13 @@ Ad.openAddAd = function () {
 };
 
 /**
- * 打开查看部门详情
+ * 打开查看广告详情
  */
 Ad.openAdDetail = function () {
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '部门详情',
+            title: '广告详情',
             area: ['800px', '420px'], //宽高
             fix: false, //不固定
             maxmin: true,
@@ -68,28 +70,28 @@ Ad.openAdDetail = function () {
 };
 
 /**
- * 删除部门
+ * 删除广告
  */
 Ad.delete = function () {
     if (this.check()) {
 
-        var operation = function(){
+        var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/ad/delete", function () {
                 Feng.success("删除成功!");
                 Ad.table.refresh();
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("adId",Ad.seItem.id);
+            ajax.set("adId", Ad.seItem.id);
             ajax.start();
         };
 
-        Feng.confirm("是否刪除该部门?", operation);
+        Feng.confirm("是否刪除该广告?", operation);
     }
 };
 
 /**
- * 查询部门列表
+ * 查询广告列表
  */
 Ad.search = function () {
     var queryData = {};
