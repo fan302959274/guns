@@ -11,7 +11,10 @@ import com.stylefeng.guns.common.persistence.dao.PkAdMapper;
 import com.stylefeng.guns.common.persistence.model.PkAd;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
+import com.stylefeng.guns.core.support.BeanKit;
+import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.core.util.ToolUtil;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 广告控制器
@@ -59,11 +64,13 @@ public class AdController extends BaseController {
     /**
      * 跳转到修改广告
      */
-    @Permission
     @RequestMapping("/ad_update/{adId}")
     public String adUpdate(@PathVariable Integer adId, Model model) {
         PkAd pkAd = pkAdMapper.selectById(adId);
-        model.addAttribute(pkAd);
+
+        Map<String, Object> menuMap = BeanKit.beanToMap(pkAd);
+        model.addAttribute("ad", menuMap);
+//        model.addAttribute(pkAd);
         LogObjectHolder.me().set(pkAd);
         return PREFIX + "ad_edit.html";
     }
@@ -76,7 +83,7 @@ public class AdController extends BaseController {
     @RequestMapping(value = "/add")
     @Permission
     @ResponseBody
-    public Object add(PkAd pkAd) {
+    public Object add(PkAd pkAd) throws ParseException {
         if (ToolUtil.isOneEmpty(pkAd, pkAd.getAdMainHead())) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
@@ -90,10 +97,10 @@ public class AdController extends BaseController {
     @RequestMapping(value = "/list")
     @Permission
     @ResponseBody
-    public Object list(PkAd condition, Integer page, Integer pageSize) {
+    public Object list(@RequestParam(required = false) String adMainHead, Integer page, Integer pageSize) {
         RowBounds rowBounds = new RowBounds();
         Wrapper<PkAd> wrapper = new EntityWrapper<>();
-//        wrapper = wrapper.eq("id", condition.getId());
+        wrapper = wrapper.like("adMainHead", adMainHead);
         List<PkAd> list = this.pkAdMapper.selectPage(rowBounds, wrapper);
         return list;
     }
@@ -130,7 +137,7 @@ public class AdController extends BaseController {
     @RequestMapping(value = "/delete")
     @Permission
     @ResponseBody
-    public Object delete(@RequestParam Integer adId) {
+    public Object delete(@RequestParam Long adId) {
         pkAdMapper.deleteById(adId);
 
         return SUCCESS_TIP;

@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
@@ -42,11 +44,13 @@ public class PkAd extends Model<PkAd> {
      * 开始时间
      */
 	@TableField("ad_start_time")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date adStartTime;
     /**
      * 结束时间
      */
 	@TableField("ad_end_time")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date adEndTime;
     /**
      * 广告链接
