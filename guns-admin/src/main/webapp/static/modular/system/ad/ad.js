@@ -96,7 +96,6 @@ Ad.delete = function () {
 Ad.search = function () {
     var queryData = {};
     queryData['adMainHead'] = $("#condition").val();
-    alert(queryData['adMainHead']);
     Ad.table.refresh({query: queryData});
 };
 

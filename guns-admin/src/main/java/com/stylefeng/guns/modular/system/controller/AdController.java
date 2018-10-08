@@ -14,6 +14,7 @@ import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.support.BeanKit;
 import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.core.util.ToolUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
@@ -100,7 +101,9 @@ public class AdController extends BaseController {
     public Object list(@RequestParam(required = false) String adMainHead, Integer page, Integer pageSize) {
         RowBounds rowBounds = new RowBounds();
         Wrapper<PkAd> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.like("adMainHead", adMainHead);
+        if (StringUtils.isNoneBlank(adMainHead)){
+            wrapper = wrapper.like("ad_main_head", adMainHead);
+        }
         List<PkAd> list = this.pkAdMapper.selectPage(rowBounds, wrapper);
         return list;
     }
