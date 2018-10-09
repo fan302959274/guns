@@ -3,7 +3,7 @@ package com.stylefeng.guns.modular.system.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.common.annotion.Permission;
-import com.stylefeng.guns.common.enums.AttachEnum;
+import com.stylefeng.guns.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.PkAdMapper;
@@ -116,7 +116,7 @@ public class AdController extends BaseController {
         if (StringUtils.isNoneBlank(ads)) {
             Arrays.asList(ads.split(",")).forEach(s -> {
                 PkAttachment pkAttachment = new PkAttachment();
-                pkAttachment.setType(AttachEnum.AD.getCode());
+                pkAttachment.setCategory(AttachCategoryEnum.AD.getCode());
                 pkAttachment.setLinkid(record.getId());
                 pkAttachment.setName(s);
                 pkAttachment.setSuffix(s.substring(s.lastIndexOf(".") + 1));
@@ -178,7 +178,7 @@ public class AdController extends BaseController {
         if (StringUtils.isNoneBlank(ads)) {
             Arrays.asList(ads.split(",")).forEach(s -> {
                 PkAttachment pkAttachment = new PkAttachment();
-                pkAttachment.setType(AttachEnum.AD.getCode());
+                pkAttachment.setCategory(AttachCategoryEnum.AD.getCode());
                 pkAttachment.setLinkid(record.getId());
                 pkAttachment.setName(s);
                 pkAttachment.setSuffix(s.substring(s.lastIndexOf(".") + 1));

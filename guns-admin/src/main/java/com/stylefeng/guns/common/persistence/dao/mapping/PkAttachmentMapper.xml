@@ -8,6 +8,7 @@
 		<result column="name" property="name" />
 		<result column="osskey" property="osskey" />
 		<result column="url" property="url" />
+		<result column="category" property="category" />
 		<result column="type" property="type" />
 		<result column="linkid" property="linkid" />
 		<result column="suffix" property="suffix" />

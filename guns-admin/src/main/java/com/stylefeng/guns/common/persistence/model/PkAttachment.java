@@ -40,7 +40,11 @@ public class PkAttachment extends Model<PkAttachment> {
      */
 	private String url;
     /**
-     * 附件类型1:队员附件;2:球队附件;3:球场附件;4:广告附件
+     * 附件种类1:队员附件;2:球队附件;3:球场附件;4:广告附件
+     */
+	private String category;
+    /**
+     * 附件类型:针对不同种类区分
      */
 	private String type;
     /**
@@ -103,6 +107,14 @@ public class PkAttachment extends Model<PkAttachment> {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getType() {
@@ -181,6 +193,7 @@ public class PkAttachment extends Model<PkAttachment> {
 			", name=" + name +
 			", osskey=" + osskey +
 			", url=" + url +
+			", category=" + category +
 			", type=" + type +
 			", linkid=" + linkid +
 			", suffix=" + suffix +

@@ -4,14 +4,16 @@ package com.stylefeng.guns.common.enums;
  * 附件类型枚举类
  *
  */
-public enum AttachEnum {
+public enum AttachTypeEnum {
 
-    AD("AD", "队员");
+    HEAD("HEAD", "头像"),
+    IDCARD("IDCARD", "身份证"),
+    LOGO("LOGO", "头像");
 
     String code;
     String message;
 
-    AttachEnum(String code, String message) {
+    AttachTypeEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }
