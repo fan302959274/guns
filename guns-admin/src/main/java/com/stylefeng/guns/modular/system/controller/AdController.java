@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,6 +76,22 @@ public class AdController extends BaseController {
         PkAd pkAd = pkAdMapper.selectById(adId);
 
         Map<String, Object> menuMap = BeanKit.beanToMap(pkAd);
+        Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
+        wrapper = wrapper.eq("linkid", adId);
+        List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
+        String ads = "";
+        if (!CollectionUtils.isEmpty(list)) {
+            for (PkAttachment pkAttachment : list) {
+                if (StringUtils.isNoneBlank(ads)) {
+                    ads = ads.concat(",").concat(pkAttachment.getUrl());
+                } else {
+                    ads = ads.concat(pkAttachment.getUrl());
+                }
+            }
+
+        }
+        menuMap.put("adsImg", list);
+        menuMap.put("ads", ads);
         model.addAttribute("ad", menuMap);
 //        model.addAttribute(pkAd);
         LogObjectHolder.me().set(pkAd);
@@ -123,7 +140,7 @@ public class AdController extends BaseController {
         RowBounds rowBounds = new RowBounds();
         Wrapper<PkAd> wrapper = new EntityWrapper<>();
         if (StringUtils.isNoneBlank(adMainHead)) {
-            wrapper = wrapper.like("ad_main_head", adMainHead);
+            wrapper = wrapper.like("mainhead", adMainHead);
         }
         List<PkAd> list = this.pkAdMapper.selectPage(rowBounds, wrapper);
         return list;
