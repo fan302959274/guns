@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.math.BigDecimal;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -17,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-09-29
+ * @since 2018-10-09
  */
 @TableName("pk_member")
 public class PkMember extends Model<PkMember> {
@@ -32,63 +31,51 @@ public class PkMember extends Model<PkMember> {
     /**
      * 队员名称
      */
-	@TableField("member_name")
-	private String memberName;
+	private String name;
     /**
      * 队员性别0:男;1:女
      */
-	@TableField("member_sex")
-	private String memberSex;
+	private String sex;
     /**
      * 手机号
      */
-	@TableField("member_mobile")
-	private String memberMobile;
+	private String mobile;
     /**
      * 出生年月
      */
-	@TableField("member_birth")
-	private Date memberBirth;
+	private Date birth;
     /**
      * 主攻位置
      */
-	@TableField("member_position")
-	private String memberPosition;
+	private String position;
     /**
      * 惯用脚
      */
-	@TableField("member_habit_feet")
-	private String memberHabitFeet;
+	private String habitfeet;
     /**
      * 身高
      */
-	@TableField("member_height")
-	private BigDecimal memberHeight;
+	private BigDecimal height;
     /**
      * 体重
      */
-	@TableField("member_weight")
-	private BigDecimal memberWeight;
+	private BigDecimal weight;
     /**
      * 队员类型:1:队长;2:普通球员
      */
-	@TableField("member_type")
-	private String memberType;
+	private String type;
     /**
      * 队员状态:0:禁用1:启用
      */
-	@TableField("member_status")
-	private String memberStatus;
+	private String status;
     /**
      * 创建时间
      */
-	@TableField("create_date")
-	private Date createDate;
+	private Date createdate;
     /**
      * 更新时间
      */
-	@TableField("update_date")
-	private Date updateDate;
+	private Date updatedate;
     /**
      * 创建人
      */
@@ -100,8 +87,7 @@ public class PkMember extends Model<PkMember> {
     /**
      * 是否删除
      */
-	@TableField("is_deleted")
-	private String isDeleted;
+	private String isdeleted;
 
 
 	public Long getId() {
@@ -112,100 +98,100 @@ public class PkMember extends Model<PkMember> {
 		this.id = id;
 	}
 
-	public String getMemberName() {
-		return memberName;
+	public String getName() {
+		return name;
 	}
 
-	public void setMemberName(String memberName) {
-		this.memberName = memberName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getMemberSex() {
-		return memberSex;
+	public String getSex() {
+		return sex;
 	}
 
-	public void setMemberSex(String memberSex) {
-		this.memberSex = memberSex;
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
-	public String getMemberMobile() {
-		return memberMobile;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setMemberMobile(String memberMobile) {
-		this.memberMobile = memberMobile;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
-	public Date getMemberBirth() {
-		return memberBirth;
+	public Date getBirth() {
+		return birth;
 	}
 
-	public void setMemberBirth(Date memberBirth) {
-		this.memberBirth = memberBirth;
+	public void setBirth(Date birth) {
+		this.birth = birth;
 	}
 
-	public String getMemberPosition() {
-		return memberPosition;
+	public String getPosition() {
+		return position;
 	}
 
-	public void setMemberPosition(String memberPosition) {
-		this.memberPosition = memberPosition;
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
-	public String getMemberHabitFeet() {
-		return memberHabitFeet;
+	public String getHabitfeet() {
+		return habitfeet;
 	}
 
-	public void setMemberHabitFeet(String memberHabitFeet) {
-		this.memberHabitFeet = memberHabitFeet;
+	public void setHabitfeet(String habitfeet) {
+		this.habitfeet = habitfeet;
 	}
 
-	public BigDecimal getMemberHeight() {
-		return memberHeight;
+	public BigDecimal getHeight() {
+		return height;
 	}
 
-	public void setMemberHeight(BigDecimal memberHeight) {
-		this.memberHeight = memberHeight;
+	public void setHeight(BigDecimal height) {
+		this.height = height;
 	}
 
-	public BigDecimal getMemberWeight() {
-		return memberWeight;
+	public BigDecimal getWeight() {
+		return weight;
 	}
 
-	public void setMemberWeight(BigDecimal memberWeight) {
-		this.memberWeight = memberWeight;
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
 	}
 
-	public String getMemberType() {
-		return memberType;
+	public String getType() {
+		return type;
 	}
 
-	public void setMemberType(String memberType) {
-		this.memberType = memberType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getMemberStatus() {
-		return memberStatus;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setMemberStatus(String memberStatus) {
-		this.memberStatus = memberStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedate() {
+		return createdate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedate() {
+		return updatedate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
 	}
 
 	public String getCreator() {
@@ -224,12 +210,12 @@ public class PkMember extends Model<PkMember> {
 		this.updator = updator;
 	}
 
-	public String getIsDeleted() {
-		return isDeleted;
+	public String getIsdeleted() {
+		return isdeleted;
 	}
 
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setIsdeleted(String isdeleted) {
+		this.isdeleted = isdeleted;
 	}
 
 	@Override
@@ -241,21 +227,21 @@ public class PkMember extends Model<PkMember> {
 	public String toString() {
 		return "PkMember{" +
 			"id=" + id +
-			", memberName=" + memberName +
-			", memberSex=" + memberSex +
-			", memberMobile=" + memberMobile +
-			", memberBirth=" + memberBirth +
-			", memberPosition=" + memberPosition +
-			", memberHabitFeet=" + memberHabitFeet +
-			", memberHeight=" + memberHeight +
-			", memberWeight=" + memberWeight +
-			", memberType=" + memberType +
-			", memberStatus=" + memberStatus +
-			", createDate=" + createDate +
-			", updateDate=" + updateDate +
+			", name=" + name +
+			", sex=" + sex +
+			", mobile=" + mobile +
+			", birth=" + birth +
+			", position=" + position +
+			", habitfeet=" + habitfeet +
+			", height=" + height +
+			", weight=" + weight +
+			", type=" + type +
+			", status=" + status +
+			", createdate=" + createdate +
+			", updatedate=" + updatedate +
 			", creator=" + creator +
 			", updator=" + updator +
-			", isDeleted=" + isDeleted +
+			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

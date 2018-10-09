@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,7 +17,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-09-29
+ * @since 2018-10-09
  */
 @TableName("pk_ad")
 public class PkAd extends Model<PkAd> {
@@ -33,45 +32,37 @@ public class PkAd extends Model<PkAd> {
     /**
      * 广告主标题
      */
-	@TableField("ad_main_head")
-	private String adMainHead;
+	private String mainhead;
     /**
      * 广告副标题
      */
-	@TableField("ad_sub_head")
-	private String adSubHead;
+	private String subhead;
     /**
      * 开始时间
      */
-	@TableField("ad_start_time")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date adStartTime;
+	private Date starttime;
     /**
      * 结束时间
      */
-	@TableField("ad_end_time")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date adEndTime;
+	private Date endtime;
     /**
      * 广告链接
      */
-	@TableField("ad_url")
-	private String adUrl;
+	private String url;
     /**
      * 广告状态:0:预上线;1:已上线
      */
-	@TableField("ad_status")
-	private String adStatus;
+	private String status;
     /**
      * 创建时间
      */
-	@TableField("create_date")
-	private Date createDate;
+	private Date createdate;
     /**
      * 更新时间
      */
-	@TableField("update_date")
-	private Date updateDate;
+	private Date updatedate;
     /**
      * 创建人
      */
@@ -83,8 +74,7 @@ public class PkAd extends Model<PkAd> {
     /**
      * 是否删除
      */
-	@TableField("is_deleted")
-	private String isDeleted;
+	private String isdeleted;
 
 
 	public Long getId() {
@@ -95,68 +85,68 @@ public class PkAd extends Model<PkAd> {
 		this.id = id;
 	}
 
-	public String getAdMainHead() {
-		return adMainHead;
+	public String getMainhead() {
+		return mainhead;
 	}
 
-	public void setAdMainHead(String adMainHead) {
-		this.adMainHead = adMainHead;
+	public void setMainhead(String mainhead) {
+		this.mainhead = mainhead;
 	}
 
-	public String getAdSubHead() {
-		return adSubHead;
+	public String getSubhead() {
+		return subhead;
 	}
 
-	public void setAdSubHead(String adSubHead) {
-		this.adSubHead = adSubHead;
+	public void setSubhead(String subhead) {
+		this.subhead = subhead;
 	}
 
-	public Date getAdStartTime() {
-		return adStartTime;
+	public Date getStarttime() {
+		return starttime;
 	}
 
-	public void setAdStartTime(Date adStartTime) {
-		this.adStartTime = adStartTime;
+	public void setStarttime(Date starttime) {
+		this.starttime = starttime;
 	}
 
-	public Date getAdEndTime() {
-		return adEndTime;
+	public Date getEndtime() {
+		return endtime;
 	}
 
-	public void setAdEndTime(Date adEndTime) {
-		this.adEndTime = adEndTime;
+	public void setEndtime(Date endtime) {
+		this.endtime = endtime;
 	}
 
-	public String getAdUrl() {
-		return adUrl;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setAdUrl(String adUrl) {
-		this.adUrl = adUrl;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public String getAdStatus() {
-		return adStatus;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setAdStatus(String adStatus) {
-		this.adStatus = adStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedate() {
+		return createdate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedate() {
+		return updatedate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
 	}
 
 	public String getCreator() {
@@ -175,12 +165,12 @@ public class PkAd extends Model<PkAd> {
 		this.updator = updator;
 	}
 
-	public String getIsDeleted() {
-		return isDeleted;
+	public String getIsdeleted() {
+		return isdeleted;
 	}
 
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setIsdeleted(String isdeleted) {
+		this.isdeleted = isdeleted;
 	}
 
 	@Override
@@ -192,17 +182,17 @@ public class PkAd extends Model<PkAd> {
 	public String toString() {
 		return "PkAd{" +
 			"id=" + id +
-			", adMainHead=" + adMainHead +
-			", adSubHead=" + adSubHead +
-			", adStartTime=" + adStartTime +
-			", adEndTime=" + adEndTime +
-			", adUrl=" + adUrl +
-			", adStatus=" + adStatus +
-			", createDate=" + createDate +
-			", updateDate=" + updateDate +
+			", mainhead=" + mainhead +
+			", subhead=" + subhead +
+			", starttime=" + starttime +
+			", endtime=" + endtime +
+			", url=" + url +
+			", status=" + status +
+			", createdate=" + createdate +
+			", updatedate=" + updatedate +
 			", creator=" + creator +
 			", updator=" + updator +
-			", isDeleted=" + isDeleted +
+			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

@@ -5,24 +5,24 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.PkTeam">
 		<id column="id" property="id" />
-		<result column="team_name" property="teamName" />
-		<result column="team_level" property="teamLevel" />
-		<result column="team_member_num" property="teamMemberNum" />
-		<result column="team_win_num" property="teamWinNum" />
-		<result column="team_debt_num" property="teamDebtNum" />
-		<result column="team_draw_num" property="teamDrawNum" />
-		<result column="team_point" property="teamPoint" />
-		<result column="team_province" property="teamProvince" />
-		<result column="team_city" property="teamCity" />
-		<result column="team_area" property="teamArea" />
-		<result column="team_member_desc" property="teamMemberDesc" />
-		<result column="team_owner_id" property="teamOwnerId" />
-		<result column="team_status" property="teamStatus" />
-		<result column="create_date" property="createDate" />
-		<result column="update_date" property="updateDate" />
+		<result column="name" property="name" />
+		<result column="level" property="level" />
+		<result column="membernum" property="membernum" />
+		<result column="winnum" property="winnum" />
+		<result column="debtnum" property="debtnum" />
+		<result column="drawnum" property="drawnum" />
+		<result column="point" property="point" />
+		<result column="prov" property="prov" />
+		<result column="city" property="city" />
+		<result column="area" property="area" />
+		<result column="desc" property="desc" />
+		<result column="ownerid" property="ownerid" />
+		<result column="status" property="status" />
+		<result column="createdate" property="createdate" />
+		<result column="updatedate" property="updatedate" />
 		<result column="creator" property="creator" />
 		<result column="updator" property="updator" />
-		<result column="is_deleted" property="isDeleted" />
+		<result column="isdeleted" property="isdeleted" />
 	</resultMap>
 
 </mapper>

@@ -5,17 +5,17 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.PkPark">
 		<id column="id" property="id" />
-		<result column="park_name" property="parkName" />
-		<result column="park_province" property="parkProvince" />
-		<result column="park_city" property="parkCity" />
-		<result column="park_area" property="parkArea" />
-		<result column="park_desc" property="parkDesc" />
-		<result column="park_business_time" property="parkBusinessTime" />
-		<result column="create_date" property="createDate" />
-		<result column="update_date" property="updateDate" />
+		<result column="name" property="name" />
+		<result column="prov" property="prov" />
+		<result column="city" property="city" />
+		<result column="area" property="area" />
+		<result column="desc" property="desc" />
+		<result column="businesstime" property="businesstime" />
+		<result column="createdate" property="createdate" />
+		<result column="updatedate" property="updatedate" />
 		<result column="creator" property="creator" />
 		<result column="updator" property="updator" />
-		<result column="is_deleted" property="isDeleted" />
+		<result column="isdeleted" property="isdeleted" />
 	</resultMap>
 
 </mapper>

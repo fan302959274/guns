@@ -5,21 +5,21 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.PkMember">
 		<id column="id" property="id" />
-		<result column="member_name" property="memberName" />
-		<result column="member_sex" property="memberSex" />
-		<result column="member_mobile" property="memberMobile" />
-		<result column="member_birth" property="memberBirth" />
-		<result column="member_position" property="memberPosition" />
-		<result column="member_habit_feet" property="memberHabitFeet" />
-		<result column="member_height" property="memberHeight" />
-		<result column="member_weight" property="memberWeight" />
-		<result column="member_type" property="memberType" />
-		<result column="member_status" property="memberStatus" />
-		<result column="create_date" property="createDate" />
-		<result column="update_date" property="updateDate" />
+		<result column="name" property="name" />
+		<result column="sex" property="sex" />
+		<result column="mobile" property="mobile" />
+		<result column="birth" property="birth" />
+		<result column="position" property="position" />
+		<result column="habitfeet" property="habitfeet" />
+		<result column="height" property="height" />
+		<result column="weight" property="weight" />
+		<result column="type" property="type" />
+		<result column="status" property="status" />
+		<result column="createdate" property="createdate" />
+		<result column="updatedate" property="updatedate" />
 		<result column="creator" property="creator" />
 		<result column="updator" property="updator" />
-		<result column="is_deleted" property="isDeleted" />
+		<result column="isdeleted" property="isdeleted" />
 	</resultMap>
 
 </mapper>

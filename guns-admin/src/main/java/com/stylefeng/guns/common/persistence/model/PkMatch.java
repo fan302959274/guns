@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -16,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-09-29
+ * @since 2018-10-09
  */
 @TableName("pk_match")
 public class PkMatch extends Model<PkMatch> {
@@ -31,78 +30,63 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 比赛名称
      */
-	@TableField("match_name")
-	private String matchName;
+	private String name;
     /**
      * 比赛时间
      */
-	@TableField("match_time")
-	private Integer matchTime;
+	private Integer time;
     /**
      * 比赛地点
      */
-	@TableField("match_place")
-	private String matchPlace;
+	private String place;
     /**
      * 比赛发起人
      */
-	@TableField("match_initiator_id")
-	private String matchInitiatorId;
+	private String initiatorid;
     /**
      * 东道主team
      */
-	@TableField("match_host_team_id")
-	private Long matchHostTeamId;
+	private Long hostteamid;
     /**
      * 挑战team
      */
-	@TableField("match_challenge_team_id")
-	private Long matchChallengeTeamId;
+	private Long challengeteamid;
     /**
      * 比赛省份
      */
-	@TableField("match_province")
-	private String matchProvince;
+	private String prov;
     /**
      * 比赛市
      */
-	@TableField("match_city")
-	private String matchCity;
+	private String city;
     /**
      * 比赛区
      */
-	@TableField("match_area")
-	private String matchArea;
+	private String area;
     /**
      * 球赛开始时间
      */
-	@TableField("match_start_time")
-	private Date matchStartTime;
+	private Date starttime;
     /**
      * 球赛结束时间
      */
-	@TableField("match_end_time")
-	private Date matchEndTime;
+	private Date endtime;
     /**
      * 球场id
      */
-	@TableField("match_park_id")
-	private Long matchParkId;
+	private Long parkid;
     /**
      * 比赛状态(待定)
      */
-	@TableField("match_status")
-	private String matchStatus;
+	private String status;
     /**
      * 创建时间
      */
-	@TableField("create_date")
-	private Date createDate;
+	private Date createdate;
     /**
      * 更新时间
      */
-	@TableField("update_date")
-	private Date updateDate;
+	private Date updatedate;
     /**
      * 创建人
      */
@@ -114,8 +98,7 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 是否删除
      */
-	@TableField("is_deleted")
-	private String isDeleted;
+	private String isdeleted;
 
 
 	public Long getId() {
@@ -126,124 +109,124 @@ public class PkMatch extends Model<PkMatch> {
 		this.id = id;
 	}
 
-	public String getMatchName() {
-		return matchName;
+	public String getName() {
+		return name;
 	}
 
-	public void setMatchName(String matchName) {
-		this.matchName = matchName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Integer getMatchTime() {
-		return matchTime;
+	public Integer getTime() {
+		return time;
 	}
 
-	public void setMatchTime(Integer matchTime) {
-		this.matchTime = matchTime;
+	public void setTime(Integer time) {
+		this.time = time;
 	}
 
-	public String getMatchPlace() {
-		return matchPlace;
+	public String getPlace() {
+		return place;
 	}
 
-	public void setMatchPlace(String matchPlace) {
-		this.matchPlace = matchPlace;
+	public void setPlace(String place) {
+		this.place = place;
 	}
 
-	public String getMatchInitiatorId() {
-		return matchInitiatorId;
+	public String getInitiatorid() {
+		return initiatorid;
 	}
 
-	public void setMatchInitiatorId(String matchInitiatorId) {
-		this.matchInitiatorId = matchInitiatorId;
+	public void setInitiatorid(String initiatorid) {
+		this.initiatorid = initiatorid;
 	}
 
-	public Long getMatchHostTeamId() {
-		return matchHostTeamId;
+	public Long getHostteamid() {
+		return hostteamid;
 	}
 
-	public void setMatchHostTeamId(Long matchHostTeamId) {
-		this.matchHostTeamId = matchHostTeamId;
+	public void setHostteamid(Long hostteamid) {
+		this.hostteamid = hostteamid;
 	}
 
-	public Long getMatchChallengeTeamId() {
-		return matchChallengeTeamId;
+	public Long getChallengeteamid() {
+		return challengeteamid;
 	}
 
-	public void setMatchChallengeTeamId(Long matchChallengeTeamId) {
-		this.matchChallengeTeamId = matchChallengeTeamId;
+	public void setChallengeteamid(Long challengeteamid) {
+		this.challengeteamid = challengeteamid;
 	}
 
-	public String getMatchProvince() {
-		return matchProvince;
+	public String getProv() {
+		return prov;
 	}
 
-	public void setMatchProvince(String matchProvince) {
-		this.matchProvince = matchProvince;
+	public void setProv(String prov) {
+		this.prov = prov;
 	}
 
-	public String getMatchCity() {
-		return matchCity;
+	public String getCity() {
+		return city;
 	}
 
-	public void setMatchCity(String matchCity) {
-		this.matchCity = matchCity;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	public String getMatchArea() {
-		return matchArea;
+	public String getArea() {
+		return area;
 	}
 
-	public void setMatchArea(String matchArea) {
-		this.matchArea = matchArea;
+	public void setArea(String area) {
+		this.area = area;
 	}
 
-	public Date getMatchStartTime() {
-		return matchStartTime;
+	public Date getStarttime() {
+		return starttime;
 	}
 
-	public void setMatchStartTime(Date matchStartTime) {
-		this.matchStartTime = matchStartTime;
+	public void setStarttime(Date starttime) {
+		this.starttime = starttime;
 	}
 
-	public Date getMatchEndTime() {
-		return matchEndTime;
+	public Date getEndtime() {
+		return endtime;
 	}
 
-	public void setMatchEndTime(Date matchEndTime) {
-		this.matchEndTime = matchEndTime;
+	public void setEndtime(Date endtime) {
+		this.endtime = endtime;
 	}
 
-	public Long getMatchParkId() {
-		return matchParkId;
+	public Long getParkid() {
+		return parkid;
 	}
 
-	public void setMatchParkId(Long matchParkId) {
-		this.matchParkId = matchParkId;
+	public void setParkid(Long parkid) {
+		this.parkid = parkid;
 	}
 
-	public String getMatchStatus() {
-		return matchStatus;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setMatchStatus(String matchStatus) {
-		this.matchStatus = matchStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedate() {
+		return createdate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedate() {
+		return updatedate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
 	}
 
 	public String getCreator() {
@@ -262,12 +245,12 @@ public class PkMatch extends Model<PkMatch> {
 		this.updator = updator;
 	}
 
-	public String getIsDeleted() {
-		return isDeleted;
+	public String getIsdeleted() {
+		return isdeleted;
 	}
 
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setIsdeleted(String isdeleted) {
+		this.isdeleted = isdeleted;
 	}
 
 	@Override
@@ -279,24 +262,24 @@ public class PkMatch extends Model<PkMatch> {
 	public String toString() {
 		return "PkMatch{" +
 			"id=" + id +
-			", matchName=" + matchName +
-			", matchTime=" + matchTime +
-			", matchPlace=" + matchPlace +
-			", matchInitiatorId=" + matchInitiatorId +
-			", matchHostTeamId=" + matchHostTeamId +
-			", matchChallengeTeamId=" + matchChallengeTeamId +
-			", matchProvince=" + matchProvince +
-			", matchCity=" + matchCity +
-			", matchArea=" + matchArea +
-			", matchStartTime=" + matchStartTime +
-			", matchEndTime=" + matchEndTime +
-			", matchParkId=" + matchParkId +
-			", matchStatus=" + matchStatus +
-			", createDate=" + createDate +
-			", updateDate=" + updateDate +
+			", name=" + name +
+			", time=" + time +
+			", place=" + place +
+			", initiatorid=" + initiatorid +
+			", hostteamid=" + hostteamid +
+			", challengeteamid=" + challengeteamid +
+			", prov=" + prov +
+			", city=" + city +
+			", area=" + area +
+			", starttime=" + starttime +
+			", endtime=" + endtime +
+			", parkid=" + parkid +
+			", status=" + status +
+			", createdate=" + createdate +
+			", updatedate=" + updatedate +
 			", creator=" + creator +
 			", updator=" + updator +
-			", isDeleted=" + isDeleted +
+			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

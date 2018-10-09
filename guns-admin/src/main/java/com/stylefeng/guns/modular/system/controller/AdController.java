@@ -85,7 +85,7 @@ public class AdController extends BaseController {
     @Permission
     @ResponseBody
     public Object add(PkAd pkAd) throws ParseException {
-        if (ToolUtil.isOneEmpty(pkAd, pkAd.getAdMainHead())) {
+        if (ToolUtil.isOneEmpty(pkAd, pkAd.getMainhead())) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
         return this.pkAdMapper.insert(pkAd);

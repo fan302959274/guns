@@ -15,12 +15,12 @@ Ad.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
-        {title: '广告标题', field: 'adMainHead', align: 'center', valign: 'middle', sortable: true},
-        {title: '广告副标题', field: 'adSubHead', align: 'center', valign: 'middle', sortable: true},
-        {title: '开始时间', field: 'adStartTime', align: 'center', valign: 'middle', sortable: true},
-        {title: '结束时间', field: 'adEndTime', align: 'center', valign: 'middle', sortable: true},
-        {title: '广告链接', field: 'adUrl', align: 'center', valign: 'middle', sortable: true},
-        {title: '广告状态', field: 'adStatus', align: 'center', valign: 'middle', sortable: true}];
+        {title: '广告标题', field: 'mainhead', align: 'center', valign: 'middle', sortable: true},
+        {title: '广告副标题', field: 'subhead', align: 'center', valign: 'middle', sortable: true},
+        {title: '开始时间', field: 'starttime', align: 'center', valign: 'middle', sortable: true},
+        {title: '结束时间', field: 'endtime', align: 'center', valign: 'middle', sortable: true},
+        {title: '广告链接', field: 'url', align: 'center', valign: 'middle', sortable: true},
+        {title: '广告状态', field: 'status', align: 'center', valign: 'middle', sortable: true}];
 };
 
 /**

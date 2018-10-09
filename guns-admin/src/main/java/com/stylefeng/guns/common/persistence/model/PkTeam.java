@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -16,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-09-29
+ * @since 2018-10-09
  */
 @TableName("pk_team")
 public class PkTeam extends Model<PkTeam> {
@@ -31,78 +30,63 @@ public class PkTeam extends Model<PkTeam> {
     /**
      * 球队名称
      */
-	@TableField("team_name")
-	private String teamName;
+	private String name;
     /**
      * 球队级别
      */
-	@TableField("team_level")
-	private String teamLevel;
+	private String level;
     /**
      * 球员数量
      */
-	@TableField("team_member_num")
-	private Integer teamMemberNum;
+	private Integer membernum;
     /**
      * 球队胜利场数
      */
-	@TableField("team_win_num")
-	private Integer teamWinNum;
+	private Integer winnum;
     /**
      * 球队失败场数
      */
-	@TableField("team_debt_num")
-	private Integer teamDebtNum;
+	private Integer debtnum;
     /**
      * 球队平局场数
      */
-	@TableField("team_draw_num")
-	private Integer teamDrawNum;
+	private Integer drawnum;
     /**
      * 球队积分
      */
-	@TableField("team_point")
-	private Integer teamPoint;
+	private Integer point;
     /**
      * 球队省份
      */
-	@TableField("team_province")
-	private String teamProvince;
+	private String prov;
     /**
      * 球队市
      */
-	@TableField("team_city")
-	private String teamCity;
+	private String city;
     /**
      * 球队区
      */
-	@TableField("team_area")
-	private String teamArea;
+	private String area;
     /**
      * 球队描述
      */
-	@TableField("team_member_desc")
-	private String teamMemberDesc;
+	private String desc;
     /**
      * 所属人
      */
-	@TableField("team_owner_id")
-	private Long teamOwnerId;
+	private Long ownerid;
     /**
      * 球队状态:0:禁用1:启用
      */
-	@TableField("team_status")
-	private String teamStatus;
+	private String status;
     /**
      * 创建时间
      */
-	@TableField("create_date")
-	private Date createDate;
+	private Date createdate;
     /**
      * 更新时间
      */
-	@TableField("update_date")
-	private Date updateDate;
+	private Date updatedate;
     /**
      * 创建人
      */
@@ -114,8 +98,7 @@ public class PkTeam extends Model<PkTeam> {
     /**
      * 是否删除
      */
-	@TableField("is_deleted")
-	private String isDeleted;
+	private String isdeleted;
 
 
 	public Long getId() {
@@ -126,124 +109,124 @@ public class PkTeam extends Model<PkTeam> {
 		this.id = id;
 	}
 
-	public String getTeamName() {
-		return teamName;
+	public String getName() {
+		return name;
 	}
 
-	public void setTeamName(String teamName) {
-		this.teamName = teamName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getTeamLevel() {
-		return teamLevel;
+	public String getLevel() {
+		return level;
 	}
 
-	public void setTeamLevel(String teamLevel) {
-		this.teamLevel = teamLevel;
+	public void setLevel(String level) {
+		this.level = level;
 	}
 
-	public Integer getTeamMemberNum() {
-		return teamMemberNum;
+	public Integer getMembernum() {
+		return membernum;
 	}
 
-	public void setTeamMemberNum(Integer teamMemberNum) {
-		this.teamMemberNum = teamMemberNum;
+	public void setMembernum(Integer membernum) {
+		this.membernum = membernum;
 	}
 
-	public Integer getTeamWinNum() {
-		return teamWinNum;
+	public Integer getWinnum() {
+		return winnum;
 	}
 
-	public void setTeamWinNum(Integer teamWinNum) {
-		this.teamWinNum = teamWinNum;
+	public void setWinnum(Integer winnum) {
+		this.winnum = winnum;
 	}
 
-	public Integer getTeamDebtNum() {
-		return teamDebtNum;
+	public Integer getDebtnum() {
+		return debtnum;
 	}
 
-	public void setTeamDebtNum(Integer teamDebtNum) {
-		this.teamDebtNum = teamDebtNum;
+	public void setDebtnum(Integer debtnum) {
+		this.debtnum = debtnum;
 	}
 
-	public Integer getTeamDrawNum() {
-		return teamDrawNum;
+	public Integer getDrawnum() {
+		return drawnum;
 	}
 
-	public void setTeamDrawNum(Integer teamDrawNum) {
-		this.teamDrawNum = teamDrawNum;
+	public void setDrawnum(Integer drawnum) {
+		this.drawnum = drawnum;
 	}
 
-	public Integer getTeamPoint() {
-		return teamPoint;
+	public Integer getPoint() {
+		return point;
 	}
 
-	public void setTeamPoint(Integer teamPoint) {
-		this.teamPoint = teamPoint;
+	public void setPoint(Integer point) {
+		this.point = point;
 	}
 
-	public String getTeamProvince() {
-		return teamProvince;
+	public String getProv() {
+		return prov;
 	}
 
-	public void setTeamProvince(String teamProvince) {
-		this.teamProvince = teamProvince;
+	public void setProv(String prov) {
+		this.prov = prov;
 	}
 
-	public String getTeamCity() {
-		return teamCity;
+	public String getCity() {
+		return city;
 	}
 
-	public void setTeamCity(String teamCity) {
-		this.teamCity = teamCity;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	public String getTeamArea() {
-		return teamArea;
+	public String getArea() {
+		return area;
 	}
 
-	public void setTeamArea(String teamArea) {
-		this.teamArea = teamArea;
+	public void setArea(String area) {
+		this.area = area;
 	}
 
-	public String getTeamMemberDesc() {
-		return teamMemberDesc;
+	public String getDesc() {
+		return desc;
 	}
 
-	public void setTeamMemberDesc(String teamMemberDesc) {
-		this.teamMemberDesc = teamMemberDesc;
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
-	public Long getTeamOwnerId() {
-		return teamOwnerId;
+	public Long getOwnerid() {
+		return ownerid;
 	}
 
-	public void setTeamOwnerId(Long teamOwnerId) {
-		this.teamOwnerId = teamOwnerId;
+	public void setOwnerid(Long ownerid) {
+		this.ownerid = ownerid;
 	}
 
-	public String getTeamStatus() {
-		return teamStatus;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setTeamStatus(String teamStatus) {
-		this.teamStatus = teamStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedate() {
+		return createdate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedate() {
+		return updatedate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
 	}
 
 	public String getCreator() {
@@ -262,12 +245,12 @@ public class PkTeam extends Model<PkTeam> {
 		this.updator = updator;
 	}
 
-	public String getIsDeleted() {
-		return isDeleted;
+	public String getIsdeleted() {
+		return isdeleted;
 	}
 
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setIsdeleted(String isdeleted) {
+		this.isdeleted = isdeleted;
 	}
 
 	@Override
@@ -279,24 +262,24 @@ public class PkTeam extends Model<PkTeam> {
 	public String toString() {
 		return "PkTeam{" +
 			"id=" + id +
-			", teamName=" + teamName +
-			", teamLevel=" + teamLevel +
-			", teamMemberNum=" + teamMemberNum +
-			", teamWinNum=" + teamWinNum +
-			", teamDebtNum=" + teamDebtNum +
-			", teamDrawNum=" + teamDrawNum +
-			", teamPoint=" + teamPoint +
-			", teamProvince=" + teamProvince +
-			", teamCity=" + teamCity +
-			", teamArea=" + teamArea +
-			", teamMemberDesc=" + teamMemberDesc +
-			", teamOwnerId=" + teamOwnerId +
-			", teamStatus=" + teamStatus +
-			", createDate=" + createDate +
-			", updateDate=" + updateDate +
+			", name=" + name +
+			", level=" + level +
+			", membernum=" + membernum +
+			", winnum=" + winnum +
+			", debtnum=" + debtnum +
+			", drawnum=" + drawnum +
+			", point=" + point +
+			", prov=" + prov +
+			", city=" + city +
+			", area=" + area +
+			", desc=" + desc +
+			", ownerid=" + ownerid +
+			", status=" + status +
+			", createdate=" + createdate +
+			", updatedate=" + updatedate +
 			", creator=" + creator +
 			", updator=" + updator +
-			", isDeleted=" + isDeleted +
+			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

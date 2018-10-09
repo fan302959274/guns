@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -16,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-09-29
+ * @since 2018-10-09
  */
 @TableName("pk_attachment")
 public class PkAttachment extends Model<PkAttachment> {
@@ -31,43 +30,35 @@ public class PkAttachment extends Model<PkAttachment> {
     /**
      * 附件名称
      */
-	@TableField("attachment_name")
-	private String attachmentName;
+	private String name;
     /**
      * 附件osskey
      */
-	@TableField("attachment_osskey")
-	private String attachmentOsskey;
+	private String osskey;
     /**
      * 附件链接
      */
-	@TableField("attachment_url")
-	private String attachmentUrl;
+	private String url;
     /**
      * 附件类型1:队员附件;2:球队附件;3:球场附件;4:广告附件
      */
-	@TableField("attachment_type")
-	private String attachmentType;
+	private String type;
     /**
      * 关联主键:队员id|球队id|球场id|广告id
      */
-	@TableField("attachment_key")
-	private String attachmentKey;
+	private String key;
     /**
      * 附件后缀
      */
-	@TableField("attachment_suffix")
-	private String attachmentSuffix;
+	private String suffix;
     /**
      * 创建时间
      */
-	@TableField("create_date")
-	private Date createDate;
+	private Date createdate;
     /**
      * 更新时间
      */
-	@TableField("update_date")
-	private Date updateDate;
+	private Date updatedate;
     /**
      * 创建人
      */
@@ -79,8 +70,7 @@ public class PkAttachment extends Model<PkAttachment> {
     /**
      * 是否删除
      */
-	@TableField("is_deleted")
-	private String isDeleted;
+	private String isdeleted;
 
 
 	public Long getId() {
@@ -91,68 +81,68 @@ public class PkAttachment extends Model<PkAttachment> {
 		this.id = id;
 	}
 
-	public String getAttachmentName() {
-		return attachmentName;
+	public String getName() {
+		return name;
 	}
 
-	public void setAttachmentName(String attachmentName) {
-		this.attachmentName = attachmentName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getAttachmentOsskey() {
-		return attachmentOsskey;
+	public String getOsskey() {
+		return osskey;
 	}
 
-	public void setAttachmentOsskey(String attachmentOsskey) {
-		this.attachmentOsskey = attachmentOsskey;
+	public void setOsskey(String osskey) {
+		this.osskey = osskey;
 	}
 
-	public String getAttachmentUrl() {
-		return attachmentUrl;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setAttachmentUrl(String attachmentUrl) {
-		this.attachmentUrl = attachmentUrl;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public String getAttachmentType() {
-		return attachmentType;
+	public String getType() {
+		return type;
 	}
 
-	public void setAttachmentType(String attachmentType) {
-		this.attachmentType = attachmentType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getAttachmentKey() {
-		return attachmentKey;
+	public String getKey() {
+		return key;
 	}
 
-	public void setAttachmentKey(String attachmentKey) {
-		this.attachmentKey = attachmentKey;
+	public void setKey(String key) {
+		this.key = key;
 	}
 
-	public String getAttachmentSuffix() {
-		return attachmentSuffix;
+	public String getSuffix() {
+		return suffix;
 	}
 
-	public void setAttachmentSuffix(String attachmentSuffix) {
-		this.attachmentSuffix = attachmentSuffix;
+	public void setSuffix(String suffix) {
+		this.suffix = suffix;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedate() {
+		return createdate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedate() {
+		return updatedate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
 	}
 
 	public String getCreator() {
@@ -171,12 +161,12 @@ public class PkAttachment extends Model<PkAttachment> {
 		this.updator = updator;
 	}
 
-	public String getIsDeleted() {
-		return isDeleted;
+	public String getIsdeleted() {
+		return isdeleted;
 	}
 
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setIsdeleted(String isdeleted) {
+		this.isdeleted = isdeleted;
 	}
 
 	@Override
@@ -188,17 +178,17 @@ public class PkAttachment extends Model<PkAttachment> {
 	public String toString() {
 		return "PkAttachment{" +
 			"id=" + id +
-			", attachmentName=" + attachmentName +
-			", attachmentOsskey=" + attachmentOsskey +
-			", attachmentUrl=" + attachmentUrl +
-			", attachmentType=" + attachmentType +
-			", attachmentKey=" + attachmentKey +
-			", attachmentSuffix=" + attachmentSuffix +
-			", createDate=" + createDate +
-			", updateDate=" + updateDate +
+			", name=" + name +
+			", osskey=" + osskey +
+			", url=" + url +
+			", type=" + type +
+			", key=" + key +
+			", suffix=" + suffix +
+			", createdate=" + createdate +
+			", updatedate=" + updatedate +
 			", creator=" + creator +
 			", updator=" + updator +
-			", isDeleted=" + isDeleted +
+			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -15,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-09-29
+ * @since 2018-10-09
  */
 @TableName("pk_team_member")
 public class PkTeamMember extends Model<PkTeamMember> {
@@ -30,13 +29,11 @@ public class PkTeamMember extends Model<PkTeamMember> {
     /**
      * 球队id
      */
-	@TableField("team_id")
-	private Long teamId;
+	private Long teamid;
     /**
      * 队员id
      */
-	@TableField("member_id")
-	private Long memberId;
+	private Long memberid;
 
 
 	public Long getId() {
@@ -47,20 +44,20 @@ public class PkTeamMember extends Model<PkTeamMember> {
 		this.id = id;
 	}
 
-	public Long getTeamId() {
-		return teamId;
+	public Long getTeamid() {
+		return teamid;
 	}
 
-	public void setTeamId(Long teamId) {
-		this.teamId = teamId;
+	public void setTeamid(Long teamid) {
+		this.teamid = teamid;
 	}
 
-	public Long getMemberId() {
-		return memberId;
+	public Long getMemberid() {
+		return memberid;
 	}
 
-	public void setMemberId(Long memberId) {
-		this.memberId = memberId;
+	public void setMemberid(Long memberid) {
+		this.memberid = memberid;
 	}
 
 	@Override
@@ -72,8 +69,8 @@ public class PkTeamMember extends Model<PkTeamMember> {
 	public String toString() {
 		return "PkTeamMember{" +
 			"id=" + id +
-			", teamId=" + teamId +
-			", memberId=" + memberId +
+			", teamid=" + teamid +
+			", memberid=" + memberid +
 			"}";
 	}
 }

@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -16,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-09-29
+ * @since 2018-10-09
  */
 @TableName("pk_park")
 public class PkPark extends Model<PkPark> {
@@ -31,43 +30,35 @@ public class PkPark extends Model<PkPark> {
     /**
      * 球场名称
      */
-	@TableField("park_name")
-	private String parkName;
+	private String name;
     /**
      * 球场省份
      */
-	@TableField("park_province")
-	private String parkProvince;
+	private String prov;
     /**
      * 球场市
      */
-	@TableField("park_city")
-	private String parkCity;
+	private String city;
     /**
      * 球场区
      */
-	@TableField("park_area")
-	private String parkArea;
+	private String area;
     /**
      * 球场简介
      */
-	@TableField("park_desc")
-	private String parkDesc;
+	private String desc;
     /**
      * 球场可用时间
      */
-	@TableField("park_business_time")
-	private String parkBusinessTime;
+	private String businesstime;
     /**
      * 创建时间
      */
-	@TableField("create_date")
-	private Date createDate;
+	private Date createdate;
     /**
      * 更新时间
      */
-	@TableField("update_date")
-	private Date updateDate;
+	private Date updatedate;
     /**
      * 创建人
      */
@@ -79,8 +70,7 @@ public class PkPark extends Model<PkPark> {
     /**
      * 是否删除
      */
-	@TableField("is_deleted")
-	private String isDeleted;
+	private String isdeleted;
 
 
 	public Long getId() {
@@ -91,68 +81,68 @@ public class PkPark extends Model<PkPark> {
 		this.id = id;
 	}
 
-	public String getParkName() {
-		return parkName;
+	public String getName() {
+		return name;
 	}
 
-	public void setParkName(String parkName) {
-		this.parkName = parkName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getParkProvince() {
-		return parkProvince;
+	public String getProv() {
+		return prov;
 	}
 
-	public void setParkProvince(String parkProvince) {
-		this.parkProvince = parkProvince;
+	public void setProv(String prov) {
+		this.prov = prov;
 	}
 
-	public String getParkCity() {
-		return parkCity;
+	public String getCity() {
+		return city;
 	}
 
-	public void setParkCity(String parkCity) {
-		this.parkCity = parkCity;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	public String getParkArea() {
-		return parkArea;
+	public String getArea() {
+		return area;
 	}
 
-	public void setParkArea(String parkArea) {
-		this.parkArea = parkArea;
+	public void setArea(String area) {
+		this.area = area;
 	}
 
-	public String getParkDesc() {
-		return parkDesc;
+	public String getDesc() {
+		return desc;
 	}
 
-	public void setParkDesc(String parkDesc) {
-		this.parkDesc = parkDesc;
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
-	public String getParkBusinessTime() {
-		return parkBusinessTime;
+	public String getBusinesstime() {
+		return businesstime;
 	}
 
-	public void setParkBusinessTime(String parkBusinessTime) {
-		this.parkBusinessTime = parkBusinessTime;
+	public void setBusinesstime(String businesstime) {
+		this.businesstime = businesstime;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreatedate() {
+		return createdate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
 	}
 
-	public Date getUpdateDate() {
-		return updateDate;
+	public Date getUpdatedate() {
+		return updatedate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
 	}
 
 	public String getCreator() {
@@ -171,12 +161,12 @@ public class PkPark extends Model<PkPark> {
 		this.updator = updator;
 	}
 
-	public String getIsDeleted() {
-		return isDeleted;
+	public String getIsdeleted() {
+		return isdeleted;
 	}
 
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setIsdeleted(String isdeleted) {
+		this.isdeleted = isdeleted;
 	}
 
 	@Override
@@ -188,17 +178,17 @@ public class PkPark extends Model<PkPark> {
 	public String toString() {
 		return "PkPark{" +
 			"id=" + id +
-			", parkName=" + parkName +
-			", parkProvince=" + parkProvince +
-			", parkCity=" + parkCity +
-			", parkArea=" + parkArea +
-			", parkDesc=" + parkDesc +
-			", parkBusinessTime=" + parkBusinessTime +
-			", createDate=" + createDate +
-			", updateDate=" + updateDate +
+			", name=" + name +
+			", prov=" + prov +
+			", city=" + city +
+			", area=" + area +
+			", desc=" + desc +
+			", businesstime=" + businesstime +
+			", createdate=" + createdate +
+			", updatedate=" + updatedate +
 			", creator=" + creator +
 			", updator=" + updator +
-			", isDeleted=" + isDeleted +
+			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

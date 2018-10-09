@@ -4,14 +4,14 @@
 var AdInfoDlg = {
     adInfoData : {},
     validateFields: {
-        adMainHead: {
+        mainhead: {
             validators: {
                 notEmpty: {
                     message: '广告标题不能为空'
                 }
             }
         },
-        adSubHead: {
+        subhead: {
             validators: {
                 notEmpty: {
                     message: '广告副标题不能为空'
@@ -60,7 +60,7 @@ AdInfoDlg.close = function() {
  * 收集数据
  */
 AdInfoDlg.collectData = function() {
-    this.set('id').set('adMainHead').set('adSubHead').set('adStartTime').set('adEndTime').set('adUrl').set('adStatus');
+    this.set('id').set('mainhead').set('subhead').set('starttime').set('endtime').set('url').set('status');
 }
 
 /**

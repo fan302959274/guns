@@ -5,24 +5,24 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.PkMatch">
 		<id column="id" property="id" />
-		<result column="match_name" property="matchName" />
-		<result column="match_time" property="matchTime" />
-		<result column="match_place" property="matchPlace" />
-		<result column="match_initiator_id" property="matchInitiatorId" />
-		<result column="match_host_team_id" property="matchHostTeamId" />
-		<result column="match_challenge_team_id" property="matchChallengeTeamId" />
-		<result column="match_province" property="matchProvince" />
-		<result column="match_city" property="matchCity" />
-		<result column="match_area" property="matchArea" />
-		<result column="match_start_time" property="matchStartTime" />
-		<result column="match_end_time" property="matchEndTime" />
-		<result column="match_park_id" property="matchParkId" />
-		<result column="match_status" property="matchStatus" />
-		<result column="create_date" property="createDate" />
-		<result column="update_date" property="updateDate" />
+		<result column="name" property="name" />
+		<result column="time" property="time" />
+		<result column="place" property="place" />
+		<result column="initiatorid" property="initiatorid" />
+		<result column="hostteamid" property="hostteamid" />
+		<result column="challengeteamid" property="challengeteamid" />
+		<result column="prov" property="prov" />
+		<result column="city" property="city" />
+		<result column="area" property="area" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+		<result column="parkid" property="parkid" />
+		<result column="status" property="status" />
+		<result column="createdate" property="createdate" />
+		<result column="updatedate" property="updatedate" />
 		<result column="creator" property="creator" />
 		<result column="updator" property="updator" />
-		<result column="is_deleted" property="isDeleted" />
+		<result column="isdeleted" property="isdeleted" />
 	</resultMap>
 
 </mapper>
