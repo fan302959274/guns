@@ -39,7 +39,7 @@ import java.util.Map;
 @RequestMapping("/ad")
 public class AdController extends BaseController {
 
-    private String PREFIX = "/system/ad/";
+    private String PREFIX = "/football/ad/";
 
 
     @Resource
