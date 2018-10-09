@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.TeamDao">
+
+    <sql id="Base_Column_List">
+        id, parkName  , provinceId, cityId, areaId, parkDesc, businessTime,createDate,updateDate,creator,updator,isDeleted
+    </sql>
+
+    <select id="selectParks" resultType="map">
+        select
+        <include refid="Base_Column_List" />
+        from pk_park
+        <if test="condition != null">
+            where name like CONCAT('%',#{condition},'%')
+        </if>
+    </select>
+</mapper>

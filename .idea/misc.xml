@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/guns-admin/pom.xml" />
+        <option value="$PROJECT_DIR$/guns-core/pom.xml" />
+        <option value="$PROJECT_DIR$/guns-parent/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://vip.alisvn.com/songsong818.foot_924/branches" />
+                  <option value="https://vip.alisvn.com/songsong818.foot_924/document" />
+                  <option value="https://vip.alisvn.com/songsong818.foot_924/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://vip.alisvn.com/songsong818.foot_924/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+</project>

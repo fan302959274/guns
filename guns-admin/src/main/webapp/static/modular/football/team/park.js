@@ -1,5 +1,5 @@
 /**
- * 角色管理的单例
+ * 球场管理的单例
  */
 var Role = {
     id: "roleTable",	//表格id
@@ -15,12 +15,11 @@ Role.initColumn = function () {
     var columns = [
         {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
-        {title: '主标题', field: 'ad_main_head', align: 'center', valign: 'middle', sortable: true},
-        {title: '副标题', field: 'ad_sub_head', align: 'center', valign: 'middle', sortable: true},
-        {title: '开始时间', field: 'ad_start_time', align: 'center', valign: 'middle', sortable: true},
-        {title: '结束时间', field: 'ad_end_time', align: 'center', valign: 'middle', sortable: true},
-        {title: '状态', field: 'status', align: 'center', valign: 'middle', sortable: true}
-        ]
+        {title: '球场名称', field: 'ad_main_head', align: 'center', valign: 'middle', sortable: true},
+        {title: '球场区域', field: 'ad_sub_head', align: 'center', valign: 'middle', sortable: true},
+        {title: '球场地址', field: 'ad_start_time', align: 'center', valign: 'middle', sortable: true},
+        {title: '球场描述', field: 'ad_start_time', align: 'center', valign: 'middle', sortable: true}
+    ]
     return columns;
 };
 
@@ -120,7 +119,7 @@ Role.search = function () {
 
 $(function () {
     var defaultColunms = Role.initColumn();
-    var table = new BSTable(Role.id, "/banner/list", defaultColunms);
+    var table = new BSTable(Role.id, "/park/list", defaultColunms);
     table.setPaginationType("client");
     table.init();
     Role.table = table;
