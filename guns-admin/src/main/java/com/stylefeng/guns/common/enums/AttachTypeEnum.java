@@ -8,7 +8,7 @@ public enum AttachTypeEnum {
 
     HEAD("HEAD", "头像"),
     IDCARD("IDCARD", "身份证"),
-    LOGO("LOGO", "头像");
+    LOGO("LOGO", "logo");
 
     String code;
     String message;

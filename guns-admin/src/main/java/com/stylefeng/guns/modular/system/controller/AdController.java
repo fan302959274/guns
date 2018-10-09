@@ -77,7 +77,7 @@ public class AdController extends BaseController {
 
         Map<String, Object> menuMap = BeanKit.beanToMap(pkAd);
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", adId);
+        wrapper = wrapper.eq("linkid", adId).eq("category",AttachCategoryEnum.AD.getCode());
         List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
         String ads = "";
         if (!CollectionUtils.isEmpty(list)) {

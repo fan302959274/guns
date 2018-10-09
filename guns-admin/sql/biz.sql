@@ -268,7 +268,7 @@ CREATE TABLE `pk_attachment` (
   COMMENT '附件链接',
   `category` VARCHAR(10)  NOT NULL
   COMMENT '附件种类1:队员附件;2:球队附件;3:球场附件;4:广告附件',
-  `type`   VARCHAR(10)  NOT NULL
+  `type`   VARCHAR(10)   DEFAULT NULL
   COMMENT '附件类型:针对不同种类区分',
   `linkid`    BIGINT(20) NOT NULL
   COMMENT '关联主键:队员id|球队id|球场id|广告id',
