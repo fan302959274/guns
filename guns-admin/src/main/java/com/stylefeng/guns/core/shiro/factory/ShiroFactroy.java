@@ -12,6 +12,7 @@ import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -95,4 +96,13 @@ public class ShiroFactroy implements IShiro {
         return new SimpleAuthenticationInfo(shiroUser, credentials, credentialsSalt, realmName);
     }
 
+
+//    public static void main(String[] args) {
+//        String hashAlgorithmName = "MD5";
+//        String credentials = "123456";
+//        int hashIterations = 1024;
+//        ByteSource credentialsSalt = new Md5Hash("8pgby");
+//        Object obj = new SimpleHash(hashAlgorithmName, credentials, credentialsSalt, hashIterations);
+//        System.out.println(obj);
+//    }
 }
