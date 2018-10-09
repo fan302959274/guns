@@ -6,7 +6,7 @@
             <input type="hidden" id="id" value="${ad.id}">
 
             <div class="row">
-                <div class="col-sm-6 b-r">
+                <div class="col-sm-12 b-r">
 
                     <#input id="mainhead" name="广告标题" underline="true" value="${ad.mainhead}"/>
 
@@ -23,7 +23,8 @@
 
                     <#input id="url" name="广告链接" underline="true" value="${ad.url}"/>
 
-                    <#input id="status" name="广告状态" underline="true" value="${ad.status}"/>
+                    <#ad id="ads" name="图片上传" underline="true" />
+
                 </div>
 
             </div>

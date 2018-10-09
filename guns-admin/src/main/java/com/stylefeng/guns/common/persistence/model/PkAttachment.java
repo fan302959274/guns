@@ -46,7 +46,7 @@ public class PkAttachment extends Model<PkAttachment> {
     /**
      * 关联主键:队员id|球队id|球场id|广告id
      */
-	private String key;
+	private Long linkid;
     /**
      * 附件后缀
      */
@@ -113,12 +113,12 @@ public class PkAttachment extends Model<PkAttachment> {
 		this.type = type;
 	}
 
-	public String getKey() {
-		return key;
+	public Long getLinkid() {
+		return linkid;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setLinkid(Long linkid) {
+		this.linkid = linkid;
 	}
 
 	public String getSuffix() {
@@ -182,7 +182,7 @@ public class PkAttachment extends Model<PkAttachment> {
 			", osskey=" + osskey +
 			", url=" + url +
 			", type=" + type +
-			", key=" + key +
+			", linkid=" + linkid +
 			", suffix=" + suffix +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +

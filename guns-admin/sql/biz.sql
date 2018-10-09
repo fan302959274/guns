@@ -36,7 +36,7 @@ INSERT INTO `test` VALUES ('1', 'qwe');
 -- 1、广告表
 DROP TABLE IF EXISTS `pk_ad`;
 CREATE TABLE `pk_ad` (
-  `id`            BIGINT(11) NOT NULL AUTO_INCREMENT
+  `id`            BIGINT(20) NOT NULL  AUTO_INCREMENT
   COMMENT '主键',
   `mainhead`  VARCHAR(256)        DEFAULT NULL
   COMMENT '广告主标题',
@@ -70,7 +70,7 @@ CREATE TABLE `pk_ad` (
 -- 2、队员表
 DROP TABLE IF EXISTS `pk_member`;
 CREATE TABLE `pk_member` (
-  `id`                BIGINT(11) NOT NULL AUTO_INCREMENT
+  `id`                BIGINT(20) NOT NULL AUTO_INCREMENT
   COMMENT '主键',
   `name`       VARCHAR(100)        DEFAULT NULL
   COMMENT '队员名称',
@@ -88,7 +88,7 @@ CREATE TABLE `pk_member` (
   COMMENT '身高',
   `weight`     DECIMAL(10, 2)      DEFAULT NULL
   COMMENT '体重',
-  `type`       VARCHAR(1) NOT NULL
+  `type`       VARCHAR(10) NOT NULL
   COMMENT '队员类型:1:队长;2:普通球员',
   `status`     VARCHAR(1)          DEFAULT '0'
   COMMENT '队员状态:0:禁用1:启用',
@@ -112,7 +112,7 @@ CREATE TABLE `pk_member` (
 -- 3、球队表
 DROP TABLE IF EXISTS `pk_team`;
 CREATE TABLE `pk_team` (
-  `id`               BIGINT(11) NOT NULL AUTO_INCREMENT
+  `id`               BIGINT(20) NOT NULL AUTO_INCREMENT
   COMMENT '主键',
   `name`        VARCHAR(50)         DEFAULT NULL
   COMMENT '球队名称',
@@ -136,7 +136,7 @@ CREATE TABLE `pk_team` (
   COMMENT '球队区',
   `desc` VARCHAR(256)        DEFAULT NULL
   COMMENT '球队描述',
-  `ownerid`    BIGINT(11) NOT NULL
+  `ownerid`    BIGINT(20) NOT NULL
   COMMENT '所属人',
   `status`      VARCHAR(10)         DEFAULT '0'
   COMMENT '球队状态:0:禁用1:启用',
@@ -160,11 +160,11 @@ CREATE TABLE `pk_team` (
 -- 4、球队队员表
 DROP TABLE IF EXISTS `pk_team_member`;
 CREATE TABLE `pk_team_member` (
-  `id`        BIGINT(11) NOT NULL AUTO_INCREMENT
+  `id`        BIGINT(20) NOT NULL AUTO_INCREMENT
   COMMENT '主键',
-  `teamid`   BIGINT(11) NOT NULL
+  `teamid`   BIGINT(20) NOT NULL
   COMMENT '球队id',
-  `memberid` BIGINT(11) NOT NULL
+  `memberid` BIGINT(20) NOT NULL
   COMMENT '队员id',
   PRIMARY KEY (`id`)
 )
@@ -176,7 +176,7 @@ CREATE TABLE `pk_team_member` (
 -- 5、比赛表
 DROP TABLE IF EXISTS `pk_match`;
 CREATE TABLE `pk_match` (
-  `id`                      BIGINT(11)   NOT NULL AUTO_INCREMENT
+  `id`                      BIGINT(20)   NOT NULL AUTO_INCREMENT
   COMMENT '主键',
   `name`              VARCHAR(50)           DEFAULT NULL
   COMMENT '比赛名称',
@@ -186,9 +186,9 @@ CREATE TABLE `pk_match` (
   COMMENT '比赛地点',
   `initiatorid`      VARCHAR(256) NOT NULL
   COMMENT '比赛发起人',
-  `hostteamid`      BIGINT(11)   NOT NULL
+  `hostteamid`      BIGINT(20)   NOT NULL
   COMMENT '东道主team',
-  `challengeteamid` BIGINT(11)            DEFAULT NULL
+  `challengeteamid` BIGINT(20)            DEFAULT NULL
   COMMENT '挑战team',
   `prov`          VARCHAR(20)           DEFAULT NULL
   COMMENT '比赛省份',
@@ -200,7 +200,7 @@ CREATE TABLE `pk_match` (
   COMMENT '球赛开始时间',
   `endtime`          DATETIME              DEFAULT NULL
   COMMENT '球赛结束时间',
-  `parkid`           BIGINT(11)   NOT NULL
+  `parkid`           BIGINT(20)   NOT NULL
   COMMENT '球场id',
   `status`            VARCHAR(10)           DEFAULT NULL
   COMMENT '比赛状态(待定)',
@@ -224,7 +224,7 @@ CREATE TABLE `pk_match` (
 -- 6、球场表
 DROP TABLE IF EXISTS `pk_park`;
 CREATE TABLE `pk_park` (
-  `id`                 BIGINT(11) NOT NULL AUTO_INCREMENT
+  `id`                 BIGINT(20) NOT NULL AUTO_INCREMENT
   COMMENT '主键',
   `name`          VARCHAR(50)         DEFAULT NULL
   COMMENT '球场名称',
@@ -258,7 +258,7 @@ CREATE TABLE `pk_park` (
 -- 7、附件表
 DROP TABLE IF EXISTS `pk_attachment`;
 CREATE TABLE `pk_attachment` (
-  `id`                BIGINT(11)  NOT NULL AUTO_INCREMENT
+  `id`                BIGINT(20)  NOT NULL AUTO_INCREMENT
   COMMENT '主键',
   `name`   VARCHAR(50)          DEFAULT NULL
   COMMENT '附件名称',
@@ -266,9 +266,9 @@ CREATE TABLE `pk_attachment` (
   COMMENT '附件osskey',
   `url`    VARCHAR(500)         DEFAULT NULL
   COMMENT '附件链接',
-  `type`   VARCHAR(3)  NOT NULL
+  `type`   VARCHAR(10)  NOT NULL
   COMMENT '附件类型1:队员附件;2:球队附件;3:球场附件;4:广告附件',
-  `key`    VARCHAR(40) NOT NULL
+  `linkid`    BIGINT(20) NOT NULL
   COMMENT '关联主键:队员id|球队id|球场id|广告id',
   `suffix` VARCHAR(500)         DEFAULT NULL
   COMMENT '附件后缀',

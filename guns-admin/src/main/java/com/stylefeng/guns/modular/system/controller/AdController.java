@@ -2,20 +2,21 @@ package com.stylefeng.guns.modular.system.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.common.annotion.BussinessLog;
 import com.stylefeng.guns.common.annotion.Permission;
-import com.stylefeng.guns.common.constant.factory.ConstantFactory;
+import com.stylefeng.guns.common.enums.AttachEnum;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.PkAdMapper;
+import com.stylefeng.guns.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.common.persistence.model.PkAd;
+import com.stylefeng.guns.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.support.BeanKit;
-import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.core.util.ToolUtil;
+import com.stylefeng.guns.modular.system.transfer.PkAdDto;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +47,8 @@ public class AdController extends BaseController {
 
     @Resource
     PkAdMapper pkAdMapper;
+    @Resource
+    PkAttachmentMapper pkAttachmentMapper;
 
 
     /**
@@ -77,18 +82,34 @@ public class AdController extends BaseController {
     }
 
 
-
     /**
      * 新增广告
      */
     @RequestMapping(value = "/add")
     @Permission
     @ResponseBody
-    public Object add(PkAd pkAd) throws ParseException {
-        if (ToolUtil.isOneEmpty(pkAd, pkAd.getMainhead())) {
+    public Object add(PkAdDto pkAdDto, @RequestParam(required = false) String ads) throws ParseException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if (ToolUtil.isOneEmpty(pkAdDto, pkAdDto.getMainhead())) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
-        return this.pkAdMapper.insert(pkAd);
+        PkAd record = new PkAd();
+        PropertyUtils.copyProperties(record, pkAdDto);
+        Integer result = this.pkAdMapper.insert(record);
+//        保存附件
+        if (StringUtils.isNoneBlank(ads)) {
+            Arrays.asList(ads.split(",")).forEach(s -> {
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setType(AttachEnum.AD.getCode());
+                pkAttachment.setLinkid(record.getId());
+                pkAttachment.setName(s);
+                pkAttachment.setSuffix(s.substring(s.lastIndexOf(".") + 1));
+                pkAttachment.setUrl(s);
+                pkAttachmentMapper.insert(pkAttachment);
+            });
+
+        }
+
+        return result;
     }
 
 
@@ -101,7 +122,7 @@ public class AdController extends BaseController {
     public Object list(@RequestParam(required = false) String adMainHead, Integer page, Integer pageSize) {
         RowBounds rowBounds = new RowBounds();
         Wrapper<PkAd> wrapper = new EntityWrapper<>();
-        if (StringUtils.isNoneBlank(adMainHead)){
+        if (StringUtils.isNoneBlank(adMainHead)) {
             wrapper = wrapper.like("ad_main_head", adMainHead);
         }
         List<PkAd> list = this.pkAdMapper.selectPage(rowBounds, wrapper);
@@ -125,11 +146,30 @@ public class AdController extends BaseController {
     @RequestMapping(value = "/update")
     @Permission
     @ResponseBody
-    public Object update(PkAd ad) {
-        if (ToolUtil.isEmpty(ad) || ad.getId() == null) {
+    public Object update(PkAdDto pkAdDto, @RequestParam(required = false) String ads) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if (ToolUtil.isEmpty(pkAdDto) || pkAdDto.getId() == null) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
-        pkAdMapper.updateById(ad);
+        PkAd record = new PkAd();
+        PropertyUtils.copyProperties(record, pkAdDto);
+        pkAdMapper.updateById(record);
+        //1、删除
+        Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
+        wrapper = wrapper.eq("linkid", record.getId());
+        pkAttachmentMapper.delete(wrapper);
+        ///2、保存附件
+        if (StringUtils.isNoneBlank(ads)) {
+            Arrays.asList(ads.split(",")).forEach(s -> {
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setType(AttachEnum.AD.getCode());
+                pkAttachment.setLinkid(record.getId());
+                pkAttachment.setName(s);
+                pkAttachment.setSuffix(s.substring(s.lastIndexOf(".") + 1));
+                pkAttachment.setUrl(s);
+                pkAttachmentMapper.insert(pkAttachment);
+            });
+
+        }
         return super.SUCCESS_TIP;
     }
 

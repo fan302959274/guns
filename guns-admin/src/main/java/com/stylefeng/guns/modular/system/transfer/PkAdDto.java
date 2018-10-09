@@ -1,13 +1,13 @@
-package com.stylefeng.guns.common.persistence.model;
+package com.stylefeng.guns.modular.system.transfer;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -17,15 +17,13 @@ import java.io.Serializable;
  * @author stylefeng
  * @since 2018-10-09
  */
-@TableName("pk_ad")
-public class PkAd extends Model<PkAd> {
+public class PkAdDto extends Model<PkAdDto> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
-	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
     /**
      * 广告主标题
@@ -38,10 +36,12 @@ public class PkAd extends Model<PkAd> {
     /**
      * 开始时间
      */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date starttime;
     /**
      * 结束时间
      */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endtime;
     /**
      * 广告链接

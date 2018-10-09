@@ -9,7 +9,7 @@
 		<result column="osskey" property="osskey" />
 		<result column="url" property="url" />
 		<result column="type" property="type" />
-		<result column="key" property="key" />
+		<result column="linkid" property="linkid" />
 		<result column="suffix" property="suffix" />
 		<result column="createdate" property="createdate" />
 		<result column="updatedate" property="updatedate" />

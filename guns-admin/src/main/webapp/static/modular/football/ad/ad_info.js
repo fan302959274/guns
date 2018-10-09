@@ -60,7 +60,7 @@ AdInfoDlg.close = function() {
  * 收集数据
  */
 AdInfoDlg.collectData = function() {
-    this.set('id').set('mainhead').set('subhead').set('starttime').set('endtime').set('url').set('status');
+    this.set('id').set('mainhead').set('subhead').set('starttime').set('endtime').set('url').set('status').set('ads');
 }
 
 /**
@@ -129,6 +129,9 @@ function onBodyDown(event) {
 
 $(function() {
     Feng.initValidator("adInfoForm", AdInfoDlg.validateFields);
+    // 初始化头像上传
+    var avatarUp = new $WebUploadAd("ads");
+    avatarUp.init();
 
 
 });
