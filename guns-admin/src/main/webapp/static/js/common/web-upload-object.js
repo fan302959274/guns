@@ -179,7 +179,7 @@
             bindEvent: function (bindedObj) {
                 var me = this;
                 bindedObj.on('fileQueued', function (file) {
-                    var $li = $('<div id="' + file.id + '" style="float:left;text-align: right;" class="file-item thumbnail draggable-element">' +
+                    var $li = $('<div id="' + file.id + '" style="float:left;text-align: right;height:120px;" class="file-item thumbnail draggable-element">' +
                         '<a class="file-panel" href="javascript:;" >' +
                         '<span class="fa fa-close"></span></a>' +
                         '<img width="100px" height="100px">' +
