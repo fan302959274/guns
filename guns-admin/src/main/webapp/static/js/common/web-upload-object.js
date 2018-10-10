@@ -179,8 +179,8 @@
             bindEvent: function (bindedObj) {
                 var me = this;
                 bindedObj.on('fileQueued', function (file) {
-                    var $li = $('<div id="' + file.id + '" style="float:left;text-align: right;height:120px;" class="file-item thumbnail draggable-element">' +
-                        '<a class="file-panel" href="javascript:;" >' +
+                    var $li = $('<div id="' + file.id + '" style="position:relative;float:left;" class="file-item thumbnail draggable-element">' +
+                        '<a class="file-panel" href="javascript:;" style="position:absolute;top:10px;right:10px;">' +
                         '<span class="fa fa-close"></span></a>' +
                         '<img width="100px" height="100px">' +
                         '</div>');
@@ -276,11 +276,9 @@
             /**
              * 设置图片上传的进度条的id
              */
-            setUploadBarId:
-
-                function (id) {
-                    this.uploadBarId = id;
-                }
+            setUploadBarId: function (id) {
+                this.uploadBarId = id;
+            }
         };
 
 

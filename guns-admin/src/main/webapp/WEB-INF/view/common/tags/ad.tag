@@ -8,14 +8,16 @@ id : 头像的id
     <div class="col-sm-8">
         <div id="${id}PreId">
             @if(isEmpty(ads)){
-            <div  style="float:left;text-align: right;height:120px;" class="file-item thumbnail draggable-element"><img
+            <div style="float:left;text-align: right;height:120px;" class="file-item thumbnail draggable-element"><img
                     width="100px" height="100px"
 
                     src="${ctxPath}/static/img/girl.gif"></div>
             @}else{
             @for(item in adsImg){
-            <div id="${item.id}" style="float:left;text-align: right;height:120px;" class="file-item thumbnail draggable-element"><a class="file-panel" href="javascript:;"><span class="fa fa-close"></span></a><img
-                    width="100px" height="100px"value = "${item.url}"
+            <div id="${item.id}" style="position:relative;float:left;" class="file-item thumbnail draggable-element"><a
+                    class="file-panel" style="position:absolute;top:10px;right:10px;" href="javascript:;"><span
+                    class="fa fa-close"></span></a><img
+                    width="100px" height="100px" value="${item.url}"
                     src="${ctxPath}/kaptcha/${item.url}">
             </div>
             @}
