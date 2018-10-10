@@ -70,6 +70,25 @@ Ad.openAdDetail = function () {
 };
 
 /**
+ * 打开查看广告详情
+ */
+Ad.openAdView = function () {
+    if (this.check()) {
+        var index = layer.open({
+            type: 2,
+            title: '广告详情',
+            area: ['800px', '420px'], //宽高
+            fix: false, //不固定
+            maxmin: true,
+            content: Feng.ctxPath + '/ad/ad_view/' + Ad.seItem.id
+        });
+        this.layerIndex = index;
+    }
+};
+
+
+
+/**
  * 删除广告
  */
 Ad.delete = function () {

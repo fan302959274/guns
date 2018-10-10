@@ -100,6 +100,35 @@ public class AdController extends BaseController {
 
 
     /**
+     * 跳转到修改广告
+     */
+    @RequestMapping("/ad_view/{adId}")
+    public String adView(@PathVariable Integer adId, Model model) {
+        PkAd pkAd = pkAdMapper.selectById(adId);
+
+        Map<String, Object> menuMap = BeanKit.beanToMap(pkAd);
+        Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
+        wrapper = wrapper.eq("linkid", adId).eq("category",AttachCategoryEnum.AD.getCode());
+        List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
+        String ads = "";
+        if (!CollectionUtils.isEmpty(list)) {
+            for (PkAttachment pkAttachment : list) {
+                if (StringUtils.isNoneBlank(ads)) {
+                    ads = ads.concat(",").concat(pkAttachment.getUrl());
+                } else {
+                    ads = ads.concat(pkAttachment.getUrl());
+                }
+            }
+
+        }
+        menuMap.put("adsImg", list);
+        menuMap.put("ads", ads);
+        model.addAttribute("ad", menuMap);
+        LogObjectHolder.me().set(pkAd);
+        return PREFIX + "ad_view.html";
+    }
+
+    /**
      * 新增广告
      */
     @RequestMapping(value = "/add")

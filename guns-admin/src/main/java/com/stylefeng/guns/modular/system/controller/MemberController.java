@@ -2,7 +2,6 @@ package com.stylefeng.guns.modular.system.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.common.annotion.Permission;
 import com.stylefeng.guns.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.common.enums.AttachTypeEnum;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
@@ -91,6 +90,31 @@ public class MemberController extends BaseController {
         model.addAttribute("member", menuMap);
         LogObjectHolder.me().set(pkMember);
         return PREFIX + "member_edit.html";
+    }
+
+    /**
+     * 跳转到修改广告
+     */
+    @RequestMapping("/member_view/{memberId}")
+    public String memberView(@PathVariable Integer memberId, Model model) {
+        PkMember pkMember = pkMemberMapper.selectById(memberId);
+
+        Map<String, Object> menuMap = BeanKit.beanToMap(pkMember);
+        Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
+        wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
+        List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
+        if (!CollectionUtils.isEmpty(list)) {
+            menuMap.put("avatar", list.get(0).getUrl());
+        }
+        wrapper = new EntityWrapper<>();
+        wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.IDCARD.getCode());
+        list = pkAttachmentMapper.selectList(wrapper);
+        if (!CollectionUtils.isEmpty(list)) {
+            menuMap.put("idcard", list.get(0).getUrl());
+        }
+        model.addAttribute("member", menuMap);
+        LogObjectHolder.me().set(pkMember);
+        return PREFIX + "member_view.html";
     }
 
 

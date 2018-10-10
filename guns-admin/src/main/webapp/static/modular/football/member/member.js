@@ -49,7 +49,7 @@ Member.openAddMember = function () {
 };
 
 /**
- * 打开查看广告详情
+ * 打开查看广告详情（编辑）
  */
 Member.openMemberDetail = function () {
     if (this.check()) {
@@ -60,6 +60,24 @@ Member.openMemberDetail = function () {
             fix: false, //不固定
             maxmin: true,
             content: Feng.ctxPath + '/member/member_update/' + Member.seItem.id
+        });
+        this.layerIndex = index;
+    }
+};
+
+
+/**
+ * 打开查看广告详情
+ */
+Member.openMemberView = function () {
+    if (this.check()) {
+        var index = layer.open({
+            type: 2,
+            title: '广告详情',
+            area: ['800px', '420px'], //宽高
+            fix: false, //不固定
+            maxmin: true,
+            content: Feng.ctxPath + '/member/member_view/' + Member.seItem.id
         });
         this.layerIndex = index;
     }
