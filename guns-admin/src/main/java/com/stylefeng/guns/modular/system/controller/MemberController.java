@@ -103,7 +103,6 @@ public class MemberController extends BaseController {
      * 新增广告
      */
     @RequestMapping(value = "/add")
-    @Permission
     @ResponseBody
     public Object add(PkMemberDto pkMemberDto, @RequestParam(required = false) String headImg, @RequestParam(required = false) String idcardImg, @RequestParam(required = false) String logoImg) throws ParseException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (ToolUtil.isOneEmpty(pkMemberDto, pkMemberDto.getName())) {
@@ -158,7 +157,6 @@ public class MemberController extends BaseController {
      * 获取所有部门列表
      */
     @RequestMapping(value = "/list")
-    @Permission
     @ResponseBody
     public Object list(@RequestParam(required = false) String name, Integer page, Integer pageSize) {
         RowBounds rowBounds = new RowBounds();
@@ -174,7 +172,6 @@ public class MemberController extends BaseController {
      * 部门详情
      */
     @RequestMapping(value = "/detail/{memberId}")
-    @Permission
     @ResponseBody
     public Object detail(@PathVariable("memberId") Integer memberId) {
         return pkMemberMapper.selectById(memberId);
@@ -183,9 +180,7 @@ public class MemberController extends BaseController {
     /**
      * 修改部门
      */
-//    @BussinessLog(value = "修改部门", key = "simplename", dict = PkAd.class)
     @RequestMapping(value = "/update")
-    @Permission
     @ResponseBody
     public Object update(PkMemberDto pkMemberDto, @RequestParam(required = false) String headImg, @RequestParam(required = false) String idcardImg, @RequestParam(required = false) String logoImg) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (ToolUtil.isEmpty(pkMemberDto) || pkMemberDto.getId() == null) {
@@ -240,9 +235,7 @@ public class MemberController extends BaseController {
     /**
      * 删除部门
      */
-//    @BussinessLog(value = "删除部门", key = "adId", dict = pkAdMapper.class)
     @RequestMapping(value = "/delete")
-    @Permission
     @ResponseBody
     public Object delete(@RequestParam Long memberId) {
         pkMemberMapper.deleteById(memberId);

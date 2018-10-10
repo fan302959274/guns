@@ -1,8 +1,8 @@
 /**
  * 广告管理初始化
  */
-var Ad = {
-    id: "AdTable",	//表格id
+var Member = {
+    id: "MemberTable",	//表格id
     seItem: null,		//选中的条目
     table: null,
     layerIndex: -1
@@ -11,7 +11,7 @@ var Ad = {
 /**
  * 初始化表格的列
  */
-Ad.initColumn = function () {
+Member.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
@@ -26,13 +26,13 @@ Ad.initColumn = function () {
 /**
  * 检查是否选中
  */
-Ad.check = function () {
+Member.check = function () {
     var selected = $('#' + this.id).bootstrapTreeTable('getSelections');
     if (selected.length == 0) {
         Feng.info("请先选中表格中的某一记录！");
         return false;
     } else {
-        Ad.seItem = selected[0];
+        Member.seItem = selected[0];
         return true;
     }
 };
@@ -40,14 +40,14 @@ Ad.check = function () {
 /**
  * 点击添加广告
  */
-Ad.openAddAd = function () {
+Member.openAddMember = function () {
     var index = layer.open({
         type: 2,
         title: '添加广告',
         area: ['800px', '420px'], //宽高
         fix: false, //不固定
         maxmin: true,
-        content: Feng.ctxPath + '/ad/ad_add'
+        content: Feng.ctxPath + '/member/member_add'
     });
     this.layerIndex = index;
 };
@@ -55,7 +55,7 @@ Ad.openAddAd = function () {
 /**
  * 打开查看广告详情
  */
-Ad.openAdDetail = function () {
+Member.openMemberDetail = function () {
     if (this.check()) {
         var index = layer.open({
             type: 2,
@@ -63,7 +63,7 @@ Ad.openAdDetail = function () {
             area: ['800px', '420px'], //宽高
             fix: false, //不固定
             maxmin: true,
-            content: Feng.ctxPath + '/ad/ad_update/' + Ad.seItem.id
+            content: Feng.ctxPath + '/member/member_update/' + Member.seItem.id
         });
         this.layerIndex = index;
     }
@@ -72,17 +72,17 @@ Ad.openAdDetail = function () {
 /**
  * 删除广告
  */
-Ad.delete = function () {
+Member.delete = function () {
     if (this.check()) {
 
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/ad/delete", function () {
+            var ajax = new $ax(Feng.ctxPath + "/member/delete", function () {
                 Feng.success("删除成功!");
-                Ad.table.refresh();
+                Member.table.refresh();
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("adId", Ad.seItem.id);
+            ajax.set("adId", Member.seItem.id);
             ajax.start();
         };
 
@@ -93,20 +93,20 @@ Ad.delete = function () {
 /**
  * 查询广告列表
  */
-Ad.search = function () {
+Member.search = function () {
     var queryData = {};
     queryData['adMainHead'] = $("#condition").val();
-    Ad.table.refresh({query: queryData});
+    Member.table.refresh({query: queryData});
 };
 
 $(function () {
-    var defaultColunms = Ad.initColumn();
-    var table = new BSTreeTable(Ad.id, "/ad/list", defaultColunms);
+    var defaultColunms = Member.initColumn();
+    var table = new BSTreeTable(Member.id, "/member/list", defaultColunms);
     table.setExpandColumn(2);
     table.setIdField("id");
     table.setCodeField("id");
     table.setParentCodeField("pid");
     table.setExpandAll(true);
     table.init();
-    Ad.table = table;
+    Member.table = table;
 });

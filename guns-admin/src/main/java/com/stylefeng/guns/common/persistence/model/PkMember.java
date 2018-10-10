@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-09
+ * @since 2018-10-10
  */
 @TableName("pk_member")
 public class PkMember extends Model<PkMember> {
@@ -28,6 +28,10 @@ public class PkMember extends Model<PkMember> {
      */
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
+    /**
+     * 队员账号
+     */
+	private String account;
     /**
      * 队员名称
      */
@@ -96,6 +100,14 @@ public class PkMember extends Model<PkMember> {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 	public String getName() {
@@ -227,6 +239,7 @@ public class PkMember extends Model<PkMember> {
 	public String toString() {
 		return "PkMember{" +
 			"id=" + id +
+			", account=" + account +
 			", name=" + name +
 			", sex=" + sex +
 			", mobile=" + mobile +

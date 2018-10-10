@@ -72,6 +72,8 @@ DROP TABLE IF EXISTS `pk_member`;
 CREATE TABLE `pk_member` (
   `id`                BIGINT(20) NOT NULL AUTO_INCREMENT
   COMMENT '主键',
+  `account`    VARCHAR(100)        DEFAULT NULL
+  COMMENT '队员账号',
   `name`       VARCHAR(100)        DEFAULT NULL
   COMMENT '队员名称',
   `sex`        VARCHAR(1)          DEFAULT NULL

@@ -8,22 +8,40 @@
             <div class="row">
                 <div class="col-sm-12 b-r">
 
-                    <#input id="mainhead" name="广告标题" underline="true" value="${ad.mainhead}"/>
+                    <#input id="account" name="账号" underline="true" value="${member.account}"/>
 
-                    <#input id="subhead" name="广告副标题" underline="true" value="${ad.subhead}"/>
+                    <#input id="name" name="姓名" underline="true" value="${member.name}"/>
 
-                    <#input id="starttime" name="出生日期" underline="true" type="date"
-                            value="${ad.starttime}"
+                    <#input id="birth" name="出生年月" underline="true" type="date" value="${member.birth}"
                             clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
 
-                    <#input id="endtime" name="出生日期" underline="true" type="date"
-                            value="${ad.endtime}"
+                    <#input id="height" name="身高" underline="true" value="${member.height}"/>
+                    <#input id="weight" name="体重" underline="true" value="${member.weight}"/>
+                    <#select id="position" name="所踢位置" underline="true" value="${member.position}">
+                        <option value="1">前锋</option>
+                        <option value="2">中锋</option>
+                    </#select>
+                    <#select id="habitfeet" name="惯用脚" underline="true" value="${member.habitfeet}">
+                        <option value="1">左</option>
+                        <option value="2">右</option>
+                    </#select>
+                    <#select id="type" name="状态" underline="true" value="${member.type}">
+                        <option value="1">队长</option>
+                        <option value="2">球员</option>
+                    </#select>
+                    <#avatar id="avatar" name="头像" underline="true" avatarImg="${member.avatarImg}" />
+                    <#avatar id="idcard" name="身份证照" underline="true" avatarImg="${member.idcardImg}"/>
+
+
+                    <#input id="teamname" name="创建球队" underline="true" value="${member.teamname}"/>
+                    <#input id="teamcreatetime" name="创建时间" underline="true" type="date" value="${member.teamcreatetime}"
                             clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+                    <#avatar id="teamlogo" name="球队logo" underline="true" avatarImg="${member.logoImg}"/>
 
-
-                    <#input id="url" name="广告链接" underline="true" value="${ad.url}"/>
-
-                    <#ad id="ads" name="图片上传" underline="true" adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
+                    <#select id="teamarea" name="球队区域" underline="true" value="${member.teamarea}">
+                        <option value="1">区域A</option>
+                        <option value="2">区域A</option>
+                    </#select>
 
                 </div>
 
@@ -32,13 +50,13 @@
 
             <div class="row btn-group-m-t">
                 <div class="col-sm-10">
-                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="AdInfoDlg.editSubmit()"/>
-                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="AdInfoDlg.close()"/>
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="MemberInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="MemberInfoDlg.close()"/>
                 </div>
             </div>
         </div>
 
     </div>
 </div>
-<script src="${ctxPath}/static/modular/football/memeber/memeber_info.js"></script>
+<script src="${ctxPath}/static/modular/football/member/member_info.js"></script>
 @}

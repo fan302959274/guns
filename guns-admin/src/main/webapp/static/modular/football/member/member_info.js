@@ -1,10 +1,10 @@
 /**
  * 初始化部门详情对话框
  */
-var AdInfoDlg = {
+var MemberInfoDlg = {
     adInfoData : {},
     validateFields: {
-        mainhead: {
+        name: {
             validators: {
                 notEmpty: {
                     message: '广告标题不能为空'
@@ -24,7 +24,7 @@ var AdInfoDlg = {
 /**
  * 清除数据
  */
-AdInfoDlg.clearData = function() {
+MemberInfoDlg.clearData = function() {
     this.adInfoData = {};
 }
 
@@ -34,7 +34,7 @@ AdInfoDlg.clearData = function() {
  * @param key 数据的名称
  * @param val 数据的具体值
  */
-AdInfoDlg.set = function(key, val) {
+MemberInfoDlg.set = function(key, val) {
     this.adInfoData[key] = (typeof value == "undefined") ? $("#" + key).val() : value;
     return this;
 }
@@ -45,28 +45,28 @@ AdInfoDlg.set = function(key, val) {
  * @param key 数据的名称
  * @param val 数据的具体值
  */
-AdInfoDlg.get = function(key) {
+MemberInfoDlg.get = function(key) {
     return $("#" + key).val();
 }
 
 /**
  * 关闭此对话框
  */
-AdInfoDlg.close = function() {
-    parent.layer.close(window.parent.Ad.layerIndex);
+MemberInfoDlg.close = function() {
+    parent.layer.close(window.parent.Member.layerIndex);
 }
 
 /**
  * 收集数据
  */
-AdInfoDlg.collectData = function() {
+MemberInfoDlg.collectData = function() {
     this.set('id').set('mainhead').set('subhead').set('starttime').set('endtime').set('url').set('status').set('ads');
 }
 
 /**
  * 验证数据是否为空
  */
-AdInfoDlg.validate = function () {
+MemberInfoDlg.validate = function () {
     $('#adInfoForm').data("bootstrapValidator").resetForm();
     $('#adInfoForm').bootstrapValidator('validate');
     return $("#adInfoForm").data('bootstrapValidator').isValid();
@@ -75,7 +75,7 @@ AdInfoDlg.validate = function () {
 /**
  * 提交添加部门
  */
-AdInfoDlg.addSubmit = function() {
+MemberInfoDlg.addSubmit = function() {
 
     this.clearData();
     this.collectData();
@@ -85,10 +85,10 @@ AdInfoDlg.addSubmit = function() {
     }
 
     //提交信息
-    var ajax = new $ax(Feng.ctxPath + "/ad/add", function(data){
+    var ajax = new $ax(Feng.ctxPath + "/member/add", function(data){
         Feng.success("添加成功!");
-        window.parent.Ad.table.refresh();
-        AdInfoDlg.close();
+        window.parent.Member.table.refresh();
+        MemberInfoDlg.close();
     },function(data){
         Feng.error("添加失败!" + data.responseJSON.message + "!");
     });
@@ -99,7 +99,7 @@ AdInfoDlg.addSubmit = function() {
 /**
  * 提交修改
  */
-AdInfoDlg.editSubmit = function() {
+MemberInfoDlg.editSubmit = function() {
 
     this.clearData();
     this.collectData();
@@ -109,10 +109,10 @@ AdInfoDlg.editSubmit = function() {
     }
 
     //提交信息
-    var ajax = new $ax(Feng.ctxPath + "/ad/update", function(data){
+    var ajax = new $ax(Feng.ctxPath + "/member/update", function(data){
         Feng.success("修改成功!");
-        window.parent.Ad.table.refresh();
-        AdInfoDlg.close();
+        window.parent.Member.table.refresh();
+        MemberInfoDlg.close();
     },function(data){
         Feng.error("修改失败!" + data.responseJSON.message + "!");
     });
@@ -121,17 +121,25 @@ AdInfoDlg.editSubmit = function() {
 }
 
 function onBodyDown(event) {
-    if (!(event.target.id == "menuBtn" || event.target.id == "parentAdMenu" || $(
-            event.target).parents("#parentAdMenu").length > 0)) {
-        AdInfoDlg.hideAdSelectTree();
+    if (!(event.target.id == "menuBtn" || event.target.id == "parentMemberMenu" || $(
+            event.target).parents("#parentMemberMenu").length > 0)) {
+        MemberInfoDlg.hideMemberSelectTree();
     }
 }
 
 $(function() {
-    Feng.initValidator("adInfoForm", AdInfoDlg.validateFields);
+    Feng.initValidator("memberInfoForm", MemberInfoDlg.validateFields);
     // 初始化头像上传
-    var avatarUp = new $WebUploadAd("ads");
+    var avatarUp = new $WebUpload("avatar");
     avatarUp.init();
+
+    // 初始化身份证照上传
+    var idcardUp = new $WebUpload("idcard");
+    idcardUp.init();
+
+    // 初始化球队logo上传
+    var teamlogoUp = new $WebUpload("teamlogo");
+    teamlogoUp.init();
 
 
 });
