@@ -94,6 +94,10 @@ public class PkMemberDto extends Model<PkMemberDto> {
      */
     private String isdeleted;
 
+    private String avatar;
+
+    private String idcard;
+
 
     public Long getId() {
         return id;
@@ -229,6 +233,22 @@ public class PkMemberDto extends Model<PkMemberDto> {
 
     public void setIsdeleted(String isdeleted) {
         this.isdeleted = isdeleted;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
     }
 
     @Override

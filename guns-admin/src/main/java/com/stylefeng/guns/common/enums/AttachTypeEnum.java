@@ -6,9 +6,10 @@ package com.stylefeng.guns.common.enums;
  */
 public enum AttachTypeEnum {
 
+    //队员的相关附件类型
     HEAD("HEAD", "头像"),
-    IDCARD("IDCARD", "身份证"),
-    LOGO("LOGO", "logo");
+    IDCARD("IDCARD", "身份证");
+
 
     String code;
     String message;

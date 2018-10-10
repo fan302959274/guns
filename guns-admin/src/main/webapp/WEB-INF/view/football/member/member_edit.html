@@ -29,13 +29,12 @@
                         <option value="1">队长</option>
                         <option value="2">球员</option>
                     </#select>
-                    <#avatar id="avatar" name="头像" underline="true" avatarImg="${member.avatarImg}" />
-                    <#avatar id="idcard" name="身份证照" underline="true" avatarImg="${member.idcardImg}"/>
+                    <#avatar id="avatar" name="头像" underline="true" avatarImg="${member.avatar}" />
+                    <#avatar id="idcard" name="身份证照" underline="true" avatarImg="${member.idcard}"/>
 
 
                     <#input id="teamname" name="创建球队" underline="true" value="${member.teamname}"/>
-                    <#input id="teamcreatetime" name="创建时间" underline="true" type="date" value="${member.teamcreatetime}"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+
                     <#avatar id="teamlogo" name="球队logo" underline="true" avatarImg="${member.logoImg}"/>
 
                     <#select id="teamarea" name="球队区域" underline="true" value="${member.teamarea}">

@@ -80,20 +80,14 @@ public class MemberController extends BaseController {
         wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
         List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
         if (!CollectionUtils.isEmpty(list)) {
-            menuMap.put("headImg", list.get(0));
+            menuMap.put("avatar", list.get(0).getUrl());
         }
         wrapper = new EntityWrapper<>();
         wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.IDCARD.getCode());
         if (!CollectionUtils.isEmpty(list)) {
-            menuMap.put("idcardImg", list.get(0));
-        }
-        wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
-        if (!CollectionUtils.isEmpty(list)) {
-            menuMap.put("logoImg", list.get(0));
+            menuMap.put("idcard", list.get(0).getUrl());
         }
         model.addAttribute("member", menuMap);
-//        model.addAttribute(pkAd);
         LogObjectHolder.me().set(pkMember);
         return PREFIX + "member_edit.html";
     }
@@ -104,7 +98,7 @@ public class MemberController extends BaseController {
      */
     @RequestMapping(value = "/add")
     @ResponseBody
-    public Object add(PkMemberDto pkMemberDto, @RequestParam(required = false) String headImg, @RequestParam(required = false) String idcardImg, @RequestParam(required = false) String logoImg) throws ParseException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public Object add(PkMemberDto pkMemberDto) throws ParseException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (ToolUtil.isOneEmpty(pkMemberDto, pkMemberDto.getName())) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
@@ -112,38 +106,28 @@ public class MemberController extends BaseController {
         PropertyUtils.copyProperties(record, pkMemberDto);
         Integer result = this.pkMemberMapper.insert(record);
 //        保存头像
-        if (StringUtils.isNoneBlank(headImg)) {
+        if (StringUtils.isNoneBlank(pkMemberDto.getAvatar())) {
 
             PkAttachment pkAttachment = new PkAttachment();
-            pkAttachment.setCategory(AttachCategoryEnum.AD.getCode());
+            pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
+            pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
             pkAttachment.setLinkid(record.getId());
-            pkAttachment.setName(headImg);
-            pkAttachment.setSuffix(headImg.substring(headImg.lastIndexOf(".") + 1));
-            pkAttachment.setUrl(headImg);
+            pkAttachment.setName(pkMemberDto.getAvatar());
+            pkAttachment.setSuffix(pkMemberDto.getAvatar().substring(pkMemberDto.getAvatar().lastIndexOf(".") + 1));
+            pkAttachment.setUrl(pkMemberDto.getAvatar());
             pkAttachmentMapper.insert(pkAttachment);
 
         }
         //        保存身份证
-        if (StringUtils.isNoneBlank(idcardImg)) {
+        if (StringUtils.isNoneBlank(pkMemberDto.getIdcard())) {
 
             PkAttachment pkAttachment = new PkAttachment();
-            pkAttachment.setCategory(AttachCategoryEnum.AD.getCode());
+            pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
+            pkAttachment.setType(AttachTypeEnum.IDCARD.getCode());
             pkAttachment.setLinkid(record.getId());
-            pkAttachment.setName(idcardImg);
-            pkAttachment.setSuffix(idcardImg.substring(idcardImg.lastIndexOf(".") + 1));
-            pkAttachment.setUrl(idcardImg);
-            pkAttachmentMapper.insert(pkAttachment);
-
-        }
-//        保存logo
-        if (StringUtils.isNoneBlank(logoImg)) {
-
-            PkAttachment pkAttachment = new PkAttachment();
-            pkAttachment.setCategory(AttachCategoryEnum.AD.getCode());
-            pkAttachment.setLinkid(record.getId());
-            pkAttachment.setName(logoImg);
-            pkAttachment.setSuffix(logoImg.substring(logoImg.lastIndexOf(".") + 1));
-            pkAttachment.setUrl(logoImg);
+            pkAttachment.setName(pkMemberDto.getIdcard());
+            pkAttachment.setSuffix(pkMemberDto.getIdcard().substring(pkMemberDto.getIdcard().lastIndexOf(".") + 1));
+            pkAttachment.setUrl(pkMemberDto.getIdcard());
             pkAttachmentMapper.insert(pkAttachment);
 
         }
@@ -182,7 +166,7 @@ public class MemberController extends BaseController {
      */
     @RequestMapping(value = "/update")
     @ResponseBody
-    public Object update(PkMemberDto pkMemberDto, @RequestParam(required = false) String headImg, @RequestParam(required = false) String idcardImg, @RequestParam(required = false) String logoImg) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public Object update(PkMemberDto pkMemberDto) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (ToolUtil.isEmpty(pkMemberDto) || pkMemberDto.getId() == null) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
@@ -194,38 +178,28 @@ public class MemberController extends BaseController {
         wrapper = wrapper.eq("linkid", record.getId());
         pkAttachmentMapper.delete(wrapper);
         //        保存头像
-        if (StringUtils.isNoneBlank(headImg)) {
+        if (StringUtils.isNoneBlank(pkMemberDto.getAvatar())) {
 
             PkAttachment pkAttachment = new PkAttachment();
-            pkAttachment.setCategory(AttachCategoryEnum.AD.getCode());
+            pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
+            pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
             pkAttachment.setLinkid(record.getId());
-            pkAttachment.setName(headImg);
-            pkAttachment.setSuffix(headImg.substring(headImg.lastIndexOf(".") + 1));
-            pkAttachment.setUrl(headImg);
+            pkAttachment.setName(pkMemberDto.getAvatar());
+            pkAttachment.setSuffix(pkMemberDto.getAvatar().substring(pkMemberDto.getAvatar().lastIndexOf(".") + 1));
+            pkAttachment.setUrl(pkMemberDto.getAvatar());
             pkAttachmentMapper.insert(pkAttachment);
 
         }
         //        保存身份证
-        if (StringUtils.isNoneBlank(idcardImg)) {
+        if (StringUtils.isNoneBlank(pkMemberDto.getIdcard())) {
 
             PkAttachment pkAttachment = new PkAttachment();
-            pkAttachment.setCategory(AttachCategoryEnum.AD.getCode());
+            pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
+            pkAttachment.setType(AttachTypeEnum.IDCARD.getCode());
             pkAttachment.setLinkid(record.getId());
-            pkAttachment.setName(idcardImg);
-            pkAttachment.setSuffix(idcardImg.substring(idcardImg.lastIndexOf(".") + 1));
-            pkAttachment.setUrl(idcardImg);
-            pkAttachmentMapper.insert(pkAttachment);
-
-        }
-//        保存logo
-        if (StringUtils.isNoneBlank(logoImg)) {
-
-            PkAttachment pkAttachment = new PkAttachment();
-            pkAttachment.setCategory(AttachCategoryEnum.AD.getCode());
-            pkAttachment.setLinkid(record.getId());
-            pkAttachment.setName(logoImg);
-            pkAttachment.setSuffix(logoImg.substring(logoImg.lastIndexOf(".") + 1));
-            pkAttachment.setUrl(logoImg);
+            pkAttachment.setName(pkMemberDto.getIdcard());
+            pkAttachment.setSuffix(pkMemberDto.getIdcard().substring(pkMemberDto.getIdcard().lastIndexOf(".") + 1));
+            pkAttachment.setUrl(pkMemberDto.getIdcard());
             pkAttachmentMapper.insert(pkAttachment);
 
         }

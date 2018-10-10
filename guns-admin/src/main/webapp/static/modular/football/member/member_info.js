@@ -60,7 +60,7 @@ MemberInfoDlg.close = function() {
  * 收集数据
  */
 MemberInfoDlg.collectData = function() {
-    this.set('id').set('account').set('name').set('birth').set('height').set('weight').set('position').set('habitfeet').set('type');
+    this.set('id').set('account').set('name').set('birth').set('height').set('weight').set('position').set('habitfeet').set('type').set('avatar').set('idcard');
 }
 
 /**
