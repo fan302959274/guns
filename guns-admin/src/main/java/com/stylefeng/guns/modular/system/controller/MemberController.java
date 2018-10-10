@@ -84,6 +84,7 @@ public class MemberController extends BaseController {
         }
         wrapper = new EntityWrapper<>();
         wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.IDCARD.getCode());
+        list = pkAttachmentMapper.selectList(wrapper);
         if (!CollectionUtils.isEmpty(list)) {
             menuMap.put("idcard", list.get(0).getUrl());
         }

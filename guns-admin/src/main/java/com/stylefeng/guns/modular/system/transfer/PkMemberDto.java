@@ -94,8 +94,15 @@ public class PkMemberDto extends Model<PkMemberDto> {
      */
     private String isdeleted;
 
+    /**
+     * 头像
+     */
     private String avatar;
 
+
+    /**
+     * 身份证
+     */
     private String idcard;
 
 
