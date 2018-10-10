@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-10
+ * @since 2018-10-11
  */
 @TableName("pk_ad")
 public class PkAd extends Model<PkAd> {

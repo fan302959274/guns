@@ -208,6 +208,10 @@ CREATE TABLE `pk_match` (
   COMMENT '比赛状态(待定)',
   `createdate`             TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
   COMMENT '创建时间',
+  `hostpaystatus`      VARCHAR(10)   DEFAULT NULL
+  COMMENT '发起方支付状态',
+  `challengepaystatus`      VARCHAR(10)   DEFAULT NULL
+  COMMENT '挑战者支付状态',
   `updatedate`             TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   COMMENT '更新时间',
   `creator`                 VARCHAR(100)          DEFAULT NULL
