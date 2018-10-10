@@ -167,11 +167,11 @@ public class MemberController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(required = false) String name, Integer page, Integer pageSize) {
+    public Object list(@RequestParam(required = false) String account, Integer page, Integer pageSize) {
         RowBounds rowBounds = new RowBounds();
         Wrapper<PkMember> wrapper = new EntityWrapper<>();
-        if (StringUtils.isNoneBlank(name)) {
-            wrapper = wrapper.like("name", name);
+        if (StringUtils.isNoneBlank(account)) {
+            wrapper = wrapper.like("account", account);
         }
         List<PkMember> list = this.pkMemberMapper.selectPage(rowBounds, wrapper);
         return list;

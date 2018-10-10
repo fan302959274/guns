@@ -109,7 +109,7 @@ Member.delete = function () {
  */
 Member.search = function () {
     var queryData = {};
-    queryData['adMainHead'] = $("#condition").val();
+    queryData['account'] = $("#condition").val();
     Member.table.refresh({query: queryData});
 };
 
