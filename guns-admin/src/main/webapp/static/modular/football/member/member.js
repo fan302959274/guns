@@ -15,12 +15,8 @@ Member.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
-        {title: '广告标题', field: 'mainhead', align: 'center', valign: 'middle', sortable: true},
-        {title: '广告副标题', field: 'subhead', align: 'center', valign: 'middle', sortable: true},
-        {title: '开始时间', field: 'starttime', align: 'center', valign: 'middle', sortable: true},
-        {title: '结束时间', field: 'endtime', align: 'center', valign: 'middle', sortable: true},
-        {title: '广告链接', field: 'url', align: 'center', valign: 'middle', sortable: true},
-        {title: '广告状态', field: 'status', align: 'center', valign: 'middle', sortable: true}];
+        {title: '账号', field: 'account', align: 'center', valign: 'middle', sortable: true},
+        {title: '姓名', field: 'name', align: 'center', valign: 'middle', sortable: true}];
 };
 
 /**
@@ -82,7 +78,7 @@ Member.delete = function () {
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("adId", Member.seItem.id);
+            ajax.set("memberId", Member.seItem.id);
             ajax.start();
         };
 

@@ -60,16 +60,16 @@ MemberInfoDlg.close = function() {
  * 收集数据
  */
 MemberInfoDlg.collectData = function() {
-    this.set('id').set('mainhead').set('subhead').set('starttime').set('endtime').set('url').set('status').set('ads');
+    this.set('id').set('account').set('name').set('birth').set('height').set('weight').set('position').set('habitfeet').set('type');
 }
 
 /**
  * 验证数据是否为空
  */
 MemberInfoDlg.validate = function () {
-    $('#adInfoForm').data("bootstrapValidator").resetForm();
-    $('#adInfoForm').bootstrapValidator('validate');
-    return $("#adInfoForm").data('bootstrapValidator').isValid();
+    $('#memberInfoForm').data("bootstrapValidator").resetForm();
+    $('#memberInfoForm').bootstrapValidator('validate');
+    return $("#memberInfoForm").data('bootstrapValidator').isValid();
 }
 
 /**

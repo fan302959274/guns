@@ -16,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-09
+ * @since 2018-10-10
  */
 @TableName("pk_member")
 public class PkMemberDto extends Model<PkMemberDto> {
@@ -26,223 +26,236 @@ public class PkMemberDto extends Model<PkMemberDto> {
     /**
      * 主键
      */
-	@TableId(value="id", type= IdType.AUTO)
-	private Long id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+    /**
+     * 队员账号
+     */
+    private String account;
     /**
      * 队员名称
      */
-	private String name;
+    private String name;
     /**
      * 队员性别0:男;1:女
      */
-	private String sex;
+    private String sex;
     /**
      * 手机号
      */
-	private String mobile;
+    private String mobile;
     /**
      * 出生年月
      */
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date birth;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birth;
     /**
      * 主攻位置
      */
-	private String position;
+    private String position;
     /**
      * 惯用脚
      */
-	private String habitfeet;
+    private String habitfeet;
     /**
      * 身高
      */
-	private BigDecimal height;
+    private BigDecimal height;
     /**
      * 体重
      */
-	private BigDecimal weight;
+    private BigDecimal weight;
     /**
      * 队员类型:1:队长;2:普通球员
      */
-	private String type;
+    private String type;
     /**
      * 队员状态:0:禁用1:启用
      */
-	private String status;
+    private String status;
     /**
      * 创建时间
      */
-	private Date createdate;
+    private Date createdate;
     /**
      * 更新时间
      */
-	private Date updatedate;
+    private Date updatedate;
     /**
      * 创建人
      */
-	private String creator;
+    private String creator;
     /**
      * 更新人
      */
-	private String updator;
+    private String updator;
     /**
      * 是否删除
      */
-	private String isdeleted;
+    private String isdeleted;
 
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getAccount() {
+        return account;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setAccount(String account) {
+        this.account = account;
+    }
 
-	public String getSex() {
-		return sex;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getMobile() {
-		return mobile;
-	}
+    public String getSex() {
+        return sex;
+    }
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
-	public Date getBirth() {
-		return birth;
-	}
+    public String getMobile() {
+        return mobile;
+    }
 
-	public void setBirth(Date birth) {
-		this.birth = birth;
-	}
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-	public String getPosition() {
-		return position;
-	}
+    public Date getBirth() {
+        return birth;
+    }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    public void setBirth(Date birth) {
+        this.birth = birth;
+    }
 
-	public String getHabitfeet() {
-		return habitfeet;
-	}
+    public String getPosition() {
+        return position;
+    }
 
-	public void setHabitfeet(String habitfeet) {
-		this.habitfeet = habitfeet;
-	}
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
-	public BigDecimal getHeight() {
-		return height;
-	}
+    public String getHabitfeet() {
+        return habitfeet;
+    }
 
-	public void setHeight(BigDecimal height) {
-		this.height = height;
-	}
+    public void setHabitfeet(String habitfeet) {
+        this.habitfeet = habitfeet;
+    }
 
-	public BigDecimal getWeight() {
-		return weight;
-	}
+    public BigDecimal getHeight() {
+        return height;
+    }
 
-	public void setWeight(BigDecimal weight) {
-		this.weight = weight;
-	}
+    public void setHeight(BigDecimal height) {
+        this.height = height;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public BigDecimal getWeight() {
+        return weight;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public Date getCreatedate() {
-		return createdate;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setCreatedate(Date createdate) {
-		this.createdate = createdate;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public Date getUpdatedate() {
-		return updatedate;
-	}
+    public Date getCreatedate() {
+        return createdate;
+    }
 
-	public void setUpdatedate(Date updatedate) {
-		this.updatedate = updatedate;
-	}
+    public void setCreatedate(Date createdate) {
+        this.createdate = createdate;
+    }
 
-	public String getCreator() {
-		return creator;
-	}
+    public Date getUpdatedate() {
+        return updatedate;
+    }
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public void setUpdatedate(Date updatedate) {
+        this.updatedate = updatedate;
+    }
 
-	public String getUpdator() {
-		return updator;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
-	public String getIsdeleted() {
-		return isdeleted;
-	}
+    public String getUpdator() {
+        return updator;
+    }
 
-	public void setIsdeleted(String isdeleted) {
-		this.isdeleted = isdeleted;
-	}
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
 
-	@Override
-	protected Serializable pkVal() {
-		return this.id;
-	}
+    public String getIsdeleted() {
+        return isdeleted;
+    }
 
-	@Override
-	public String toString() {
-		return "PkMember{" +
-			"id=" + id +
-			", name=" + name +
-			", sex=" + sex +
-			", mobile=" + mobile +
-			", birth=" + birth +
-			", position=" + position +
-			", habitfeet=" + habitfeet +
-			", height=" + height +
-			", weight=" + weight +
-			", type=" + type +
-			", status=" + status +
-			", createdate=" + createdate +
-			", updatedate=" + updatedate +
-			", creator=" + creator +
-			", updator=" + updator +
-			", isdeleted=" + isdeleted +
-			"}";
-	}
+    public void setIsdeleted(String isdeleted) {
+        this.isdeleted = isdeleted;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "PkMember{" +
+                "id=" + id +
+                ", account=" + account +
+                ", name=" + name +
+                ", sex=" + sex +
+                ", mobile=" + mobile +
+                ", birth=" + birth +
+                ", position=" + position +
+                ", habitfeet=" + habitfeet +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", type=" + type +
+                ", status=" + status +
+                ", createdate=" + createdate +
+                ", updatedate=" + updatedate +
+                ", creator=" + creator +
+                ", updator=" + updator +
+                ", isdeleted=" + isdeleted +
+                "}";
+    }
 }
