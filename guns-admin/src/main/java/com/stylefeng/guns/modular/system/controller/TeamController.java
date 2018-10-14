@@ -1,9 +1,8 @@
 package com.stylefeng.guns.modular.system.controller;
 
 import com.stylefeng.guns.core.base.controller.BaseController;
-import com.stylefeng.guns.modular.system.dao.ParkDao;
 import com.stylefeng.guns.modular.system.dao.TeamDao;
-import com.stylefeng.guns.modular.system.warpper.ParkWarpper;
+import com.stylefeng.guns.modular.system.warpper.TeamWarpper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,37 +27,30 @@ public class TeamController extends BaseController {
     @Resource
     TeamDao teamDao;
 
-
     /**
-     * 跳转到球场管理首页
+     * 跳转到球队管理首页
      */
     @RequestMapping("")
     public String index() {
-        return PREFIX + "park.html";
+        return PREFIX + "team.html";
+    }
+    @RequestMapping("teamMember")
+    public String teamMember() {
+        return PREFIX + "team_member.html";
     }
 
-
     /**
-     * 获取球场列表
+     * 获取球队列表
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(String condition) {
-        List<Map<String, Object>> banners = this.teamDao.selectParks(super.getPara("roleName"));
-        return super.warpObject(new ParkWarpper(banners));
-    }
-
-
-    /**
-     * 跳转到添加广告
-     */
-    @RequestMapping("/banner_add")
-    public String bannerAdd() {
-        return PREFIX + "banner_add.html";
+    public Object list(String name) {
+        List<Map<String, Object>> banners = this.teamDao.selectTeams(super.getPara("name"));
+        return super.warpObject(new TeamWarpper(banners));
     }
 
     /**
-     * 跳转到修改广告
+     * 跳转到修改球队
      */
     @RequestMapping("/banner_update/{bannerId}")
     public String bannerUpdate(@PathVariable Integer bannerId, Model model) {
@@ -66,18 +58,8 @@ public class TeamController extends BaseController {
     }
 
 
-
     /**
-     * 新增广告
-     */
-    @RequestMapping(value = "/add")
-    @ResponseBody
-    public Object add() {
-        return super.SUCCESS_TIP;
-    }
-
-    /**
-     * 删除广告
+     * 删除球队
      */
     @RequestMapping(value = "/delete")
     @ResponseBody
@@ -85,9 +67,8 @@ public class TeamController extends BaseController {
         return SUCCESS_TIP;
     }
 
-
     /**
-     * 修改广告
+     * 修改球队
      */
     @RequestMapping(value = "/update")
     @ResponseBody
@@ -96,7 +77,7 @@ public class TeamController extends BaseController {
     }
 
     /**
-     * 广告详情
+     * 球队详情
      */
     @RequestMapping(value = "/detail")
     @ResponseBody

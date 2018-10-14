@@ -21,10 +21,16 @@
                                 <#button name="添加" icon="fa-plus" clickFun="Park.openAddPark()" />
                             @}
                             @if(shiro.hasPermission("/role/edit")){
-                                <#button name="修改" icon="fa-edit" clickFun="Role.openChangeRole()" space="true"/>
+                                <#button name="修改" icon="fa-edit" clickFun="Park.openEditPark()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/mgr/freeze")){
+                            <#button name="禁用" icon="fa-warning" clickFun="Park.freezePark()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/mgr/unfreeze")){
+                            <#button name="解除禁用" icon="fa-check-circle" clickFun="Park.unfreezePark()" space="true"/>
                             @}
                             @if(shiro.hasPermission("/role/remove")){
-                                <#button name="删除" icon="fa-remove" clickFun="Role.delRole()" space="true"/>
+                                <#button name="删除" icon="fa-remove" clickFun="Park.delPark()" space="true"/>
                             @}
                         </div>
                         <#table id="parkTable"/>

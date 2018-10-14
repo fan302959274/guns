@@ -1,47 +1,82 @@
- @layout("/common/_container.html"){
-<div class="ibox float-e-margins">
-	<div class="ibox-content">
-		<div class="form-horizontal" id="roleInfoForm">
-		
-			<input type="hidden" id="id" value="${role.id}">
+@layout("/common/_container.html"){
 
-			<div class="row">
-				<div class="col-sm-6 b-r">
-					<#input id="name" name="角色名称" underline="true" value="${role.name}"/>
-					<#input id="pName" name="上级名称" underline="true" hidden="pid" hiddenValue="${role.pid}" readonly="readonly" value="${pName}"
-							clickFun="RolInfoDlg.showPNameSelectTree(); return false;"
-							style="background-color: #ffffff !important;"/>
-					<#input id="deptName" name="部门名称" hidden="deptid" hiddenValue="${role.deptid}" readonly="readonly" value="${deptName}"
-							clickFun="RolInfoDlg.showDeptSelectTree(); return false;"
-							style="background-color: #ffffff !important;"/>
-				</div>
-				<div class="col-sm-6">
-					<#input id="tips" name="别名" underline="true" value="${role.tips}"/>
-					<#input id="num" name="排序" value="${role.num}"/>
-				</div>
-			</div>
+<div class="ibox float-e-margins" >
 
-			<!-- 这是部门下拉框 -->
-			<div id="deptContent" class="menuContent"
-				style="display: none; position: absolute; z-index: 200;">
-				<ul id="deptTree" class="ztree tree-box" style="width: 250px !important;"></ul>
-			</div>
-			
-			<!-- 这是父级菜单下拉框 -->
-			<div id="pNameContent" class="menuContent"
-				style="display: none; position: absolute; z-index: 200;">
-				<ul id="pNameTree" class="ztree tree-box" style="width: 250px !important;"></ul>
-			</div>
+	<div class="row row-lg">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content" style="border:none !important; ">
+					<div class="form-horizontal" id="parkInfoForm">
+						<div class="ibox-content">
+							<div class="row">
+								<div class="col-sm-12 b-r">
+									<#ad id="ads" name="图片上传" underline="true" />
+								</div>
+							</div>
+							<input type="hidden" id="id" value="">
+							<input type="hidden" id="sexValue" value="">
 
-			<div class="row btn-group-m-t">
-				<div class="col-sm-10">
-					<#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="RolInfoDlg.editSubmit()"/>
-					<#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="RolInfoDlg.close()"/>
+							<div class="row">
+								<div class="col-sm-6 b-r">
+									<#input id="pkname" name="球场名" underline="true" value=""  />
+									<#select id="area" name="球场区域" underline="true" value="">
+										<option value="1">男</option>
+										<option value="2">女</option>
+									</#select>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">球场地址</label>
+										<div class="col-sm-9">
+											<textarea  id="pkaddr" class="form-control" id="pkaddr" name="pkaddr" rows="3" style="min-width: 90%"></textarea>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<div id="driverInfoContent">
+										<div class="form-group">
+											<label class="col-sm-3 control-label">球场简介</label>
+											<div class="col-sm-9">
+												<textarea class="form-control" id="pkdesc" name="area" rows="3" style="min-width: 90%"></textarea>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 b-r">
+								<#ad id="ads" name="球场图片" underline="true" />
+							</div>
+							<div class="col-sm-6" >
+								<label class="col-sm-3 control-label">可用时间</label>
+								<#button btnCss="info" name="增加" icon="fa-plus" clickFun="DictInfoDlg.addItem()"/>
+							</div>
+							<div class="col-sm-12" id="itemsArea" >
+							</div>
+						</div>
+						<div class="row btn-group-m-t">
+							<div class="col-sm-10">
+								<#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ParkInfoDlg.addSubmit()"/>
+								<#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ParkInfoDlg.close()"/>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-
 	</div>
 </div>
-<script src="${ctxPath}/static/modular/system/role/role_info.js"></script>
+</div>
+
+<script type="text/template" id="itemTemplate">
+	<div class="form-group" name="dictItem" id="dictItem">
+		<label class="col-sm-3 control-label"></label>
+		<div class="col-sm-4">
+			<input class="form-control" type="text" name="itemName">
+		</div>
+		<div class="col-sm-4">
+			<#button btnCss="danger" name="删除" id="cancel" icon="fa-remove" clickFun="DictInfoDlg.deleteItem(event)"/>
+		</div>
+	</div>
+</script>
+<script src="${ctxPath}/static/modular/football/park/park_info.js"></script>
 @}

@@ -22,4 +22,11 @@ public interface ParkDao {
      */
     List<Map<String, Object>> selectParks(@Param("condition") String condition);
 
+    /**
+     * 修改球场状态
+     *
+     * @param
+     * @date 2018年10月9日 下午9:42:31
+     */
+    int setStatus(@Param("parkId") Integer parkId, @Param("status") int status);
 }

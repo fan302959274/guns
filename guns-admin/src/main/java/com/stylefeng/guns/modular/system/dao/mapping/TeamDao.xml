@@ -3,15 +3,15 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.TeamDao">
 
     <sql id="Base_Column_List">
-        id, parkName  , provinceId, cityId, areaId, parkDesc, businessTime,createDate,updateDate,creator,updator,isDeleted
+        id, name,level, membernum, winnum, debtnum, drawnum,point,prov,city,area,descteam,ownerid,status,createdate,updatedate,creator,updator
     </sql>
 
-    <select id="selectParks" resultType="map">
+    <select id="selectTeams" resultType="map">
         select
         <include refid="Base_Column_List" />
-        from pk_park
-        <if test="condition != null">
-            where name like CONCAT('%',#{condition},'%')
+        from pk_team
+        <if test="name != null">
+            where name like CONCAT('%',#{name},'%')
         </if>
     </select>
 </mapper>

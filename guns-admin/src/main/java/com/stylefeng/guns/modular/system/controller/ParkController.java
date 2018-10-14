@@ -1,15 +1,29 @@
 package com.stylefeng.guns.modular.system.controller;
 
+import com.stylefeng.guns.common.annotion.BussinessLog;
+import com.stylefeng.guns.common.annotion.Permission;
+import com.stylefeng.guns.common.constant.Const;
+import com.stylefeng.guns.common.constant.dictmap.UserDict;
+import com.stylefeng.guns.common.exception.BizExceptionEnum;
+import com.stylefeng.guns.common.exception.BussinessException;
+import com.stylefeng.guns.common.persistence.dao.PkParkMapper;
+import com.stylefeng.guns.common.persistence.model.PkPark;
 import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.base.tips.Tip;
+import com.stylefeng.guns.core.log.LogObjectHolder;
+import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.modular.system.dao.ParkDao;
 import com.stylefeng.guns.modular.system.warpper.ParkWarpper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -27,9 +41,10 @@ public class ParkController extends BaseController {
     @Resource
     ParkDao parkDao;
 
-
+    @Resource
+    PkParkMapper pkParkMapper;
     /**
-     * 跳转到广告首页
+     * 跳转到球场首页
      */
     @RequestMapping("")
     public String index() {
@@ -37,7 +52,7 @@ public class ParkController extends BaseController {
     }
 
     /**
-     * 跳转到添加广告
+     * 跳转到添加球场
      */
     @RequestMapping("/park_add")
     public String parkAdd() {
@@ -45,15 +60,31 @@ public class ParkController extends BaseController {
     }
 
     /**
-     * 跳转到修改广告
+     * 新增球场
      */
-    @RequestMapping("/banner_update/{bannerId}")
-    public String bannerUpdate(@PathVariable Integer bannerId, Model model) {
-        return PREFIX + "banner_edit.html";
+    @RequestMapping(value = "/add")
+    @ResponseBody
+    public Object add(PkPark park) {
+        this.pkParkMapper.insert(park);
+        return super.SUCCESS_TIP;
     }
 
     /**
-     * 获取广告列表
+     * 跳转到修改球场
+     */
+    @RequestMapping("/park_edit/{parkId}")
+    public String bannerUpdate(@PathVariable Integer parkId, Model model) {
+        if (ToolUtil.isEmpty(parkId)) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        PkPark park = this.pkParkMapper.selectById(parkId);
+        model.addAttribute(park);
+        LogObjectHolder.me().set(park);
+        return PREFIX + "park_edit.html";
+    }
+
+    /**
+     * 获取球场列表
      */
     @RequestMapping(value = "/list")
     @ResponseBody
@@ -63,39 +94,67 @@ public class ParkController extends BaseController {
     }
 
     /**
-     * 新增广告
+     * 删除球场
      */
-    @RequestMapping(value = "/add")
+    @RequestMapping(value = "/remove")
     @ResponseBody
-    public Object add() {
-        return super.SUCCESS_TIP;
-    }
-
-    /**
-     * 删除广告
-     */
-    @RequestMapping(value = "/delete")
-    @ResponseBody
-    public Object delete() {
+    public Object delete(@RequestParam Long parkId) {
+        this.pkParkMapper.deleteById(parkId);
         return SUCCESS_TIP;
     }
 
 
     /**
-     * 修改广告
+     * 修改球场
      */
-    @RequestMapping(value = "/update")
+    @RequestMapping(value = "/edit")
     @ResponseBody
-    public Object update() {
-        return super.SUCCESS_TIP;
+    public Object update(@Valid PkPark park, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        this.pkParkMapper.updateById(park);
+        return SUCCESS_TIP;
+
     }
 
     /**
-     * 广告详情
+     * 球场详情
      */
     @RequestMapping(value = "/detail")
     @ResponseBody
     public Object detail() {
         return null;
+    }
+
+
+    /**
+     * 禁用球场
+     */
+    @RequestMapping("/freeze")
+    @BussinessLog(value = "禁用球场", key = "parkId", dict = UserDict.class)
+    @Permission(Const.ADMIN_NAME)
+    @ResponseBody
+    public Tip freeze(@RequestParam Integer parkId) {
+        if (ToolUtil.isEmpty(parkId)) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        this.parkDao.setStatus(parkId,1 );
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 解除冻结用户
+     */
+    @RequestMapping("/unfreeze")
+    @BussinessLog(value = "解除禁用球场", key = "parkId", dict = UserDict.class)
+    @Permission(Const.ADMIN_NAME)
+    @ResponseBody
+    public Tip unfreeze(@RequestParam Integer parkId) {
+        if (ToolUtil.isEmpty(parkId)) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        this.parkDao.setStatus(parkId, 0);
+        return SUCCESS_TIP;
     }
 }

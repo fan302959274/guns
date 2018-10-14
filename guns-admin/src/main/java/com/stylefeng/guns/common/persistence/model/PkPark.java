@@ -30,7 +30,7 @@ public class PkPark extends Model<PkPark> {
     /**
      * 球场名称
      */
-	private String name;
+	private String pkname;
     /**
      * 球场省份
      */
@@ -46,7 +46,13 @@ public class PkPark extends Model<PkPark> {
     /**
      * 球场简介
      */
-	private String desc;
+	private String pkdesc;
+	/**
+	 * 球场具体地址
+	 */
+	private String pkaddr;
+
+
     /**
      * 球场可用时间
      */
@@ -81,13 +87,7 @@ public class PkPark extends Model<PkPark> {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getProv() {
 		return prov;
@@ -113,13 +113,7 @@ public class PkPark extends Model<PkPark> {
 		this.area = area;
 	}
 
-	public String getDesc() {
-		return desc;
-	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
 
 	public String getBusinesstime() {
 		return businesstime;
@@ -174,21 +168,46 @@ public class PkPark extends Model<PkPark> {
 		return this.id;
 	}
 
+	public String getPkname() {
+		return pkname;
+	}
+
+	public void setPkname(String pkname) {
+		this.pkname = pkname;
+	}
+
+	public String getPkdesc() {
+		return pkdesc;
+	}
+
+	public void setPkdesc(String pkdesc) {
+		this.pkdesc = pkdesc;
+	}
+
+	public String getPkaddr() {
+		return pkaddr;
+	}
+
+	public void setPkaddr(String pkaddr) {
+		this.pkaddr = pkaddr;
+	}
+
 	@Override
 	public String toString() {
 		return "PkPark{" +
-			"id=" + id +
-			", name=" + name +
-			", prov=" + prov +
-			", city=" + city +
-			", area=" + area +
-			", desc=" + desc +
-			", businesstime=" + businesstime +
-			", createdate=" + createdate +
-			", updatedate=" + updatedate +
-			", creator=" + creator +
-			", updator=" + updator +
-			", isdeleted=" + isdeleted +
-			"}";
+				"id=" + id +
+				", pkname='" + pkname + '\'' +
+				", prov='" + prov + '\'' +
+				", city='" + city + '\'' +
+				", area='" + area + '\'' +
+				", pkdesc='" + pkdesc + '\'' +
+				", pkaddr='" + pkaddr + '\'' +
+				", businesstime='" + businesstime + '\'' +
+				", createdate=" + createdate +
+				", updatedate=" + updatedate +
+				", creator='" + creator + '\'' +
+				", updator='" + updator + '\'' +
+				", isdeleted='" + isdeleted + '\'' +
+				'}';
 	}
 }

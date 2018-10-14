@@ -15,11 +15,11 @@ import java.util.Map;
 public interface TeamDao {
 
     /**
-     * 根据条件查询广告列表
+     * 根据条件查询球队列表
      *
      * @return
-     * @date 2017年2月12日 下午9:14:34
+     * @date 2018年10月12日 下午11:14:34
      */
-    List<Map<String, Object>> selectParks(@Param("condition") String condition);
+    List<Map<String, Object>> selectTeams(@Param("name") String name);
 
 }

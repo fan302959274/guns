@@ -1,0 +1,24 @@
+@layout("/common/_container.html"){
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				<div class="row row-lg">
+					<div class="col-sm-12">
+						<div class="hidden-xs" id="roleTableToolbar" role="group">
+							@if(shiro.hasPermission("/role/add")){
+							<#button name="审核通过" icon="fa-plus" clickFun="Role.openAddRole()" />
+							@}
+							@if(shiro.hasPermission("/role/edit")){
+							<#button name="驳回" icon="fa-edit" clickFun="Role.openChangeRole()" space="true"/>
+							@}
+						</div>
+						<#table id="teamTable"  />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/football/team/team.js"></script>
+@}

@@ -3,15 +3,28 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.ParkDao">
 
     <sql id="Base_Column_List">
-        id, parkName  , provinceId, cityId, areaId, parkDesc, businessTime,createDate,updateDate,creator,updator,isDeleted
+        id, pkname  , prov, city, area, pkdesc, pkaddr,businesstime,createdate,updatedate,creator,updator,isDeleted
     </sql>
 
     <select id="selectParks" resultType="map">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List" />,
+        (
+        CASE
+        WHEN (status = 0 OR status IS NULL) THEN
+        '正常使用'
+        ELSE
+        '禁用'
+        END
+        ) "status"
         from pk_park
         <if test="condition != null">
             where name like CONCAT('%',#{condition},'%')
         </if>
     </select>
+
+    <update id="setStatus">
+        update pk_park set status = #{status} where id =
+        #{parkId}
+    </update>
 </mapper>

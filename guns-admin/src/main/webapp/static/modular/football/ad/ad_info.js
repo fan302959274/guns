@@ -132,6 +132,4 @@ $(function() {
     // 初始化头像上传
     var avatarUp = new $WebUploadAd("ads");
     avatarUp.init();
-
-
 });
