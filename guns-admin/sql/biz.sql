@@ -114,50 +114,27 @@ CREATE TABLE `pk_member` (
 -- 3、球队表
 DROP TABLE IF EXISTS `pk_team`;
 CREATE TABLE `pk_team` (
-  `id`               BIGINT(20) NOT NULL AUTO_INCREMENT
-  COMMENT '主键',
-  `name`        VARCHAR(50)         DEFAULT NULL
-  COMMENT '球队名称',
-  `level`       VARCHAR(20)         DEFAULT NULL
-  COMMENT '球队级别',
-  `membernum`  INTEGER             DEFAULT NULL
-  COMMENT '球员数量',
-  `winnum`     INTEGER             DEFAULT NULL
-  COMMENT '球队胜利场数',
-  `debtnum`    INTEGER             DEFAULT NULL
-  COMMENT '球队失败场数',
-  `drawnum`    INTEGER             DEFAULT NULL
-  COMMENT '球队平局场数',
-  `point`       INTEGER             DEFAULT NULL
-  COMMENT '球队积分',
-  `prov`    VARCHAR(20)         DEFAULT NULL
-  COMMENT '球队省份',
-  `city`        VARCHAR(20)         DEFAULT NULL
-  COMMENT '球队市',
-  `area`        VARCHAR(20)         DEFAULT NULL
-  COMMENT '球队区',
-  `desc` VARCHAR(256)        DEFAULT NULL
-  COMMENT '球队描述',
-  `ownerid`    BIGINT(20) NOT NULL
-  COMMENT '所属人',
-  `status`      VARCHAR(10)         DEFAULT '0'
-  COMMENT '球队状态:0:禁用1:启用',
-  `createdate`      TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
-  COMMENT '创建时间',
-  `updatedate`      TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-  COMMENT '更新时间',
-  `creator`          VARCHAR(100)        DEFAULT NULL
-  COMMENT '创建人',
-  `updator`          VARCHAR(100)        DEFAULT NULL
-  COMMENT '更新人',
-  `isdeleted`       VARCHAR(2)          DEFAULT '0'
-  COMMENT '是否删除',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(50) DEFAULT NULL COMMENT '球队名称',
+  `level` varchar(20) DEFAULT NULL COMMENT '球队级别',
+  `membernum` int(11) DEFAULT NULL COMMENT '球员数量',
+  `winnum` int(11) DEFAULT NULL COMMENT '球队胜利场数',
+  `debtnum` int(11) DEFAULT NULL COMMENT '球队失败场数',
+  `drawnum` int(11) DEFAULT NULL COMMENT '球队平局场数',
+  `point` int(11) DEFAULT NULL COMMENT '球队积分',
+  `prov` varchar(20) DEFAULT NULL COMMENT '球队省份',
+  `city` varchar(20) DEFAULT NULL COMMENT '球队市',
+  `area` varchar(20) DEFAULT NULL COMMENT '球队区',
+  `descteam` varchar(256) DEFAULT NULL COMMENT '球队描述',
+  `ownerid` bigint(20) NOT NULL COMMENT '所属人',
+  `status` varchar(10) DEFAULT '0' COMMENT '球队状态:0:禁用1:启用',
+  `createdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updatedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `creator` varchar(100) DEFAULT NULL COMMENT '创建人',
+  `updator` varchar(100) DEFAULT NULL COMMENT '更新人',
+  `isdeleted` varchar(2) DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`)
-)
-  ENGINE = INNODB
-  AUTO_INCREMENT = 15
-  DEFAULT CHARSET = utf8
-  COMMENT = '球队表';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='球队表';
 
 -- 4、球队队员表
 DROP TABLE IF EXISTS `pk_team_member`;
@@ -229,37 +206,28 @@ CREATE TABLE `pk_match` (
 
 -- 6、球场表
 DROP TABLE IF EXISTS `pk_park`;
-CREATE TABLE `pk_park` (
-  `id`                 BIGINT(20) NOT NULL AUTO_INCREMENT
-  COMMENT '主键',
-  `name`          VARCHAR(50)         DEFAULT NULL
-  COMMENT '球场名称',
-  `prov`      VARCHAR(20)         DEFAULT NULL
-  COMMENT '球场省份',
-  `city`          VARCHAR(20)         DEFAULT NULL
-  COMMENT '球场市',
-  `area`          VARCHAR(20)         DEFAULT NULL
-  COMMENT '球场区',
-  `desc`          VARCHAR(200)        DEFAULT NULL
-  COMMENT '球场简介',
-  `businesstime` VARCHAR(200)        DEFAULT NULL
-  COMMENT '球场可用时间',
-  `createdate`        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
-  COMMENT '创建时间',
-  `updatedate`        TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-  COMMENT '更新时间',
-  `creator`            VARCHAR(100)        DEFAULT NULL
-  COMMENT '创建人',
-  `updator`            VARCHAR(100)        DEFAULT NULL
-  COMMENT '更新人',
-  `isdeleted`         VARCHAR(2)          DEFAULT '0'
-  COMMENT '是否删除',
+CREATE TABLE `pk_team` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(50) DEFAULT NULL COMMENT '球队名称',
+  `level` varchar(20) DEFAULT NULL COMMENT '球队级别',
+  `membernum` int(11) DEFAULT NULL COMMENT '球员数量',
+  `winnum` int(11) DEFAULT NULL COMMENT '球队胜利场数',
+  `debtnum` int(11) DEFAULT NULL COMMENT '球队失败场数',
+  `drawnum` int(11) DEFAULT NULL COMMENT '球队平局场数',
+  `point` int(11) DEFAULT NULL COMMENT '球队积分',
+  `prov` varchar(20) DEFAULT NULL COMMENT '球队省份',
+  `city` varchar(20) DEFAULT NULL COMMENT '球队市',
+  `area` varchar(20) DEFAULT NULL COMMENT '球队区',
+  `descteam` varchar(256) DEFAULT NULL COMMENT '球队描述',
+  `ownerid` bigint(20) NOT NULL COMMENT '所属人',
+  `status` varchar(10) DEFAULT '0' COMMENT '球队状态:0:禁用1:启用',
+  `createdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updatedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `creator` varchar(100) DEFAULT NULL COMMENT '创建人',
+  `updator` varchar(100) DEFAULT NULL COMMENT '更新人',
+  `isdeleted` varchar(2) DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`)
-)
-  ENGINE = INNODB
-  AUTO_INCREMENT = 15
-  DEFAULT CHARSET = utf8
-  COMMENT = '球场表';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='球队表';
 
 -- 7、附件表
 DROP TABLE IF EXISTS `pk_attachment`;
@@ -296,3 +264,51 @@ CREATE TABLE `pk_attachment` (
   AUTO_INCREMENT = 15
   DEFAULT CHARSET = utf8
   COMMENT = '队员附件表';
+
+
+
+CREATE TABLE `provinces` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `provinceid` int(11) NOT NULL,
+   `province` varchar(100) NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM AUTO_INCREMENT=392 DEFAULT CHARSET=utf8
+
+CREATE TABLE `cities` (
+   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+   `cityid` char(6) NOT NULL COMMENT '城市编码',
+   `city` varchar(40) NOT NULL COMMENT '城市名称',
+   `provinceid` char(6) NOT NULL COMMENT '所属省份编码',
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=346 DEFAULT CHARSET=utf8 COMMENT='城市信息表'
+
+-- 7、区域表
+DROP TABLE IF EXISTS `areas`;
+CREATE TABLE `areas`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `areaid` char(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '区县编码',
+  `area` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '区县名称',
+  `cityid` char(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '所属城市编码',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3145 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '区县信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of areas
+-- ----------------------------
+INSERT INTO `areas` VALUES (802, '320101', '市辖区', '320100');
+INSERT INTO `areas` VALUES (803, '320102', '玄武区', '320100');
+INSERT INTO `areas` VALUES (804, '320103', '白下区', '320100');
+INSERT INTO `areas` VALUES (805, '320104', '秦淮区', '320100');
+INSERT INTO `areas` VALUES (806, '320105', '建邺区', '320100');
+INSERT INTO `areas` VALUES (807, '320106', '鼓楼区', '320100');
+INSERT INTO `areas` VALUES (808, '320107', '下关区', '320100');
+INSERT INTO `areas` VALUES (809, '320111', '浦口区', '320100');
+INSERT INTO `areas` VALUES (810, '320113', '栖霞区', '320100');
+INSERT INTO `areas` VALUES (811, '320114', '雨花台区', '320100');
+INSERT INTO `areas` VALUES (812, '320115', '江宁区', '320100');
+INSERT INTO `areas` VALUES (813, '320116', '六合区', '320100');
+INSERT INTO `areas` VALUES (814, '320124', '溧水县', '320100');
+INSERT INTO `areas` VALUES (815, '320125', '高淳县', '320100');
+
+SET FOREIGN_KEY_CHECKS = 1;
+
