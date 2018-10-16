@@ -155,6 +155,11 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>1.5.3.RELEASE</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
