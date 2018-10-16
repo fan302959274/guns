@@ -1,10 +1,10 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
+import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.modular.football.transfer.PkMemberDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +32,7 @@ public class MemberController {
     @ApiOperation(value = "注册队员", notes = "返回码:200成功;")
     @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
     public ResponseEntity register(@RequestBody PkMemberDto pkMemberDto) {
-        System.out.println(pkMemberDto.getAccount());
-        return new ResponseEntity(pkMemberDto,HttpStatus.OK);
+        return ResponseEntity.ok(new CommonResp<PkMemberDto>(pkMemberDto));
     }
 
     /**
@@ -46,8 +45,7 @@ public class MemberController {
     @ApiOperation(value = "查询队员", notes = "返回码:200成功;")
     @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
     public ResponseEntity search(@RequestBody PkMemberDto pkMemberDto) {
-        ResponseEntity responseEntity = new ResponseEntity(pkMemberDto, HttpStatus.OK);
-        return responseEntity;
+        return ResponseEntity.ok(new CommonResp<PkMemberDto>(pkMemberDto));
     }
 
 }

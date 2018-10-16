@@ -1,6 +1,9 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.stylefeng.guns.rest.common.util.response.CommonResp;
+import com.stylefeng.guns.rest.common.util.response.ResponseCode;
+import com.stylefeng.guns.rest.modular.football.transfer.PkMemberDto;
 import com.stylefeng.guns.rest.modular.football.transfer.SmsEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -53,9 +56,9 @@ public class SmsController {
             String smsCode = random1 + "" + random2 + "" + random3 + "" + random4;
             redisTemplate.opsForValue().set(mobile + "_registercode", smsCode, 120, TimeUnit.SECONDS);
             //发送第三方 TODO
-            return new ResponseEntity(smsCode, HttpStatus.OK);
+            return ResponseEntity.ok(new CommonResp<String>(smsCode));
         } catch (Exception e) {
-            return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(new CommonResp<String>(null));
         }
 
     }
@@ -76,15 +79,14 @@ public class SmsController {
             Assert.notNull(smsEntity.getSmscode(), "验证码不能为空");
             String smscode = (String) redisTemplate.opsForValue().get(smsEntity.getMobile() + "_registercode");
             if (StringUtils.isBlank(smscode)) {
-                return new ResponseEntity("验证码无效或者已过期", HttpStatus.BAD_REQUEST);
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_INVALID.getCode(),ResponseCode.SMSCODE_INVALID.getMsg()));
             }
             if (!Objects.equals(smscode,smsEntity.getSmscode())){
-                return new ResponseEntity("验证码错误", HttpStatus.BAD_REQUEST);
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_ERROR.getCode(),ResponseCode.SMSCODE_ERROR.getMsg()));
             }
-            return new ResponseEntity("验证成功", HttpStatus.OK);
-
+            return ResponseEntity.ok(new CommonResp<String>("验证成功"));
         } catch (Exception e) {
-            return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(),e.getMessage()));
         }
 
     }
