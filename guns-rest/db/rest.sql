@@ -18,8 +18,8 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
+DROP TABLE IF EXISTS `auth_user`;
+CREATE TABLE `auth_user` (
   `id` bigint(20) NOT NULL,
   `userName` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -28,4 +28,4 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin');
+INSERT INTO `auth_user` VALUES ('1', 'admin');
