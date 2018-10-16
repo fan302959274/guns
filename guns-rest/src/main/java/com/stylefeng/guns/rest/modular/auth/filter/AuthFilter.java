@@ -39,7 +39,17 @@ public class AuthFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-        if (request.getServletPath().indexOf("/swagger-ui.html")==-1) {
+
+        //swagger专用
+        if (request.getServletPath().indexOf("/swagger")!=-1) {
+            chain.doFilter(request, response);
+            return;
+        }
+        if (request.getServletPath().indexOf("/v2/api-docs")!=-1) {
+            chain.doFilter(request, response);
+            return;
+        }
+        if (request.getServletPath().indexOf("/webjars")!=-1) {
             chain.doFilter(request, response);
             return;
         }
@@ -67,4 +77,8 @@ public class AuthFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
+//
+//    public static void main(String[] args) {
+//    	System.out.println("/swagger-ui.html1232".indexOf("/swagger-ui.html")!=-1);
+//    }
 }
