@@ -4,13 +4,13 @@
         <div class="form-horizontal" id="adInfoForm">
 
             <input type="hidden" id="id" value="${ad.id}">
-            <input type="hidden" id="type" value="${ad.type}">
+
             <div class="row">
                 <div class="col-sm-12 b-r">
 
-                    <#input id="mainhead" name="广告标题" underline="true" value="${ad.mainhead}"/>
+                    <#input id="mainhead" name="球队名称" underline="true" value="${ad.mainhead}"/>
 
-                    <#input id="subhead" name="广告副标题" underline="true" value="${ad.subhead}"/>
+                    <#input id="subhead" name="级别" underline="true" value="${ad.subhead}"/>
 
                     <#input id="starttime" name="出生日期" underline="true" type="date"
                             value="${ad.starttime}"
@@ -20,11 +20,9 @@
                             value="${ad.endtime}"
                             clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
 
-
                     <#input id="url" name="广告链接" underline="true" value="${ad.url}"/>
 
-                    <#adview id="ads" name="图片上传" underline="true" adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
-
+                    <#adview id="ads" name="球队log" underline="true" adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
                 </div>
 
             </div>

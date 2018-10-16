@@ -1,5 +1,7 @@
 package com.stylefeng.guns.modular.system.controller;
 
+import com.stylefeng.guns.common.constant.factory.ConstantFactory;
+import com.stylefeng.guns.common.persistence.dao.PkTeamMapper;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.modular.system.dao.TeamDao;
 import com.stylefeng.guns.modular.system.warpper.TeamWarpper;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -26,7 +29,8 @@ public class TeamController extends BaseController {
     private String PREFIX = "/football/team/";
     @Resource
     TeamDao teamDao;
-
+    @Resource
+    PkTeamMapper pkTeamMapper;
     /**
      * 跳转到球队管理首页
      */
@@ -34,8 +38,9 @@ public class TeamController extends BaseController {
     public String index() {
         return PREFIX + "team.html";
     }
-    @RequestMapping("teamMember")
-    public String teamMember() {
+    @RequestMapping("teamMember/{teamId}")
+    public String teamMember(Model model,Long teamId) {
+        model.addAttribute("teamId",teamId);
         return PREFIX + "team_member.html";
     }
 
@@ -49,6 +54,12 @@ public class TeamController extends BaseController {
         return super.warpObject(new TeamWarpper(banners));
     }
 
+    @RequestMapping(value = "/memberList")
+    @ResponseBody
+    public Object memberList(Long teamId) {
+        List<Map<String, Object>> banners = this.teamDao.selectTeamsMembers(teamId);
+        return super.warpObject(new TeamWarpper(banners));
+    }
     /**
      * 跳转到修改球队
      */
@@ -61,12 +72,12 @@ public class TeamController extends BaseController {
     /**
      * 删除球队
      */
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/remove")
     @ResponseBody
-    public Object delete() {
+    public Object delete(@RequestParam Long teamId) {
+        this.pkTeamMapper.deleteById(teamId);
         return SUCCESS_TIP;
     }
-
     /**
      * 修改球队
      */

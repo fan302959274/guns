@@ -1,13 +1,12 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -71,7 +70,7 @@ public class PkAd extends Model<PkAd> {
      * 是否删除
      */
 	private String isdeleted;
-
+    private String type;
 
 	public Long getId() {
 		return id;
@@ -111,6 +110,14 @@ public class PkAd extends Model<PkAd> {
 
 	public void setEndtime(Date endtime) {
 		this.endtime = endtime;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getUrl() {

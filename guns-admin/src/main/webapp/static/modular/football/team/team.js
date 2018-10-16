@@ -36,7 +36,7 @@ Team.check = function () {
         Feng.info("请先选中表格中的某一记录！");
         return false;
     } else {
-        Role.seItem = selected[0];
+        Team.seItem = selected[0];
         return true;
     }
 };
@@ -52,13 +52,34 @@ $(function () {
  * 点击查看球员信息
  */
 Team.teamMember = function () {
-    var index = layer.open({
-        type: 2,
-        title: '添加球场',
-        area: ['900px', '650px'], //宽高
-        fix: false, //不固定
-        maxmin: true,
-        content: Feng.ctxPath + '/team/teamMember'
-    });
-    this.layerIndex = index;
+    if (this.check()) {
+        var index = layer.open({
+            type: 2,
+            title: '添加球场',
+            area: ['900px', '650px'], //宽高
+            fix: false, //不固定
+            maxmin: true,
+            content: Feng.ctxPath + '/team/teamMember/' + this.seItem.id
+        });
+        this.layerIndex = index;
+    }
+};
+
+/**
+ * 删除球队
+ */
+Team.delTeam = function () {
+    if (this.check()) {
+        var operation = function(){
+            var ajax = new $ax(Feng.ctxPath + "/team/remove", function () {
+                Feng.success("删除成功!");
+                Team.table.refresh();
+            }, function (data) {
+                Feng.error("删除失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("parkId", Team.seItem.id);
+            ajax.start();
+        };
+        Feng.confirm("是否删除球场 " + Team.seItem.pkname + "?",operation);
+    }
 };

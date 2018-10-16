@@ -1,9 +1,6 @@
 package com.stylefeng.guns.modular.system.transfer;
 
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -36,12 +33,12 @@ public class PkAdDto extends Model<PkAdDto> {
     /**
      * 开始时间
      */
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date starttime;
     /**
      * 结束时间
      */
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date endtime;
     /**
      * 广告链接
@@ -71,7 +68,18 @@ public class PkAdDto extends Model<PkAdDto> {
      * 是否删除
      */
 	private String isdeleted;
+	/**
+	 * 广告类型
+	 */
+	private String type;
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public Long getId() {
 		return id;

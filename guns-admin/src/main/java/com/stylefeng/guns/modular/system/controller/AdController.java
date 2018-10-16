@@ -14,10 +14,11 @@ import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.support.BeanKit;
 import com.stylefeng.guns.core.util.ToolUtil;
+import com.stylefeng.guns.modular.system.dao.AdDao;
 import com.stylefeng.guns.modular.system.transfer.PkAdDto;
+import com.stylefeng.guns.modular.system.warpper.AdWarpper;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
@@ -44,10 +44,12 @@ import java.util.Map;
 public class AdController extends BaseController {
 
     private String PREFIX = "/football/ad/";
-
+    @Resource
+    AdDao adDao;
 
     @Resource
     PkAdMapper pkAdMapper;
+
     @Resource
     PkAttachmentMapper pkAttachmentMapper;
 
@@ -56,7 +58,8 @@ public class AdController extends BaseController {
      * 跳转到广告管理首页
      */
     @RequestMapping("")
-    public String index() {
+    public String index(String type,Model model) {
+        model.addAttribute("type",type);
         return PREFIX + "ad.html";
     }
 
@@ -64,7 +67,8 @@ public class AdController extends BaseController {
      * 跳转到添加广告
      */
     @RequestMapping("/ad_add")
-    public String adAdd() {
+    public String adAdd(String type,Model model) {
+        model.addAttribute("type",type);
         return PREFIX + "ad_add.html";
     }
 
@@ -165,14 +169,9 @@ public class AdController extends BaseController {
     @RequestMapping(value = "/list")
     @Permission
     @ResponseBody
-    public Object list(@RequestParam(required = false) String adMainHead, Integer page, Integer pageSize) {
-        RowBounds rowBounds = new RowBounds();
-        Wrapper<PkAd> wrapper = new EntityWrapper<>();
-        if (StringUtils.isNoneBlank(adMainHead)) {
-            wrapper = wrapper.like("mainhead", adMainHead);
-        }
-        List<PkAd> list = this.pkAdMapper.selectPage(rowBounds, wrapper);
-        return list;
+    public Object list(@RequestParam(required = false) String adMainHead,String type) {
+        List<Map<String, Object>> ads = this.adDao.selectAds(type,adMainHead);
+        return super.warpObject(new AdWarpper(ads));
     }
 
     /**

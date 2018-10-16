@@ -23,7 +23,7 @@ Member.initColumn = function () {
  * 检查是否选中
  */
 Member.check = function () {
-    var selected = $('#' + this.id).bootstrapTreeTable('getSelections');
+    var selected = $('#' + this.id).bootstrapTable('getSelections');
     if (selected.length == 0) {
         Feng.info("请先选中表格中的某一记录！");
         return false;
@@ -115,12 +115,8 @@ Member.search = function () {
 
 $(function () {
     var defaultColunms = Member.initColumn();
-    var table = new BSTreeTable(Member.id, "/member/list", defaultColunms);
-    table.setExpandColumn(2);
-    table.setIdField("id");
-    table.setCodeField("id");
-    table.setParentCodeField("pid");
-    table.setExpandAll(true);
+    var table = new BSTable(Member.id, "/member/list", defaultColunms);
+    table.setPaginationType("client");
     table.init();
     Member.table = table;
 });

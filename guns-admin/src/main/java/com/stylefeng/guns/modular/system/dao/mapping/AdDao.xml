@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.AdDao">
+
+    <sql id="Base_Column_List">
+        id, mainhead,subhead, starttime, endtime, url, createdate,updatedate,creator,creator,isdeleted,type
+    </sql>
+
+    <select id="selectAds" resultType="map">
+        select
+        <include refid="Base_Column_List" />,
+        (
+        CASE
+        WHEN now()>endtime THEN
+        '已下线'
+        WHEN starttime>now() THEN
+        '预上线'
+        WHEN (now()>starttime AND endtime>=now())THEN
+        '上线中'
+        ELSE
+        '未知'
+        END
+        ) "status"
+        from pk_ad
+        where 1=1
+        <if test="adMainHead != null">
+           AND mainhead like CONCAT('%',#{adMainHead},'%')
+        </if>
+        <if test="type != null">
+            AND type=${type}
+        </if>
+
+
+    </select>
+
+    <select id="selectTeamsMembers" resultType="map">
+        select
+        a.id as  id ,b.name as name,b.position as position,
+        (
+        CASE
+        WHEN b.type = 1  THEN
+        '队长'
+        ELSE
+        '队员'
+        END
+        ) "status"
+        from pk_team_member a
+        INNER  JOIN   pk_member  b ON  b.id=a.memberid
+        <if test="teamId != null">
+            where a.teamid =${teamId}
+        </if>
+    </select>
+
+
+</mapper>

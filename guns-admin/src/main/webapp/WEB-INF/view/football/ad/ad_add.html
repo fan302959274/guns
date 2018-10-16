@@ -3,21 +3,22 @@
     <div class="ibox-content">
         <div class="form-horizontal" id="adInfoForm">
 
-            <input type="hidden" id="id" value="">
+            <input type="hidden" id="type" value="${type}">
 
             <div class="row">
                 <div class="col-sm-12 b-r">
+
                     <#input id="mainhead" name="广告标题" underline="true"/>
 
                     <#input id="subhead" name="广告副标题" underline="true"/>
 
                     <#input id="url" name="广告链接" underline="true"/>
 
-                    <#input id="starttime" name="开始时间" underline="true" type="date"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+                    <#input id="starttime" name="开始时间" underline="true" placeholder="yyyy-MM-dd HH:mm:ss" type="datetime"
+                            clickFun="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
 
-                    <#input id="endtime" name="结束时间" underline="true" type="date"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+                    <#input id="endtime" name="结束时间" underline="true" type="datetime" placeholder="yyyy-MM-dd HH:mm:ss"
+                            clickFun="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
 
                     <#ad id="ads" name="图片上传" underline="true" />
 

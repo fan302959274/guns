@@ -5,6 +5,7 @@
 			<div class="ibox-content">
 				<div class="row row-lg">
 					<div class="col-sm-12">
+						<input type="hidden" id="teamId" value="${teamId}">
 						<div class="hidden-xs" id="roleTableToolbar" role="group">
 							@if(shiro.hasPermission("/role/add")){
 							<#button name="审核通过" icon="fa-plus" clickFun="Role.openAddRole()" />
@@ -13,12 +14,12 @@
 							<#button name="驳回" icon="fa-edit" clickFun="Role.openChangeRole()" space="true"/>
 							@}
 						</div>
-						<#table id="teamTable"  />
+						<#table id="teamMemberTable"  />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<script src="${ctxPath}/static/modular/football/team/team.js"></script>
+<script src="${ctxPath}/static/modular/football/team/teamMember.js"></script>
 @}

@@ -14,4 +14,24 @@
             where name like CONCAT('%',#{name},'%')
         </if>
     </select>
+
+    <select id="selectTeamsMembers" resultType="map">
+        select
+        a.id as  id ,b.name as name,b.position as position,
+        (
+        CASE
+        WHEN b.type = 1  THEN
+        '队长'
+        ELSE
+        '队员'
+        END
+        ) "status"
+        from pk_team_member a
+        INNER  JOIN   pk_member  b ON  b.id=a.memberid
+        <if test="teamId != null">
+            where a.teamid =${teamId}
+        </if>
+    </select>
+
+
 </mapper>

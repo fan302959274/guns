@@ -29,6 +29,9 @@
                @if(isNotEmpty(style)){
                     style="${style}"
                @}
+               @if(isNotEmpty(placeholder)){
+               placeholder="${placeholder}"
+               @}
                @if(isNotEmpty(disabled)){
                     disabled="${disabled}"
                @}

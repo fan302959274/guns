@@ -21,5 +21,12 @@ public interface TeamDao {
      * @date 2018年10月12日 下午11:14:34
      */
     List<Map<String, Object>> selectTeams(@Param("name") String name);
+    /**
+     * 根据条件查询球队队员列表
+     *
+     * @return
+     * @date 2018年10月12日 下午11:14:34
+     */
+    List<Map<String, Object>> selectTeamsMembers(@Param("teamId") Long teamId);
 
 }

@@ -60,7 +60,7 @@ AdInfoDlg.close = function() {
  * 收集数据
  */
 AdInfoDlg.collectData = function() {
-    this.set('id').set('mainhead').set('subhead').set('starttime').set('endtime').set('url').set('status').set('ads');
+    this.set('id').set('mainhead').set('subhead').set('starttime').set('endtime').set('url').set('status').set('ads').set('type');
 }
 
 /**

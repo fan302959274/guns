@@ -183,6 +183,7 @@ MgrUser.resetSearch = function () {
 MgrUser.search = function () {
     var queryData = {};
 
+
     queryData['deptid'] = MgrUser.deptid;
     queryData['name'] = $("#name").val();
     queryData['beginTime'] = $("#beginTime").val();

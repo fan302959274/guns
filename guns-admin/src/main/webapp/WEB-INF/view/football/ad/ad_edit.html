@@ -12,14 +12,13 @@
 
                     <#input id="subhead" name="广告副标题" underline="true" value="${ad.subhead}"/>
 
-                    <#input id="starttime" name="出生日期" underline="true" type="date"
+                    <#input id="starttime" name="开始时间" underline="true" type="datetime"
                             value="${ad.starttime}"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+                            clickFun="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
 
-                    <#input id="endtime" name="出生日期" underline="true" type="date"
+                    <#input id="endtime" name="结束时间" underline="true" type="datetime"
                             value="${ad.endtime}"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
-
+                            clickFun="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
 
                     <#input id="url" name="广告链接" underline="true" value="${ad.url}"/>
 
