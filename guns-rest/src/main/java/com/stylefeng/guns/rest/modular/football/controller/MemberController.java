@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/member")
-@Api(value = "SayController|一个用来测试swagger注解的控制器")
+@Api(value = "MemberController|一个用来测试swagger注解的控制器")
 public class MemberController {
 
     /**
