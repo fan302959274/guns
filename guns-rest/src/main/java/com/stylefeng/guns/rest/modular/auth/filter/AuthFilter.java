@@ -39,6 +39,10 @@ public class AuthFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
+        if (request.getServletPath().indexOf("/swagger-ui.html")==-1) {
+            chain.doFilter(request, response);
+            return;
+        }
         final String requestHeader = request.getHeader(jwtProperties.getHeader());
         String authToken = null;
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
