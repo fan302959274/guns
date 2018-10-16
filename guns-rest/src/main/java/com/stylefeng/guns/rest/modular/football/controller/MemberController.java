@@ -29,7 +29,7 @@ public class MemberController {
      * @return
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ApiOperation(value = "注册队员", notes = "返回码:200成功;")
+    @ApiOperation(value = "注册队员", notes = "返回码:20000成功;")
     @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
     public ResponseEntity register(@RequestBody PkMemberDto pkMemberDto) {
         return ResponseEntity.ok(new CommonResp<PkMemberDto>(pkMemberDto));
@@ -42,7 +42,7 @@ public class MemberController {
      * @return
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    @ApiOperation(value = "查询队员", notes = "返回码:200成功;")
+    @ApiOperation(value = "查询队员", notes = "返回码:20000成功;")
     @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
     public ResponseEntity search(@RequestBody PkMemberDto pkMemberDto) {
         return ResponseEntity.ok(new CommonResp<PkMemberDto>(pkMemberDto));

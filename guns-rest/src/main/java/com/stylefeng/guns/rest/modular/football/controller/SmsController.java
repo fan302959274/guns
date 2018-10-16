@@ -44,7 +44,7 @@ public class SmsController {
      * @return
      */
     @RequestMapping(value = "/send", method = RequestMethod.POST)
-    @ApiOperation(value = "发送短信验证码", notes = "返回码:200成功;")
+    @ApiOperation(value = "发送短信验证码", notes = "返回码:20000成功;")
     @ApiImplicitParam(paramType = "query", name = "mobile", value = "手机号", required = true, dataType = "String")
     public ResponseEntity register(@RequestParam String mobile) {
         log.info("请求的手机号为:{}", mobile);
@@ -70,7 +70,7 @@ public class SmsController {
      * @return
      */
     @RequestMapping(value = "/valid", method = RequestMethod.POST)
-    @ApiOperation(value = "验证短信验证码", notes = "返回码:200成功;")
+    @ApiOperation(value = "验证短信验证码", notes = "返回码:20000成功;")
     @ApiImplicitParam(paramType = "body", name = "smsEntity", value = "请求实体", required = true, dataType = "SmsEntity")
     public ResponseEntity valid(@RequestBody SmsEntity smsEntity) {
         log.info("验证码验证请求参数为:{}", JSONObject.toJSONString(smsEntity));
