@@ -105,7 +105,7 @@ public class MemberController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ApiOperation(value = "查询队员", notes = "返回码:20000成功;")
-    @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
+    @ApiImplicitParam(paramType = "query", name = "mobile", value = "队员实体", required = true, dataType = "String")
     public ResponseEntity search(@RequestParam String mobile) {
         log.info("查询队员请求参数{}", JSONObject.toJSONString(mobile));
         try {
