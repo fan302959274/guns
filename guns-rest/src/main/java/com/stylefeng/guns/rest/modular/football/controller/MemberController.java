@@ -58,12 +58,13 @@ public class MemberController {
         try {
             Assert.notNull(pkMemberDto.getMobile(), "手机号不能为空");
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
-            wrapper = wrapper.eq("mobile", pkMemberDto.getMobile());
+            wrapper = wrapper.eq("account", pkMemberDto.getMobile());
             Integer count = pkMemberMapper.selectCount(wrapper);
             if (count>0) {
                 return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "手机号已注册过"));
             }
             PkMember pkMember = new PkMember();
+            pkMember.setAccount(pkMemberDto.getMobile());//以手机号作为account
             pkMember.setName(pkMemberDto.getName());
             pkMember.setMobile(pkMemberDto.getMobile());
             pkMember.setType("1");//普通队员

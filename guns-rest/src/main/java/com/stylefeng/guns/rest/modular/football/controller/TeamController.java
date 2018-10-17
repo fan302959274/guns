@@ -99,5 +99,43 @@ public class TeamController {
 
     }
 
+    /**
+     * 球队详情
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.POST)
+    @ApiOperation(value = "球队详情", notes = "返回码:20000成功;")
+    @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "String")
+    public ResponseEntity detail(@PathVariable String id) {
+        log.info("球队详情参数为:{}", id);
+        try {
+            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeamMapper.selectById(id)));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+//    /**
+//     * 加入球队
+//     *
+//     * @param id
+//     * @return
+//     */
+//    @RequestMapping(value = "/join", method = RequestMethod.POST)
+//    @ApiOperation(value = "加入球队", notes = "返回码:20000成功;")
+//    @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "String")
+//    public ResponseEntity join(@RequestParam String id) {
+//        log.info("球队详情参数为:{}", id);
+//        try {
+//            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeamMapper.selectById(id)));
+//        } catch (Exception e) {
+//            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+//        }
+//
+//    }
+
 
 }

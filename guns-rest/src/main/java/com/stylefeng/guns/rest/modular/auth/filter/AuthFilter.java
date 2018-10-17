@@ -77,8 +77,5 @@ public class AuthFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-//
-//    public static void main(String[] args) {
-//    	System.out.println("/swagger-ui.html1232".indexOf("/swagger-ui.html")!=-1);
-//    }
+
 }
