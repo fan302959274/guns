@@ -20,9 +20,16 @@ public enum BizExceptionEnum {
     SIGN_ERROR(700, "签名验证失败"),
 
     /**
+     * 文件上传相关
+     */
+    UPLOAD_ERROR(500,"上传图片出错"),
+
+    /**
      * 其他
      */
     AUTH_REQUEST_ERROR(400, "账号密码错误");
+
+
 
     BizExceptionEnum(int code, String message) {
         this.friendlyCode = code;
