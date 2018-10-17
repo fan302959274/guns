@@ -90,9 +90,9 @@ public class MemberController {
                 pkAttachment.setUrl(pkMemberDto.getIdcard());
                 pkAttachmentMapper.insert(pkAttachment);
             }
-            return ResponseEntity.ok(new CommonResp<PkMember>(pkMember));
+            return ResponseEntity.ok(new CommonResp<PkMemberDto>(pkMemberDto));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonResp<PkMemberDto>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

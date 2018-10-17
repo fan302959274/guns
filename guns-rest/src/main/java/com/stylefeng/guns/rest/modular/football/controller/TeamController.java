@@ -3,7 +3,11 @@ package com.stylefeng.guns.rest.modular.football.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
+import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
+import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
+import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.rest.common.persistence.model.PkTeam;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
@@ -12,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +40,8 @@ public class TeamController {
 
     @Autowired
     PkTeamMapper pkTeamMapper;
+    @Autowired
+    PkAttachmentMapper pkAttachmentMapper;
 
     /**
      * 查询球队
@@ -74,9 +81,20 @@ public class TeamController {
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
             pkTeamMapper.insert(pkTeam);
-            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeam));
+            //        保存logo
+            if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
+                pkAttachment.setType(AttachTypeEnum.LOGO.getCode());
+                pkAttachment.setLinkid(pkTeam.getId());
+                pkAttachment.setName(pkTeamDto.getLogo());
+                pkAttachment.setSuffix(pkTeamDto.getLogo().substring(pkTeamDto.getLogo().lastIndexOf(".") + 1));
+                pkAttachment.setUrl(pkTeamDto.getLogo());
+                pkAttachmentMapper.insert(pkAttachment);
+            }
+            return ResponseEntity.ok(new CommonResp<PkTeamDto>(pkTeamDto));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonResp<PkTeamDto>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
