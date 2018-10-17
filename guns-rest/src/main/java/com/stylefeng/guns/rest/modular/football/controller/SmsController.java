@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -58,7 +59,7 @@ public class SmsController {
             //发送第三方 TODO
             return ResponseEntity.ok(new CommonResp<String>(smsCode));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<String>(null));
+            return ResponseEntity.ok(new CommonResp<String>(""));
         }
 
     }

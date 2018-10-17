@@ -6,6 +6,7 @@ package com.stylefeng.guns.rest.common.util.response;/**
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MultiValueMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +23,9 @@ public class CommonResp<T> {
 
     public CommonResp(T body) {
         this.result = body;
+    }
+    public CommonResp(List<T> list) {
+        this.resultList = list;
     }
     public CommonResp(String code,String msg) {
         this.code = code;

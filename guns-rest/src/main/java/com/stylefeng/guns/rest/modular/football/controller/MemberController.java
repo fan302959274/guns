@@ -59,8 +59,8 @@ public class MemberController {
             Assert.notNull(pkMemberDto.getMobile(), "手机号不能为空");
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("mobile", pkMemberDto.getMobile());
-            List<PkMember> list = pkMemberMapper.selectList(wrapper);
-            if (CollectionUtils.isNotEmpty(list)) {
+            Integer count = pkMemberMapper.selectCount(wrapper);
+            if (count>0) {
                 return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "手机号已注册过"));
             }
             PkMember pkMember = new PkMember();
