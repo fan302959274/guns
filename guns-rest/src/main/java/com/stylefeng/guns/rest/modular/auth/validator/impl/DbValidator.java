@@ -1,8 +1,8 @@
 package com.stylefeng.guns.rest.modular.auth.validator.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.stylefeng.guns.rest.common.persistence.dao.AuthUserMapper;
-import com.stylefeng.guns.rest.common.persistence.model.AuthUser;
+import com.stylefeng.guns.rest.common.persistence.dao.PkMemberMapper;
+import com.stylefeng.guns.rest.common.persistence.model.PkMember;
 import com.stylefeng.guns.rest.modular.auth.validator.IReqValidator;
 import com.stylefeng.guns.rest.modular.auth.validator.dto.Credence;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ import java.util.List;
 public class DbValidator implements IReqValidator {
 
     @Autowired
-    AuthUserMapper authUserMapper;
+    PkMemberMapper pkMemberMapper;
 
     @Override
     public boolean validate(Credence credence) {
-        List<AuthUser> users = authUserMapper.selectList(new EntityWrapper<AuthUser>().eq("userName", credence.getCredenceName()));
-        if (users != null && users.size() > 0) {
+        List<PkMember> pkMembers = pkMemberMapper.selectList(new EntityWrapper<PkMember>().eq("account", credence.getCredenceName()));
+        if (pkMembers != null && pkMembers.size() > 0) {
             return true;
         } else {
             return false;

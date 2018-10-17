@@ -41,15 +41,30 @@ public class AuthFilter extends OncePerRequestFilter {
         }
 
         //swagger专用
-        if (request.getServletPath().indexOf("/swagger")!=-1) {
+        if (request.getServletPath().indexOf("/swagger") != -1) {
             chain.doFilter(request, response);
             return;
         }
-        if (request.getServletPath().indexOf("/v2/api-docs")!=-1) {
+        if (request.getServletPath().indexOf("/v2/api-docs") != -1) {
             chain.doFilter(request, response);
             return;
         }
-        if (request.getServletPath().indexOf("/webjars")!=-1) {
+        if (request.getServletPath().indexOf("/webjars") != -1) {
+            chain.doFilter(request, response);
+            return;
+        }
+        //附件操作过滤
+        if (request.getServletPath().indexOf("/attach") != -1) {
+            chain.doFilter(request, response);
+            return;
+        }
+        //短信操作过滤
+        if (request.getServletPath().indexOf("/sms") != -1) {
+            chain.doFilter(request, response);
+            return;
+        }
+        //会员操作过滤
+        if (request.getServletPath().indexOf("/member") != -1) {
             chain.doFilter(request, response);
             return;
         }

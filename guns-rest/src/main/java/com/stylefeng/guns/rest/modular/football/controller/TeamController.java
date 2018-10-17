@@ -8,18 +8,22 @@ import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
 import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
+import com.stylefeng.guns.rest.common.persistence.model.PkMember;
 import com.stylefeng.guns.rest.common.persistence.model.PkTeam;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
+import com.stylefeng.guns.rest.config.properties.JwtProperties;
 import com.stylefeng.guns.rest.modular.football.transfer.PkTeamDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +46,10 @@ public class TeamController {
     PkTeamMapper pkTeamMapper;
     @Autowired
     PkAttachmentMapper pkAttachmentMapper;
+    @Autowired
+    JwtProperties jwtProperties;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     /**
      * 查询球队
@@ -118,24 +126,28 @@ public class TeamController {
 
     }
 
-//    /**
-//     * 加入球队
-//     *
-//     * @param id
-//     * @return
-//     */
-//    @RequestMapping(value = "/join", method = RequestMethod.POST)
-//    @ApiOperation(value = "加入球队", notes = "返回码:20000成功;")
-//    @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "String")
-//    public ResponseEntity join(@RequestParam String id) {
-//        log.info("球队详情参数为:{}", id);
-//        try {
-//            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeamMapper.selectById(id)));
-//        } catch (Exception e) {
-//            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-//        }
-//
-//    }
+    /**
+     * 加入球队
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    @ApiOperation(value = "加入球队", notes = "返回码:20000成功;")
+    @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "String")
+    public ResponseEntity join(@RequestParam String id, HttpServletRequest request) {
+        log.info("球队详情参数为:{}", id);
+        try {
+            String requestHeader = request.getHeader(jwtProperties.getHeader());
+            String authToken = requestHeader.substring(7);
+            PkMember pkMember = (PkMember) redisTemplate.opsForValue().get(authToken);
+
+            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeamMapper.selectById(id)));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
 
 
 }

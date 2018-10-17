@@ -3,7 +3,6 @@ package com.stylefeng.guns.rest.modular.football.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
-import com.stylefeng.guns.rest.modular.football.transfer.PkMemberDto;
 import com.stylefeng.guns.rest.modular.football.transfer.SmsEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -13,12 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -80,14 +77,14 @@ public class SmsController {
             Assert.notNull(smsEntity.getSmscode(), "验证码不能为空");
             String smscode = (String) redisTemplate.opsForValue().get(smsEntity.getMobile() + "_registercode");
             if (StringUtils.isBlank(smscode)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_INVALID.getCode(),ResponseCode.SMSCODE_INVALID.getMsg()));
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_INVALID.getCode(), ResponseCode.SMSCODE_INVALID.getMsg()));
             }
-            if (!Objects.equals(smscode,smsEntity.getSmscode())){
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_ERROR.getCode(),ResponseCode.SMSCODE_ERROR.getMsg()));
+            if (!Objects.equals(smscode, smsEntity.getSmscode())) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_ERROR.getCode(), ResponseCode.SMSCODE_ERROR.getMsg()));
             }
             return ResponseEntity.ok(new CommonResp<String>(smsEntity.getMobile()));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(),e.getMessage()));
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
