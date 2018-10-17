@@ -84,7 +84,7 @@ public class SmsController {
             if (!Objects.equals(smscode,smsEntity.getSmscode())){
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_ERROR.getCode(),ResponseCode.SMSCODE_ERROR.getMsg()));
             }
-            return ResponseEntity.ok(new CommonResp<String>("验证成功"));
+            return ResponseEntity.ok(new CommonResp<String>(smsEntity.getMobile()));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(),e.getMessage()));
         }
