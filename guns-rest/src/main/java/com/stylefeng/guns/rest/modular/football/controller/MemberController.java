@@ -139,4 +139,45 @@ public class MemberController {
         }
     }
 
+    /**
+     * 登录接口
+     *
+     * @param mobile
+     * @return
+     */
+    @RequestMapping(value = "/Login", method = RequestMethod.POST)
+    @ApiOperation(value = "队员登录", notes = "返回码:20000成功;")
+    @ApiImplicitParam(paramType = "query", name = "mobile", value = "队员登录", required = true, dataType = "String")
+    public ResponseEntity search(@RequestParam String mobile,@RequestParam String openid,@RequestParam String verifiy) {
+        log.info("队员登录手机号码请求参数{}", JSONObject.toJSONString(mobile));
+        try {
+            Assert.notNull(mobile, "手机号不能为空");
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("mobile", mobile);
+            List<PkMember> list = pkMemberMapper.selectList(wrapper);
+            if (CollectionUtils.isEmpty(list)) {
+                return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "未获取到队员信息"));
+            }
+
+            PkMemberDto pkMemberDto = new PkMemberDto();
+            PropertyUtils.copyProperties(pkMemberDto, list.get(0));
+
+            Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkMemberDto.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
+            List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+            if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
+                pkMemberDto.setAvatar(attachmentList.get(0).getUrl());
+            }
+            pkAttachmentWrapper = new EntityWrapper<>();
+            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkMemberDto.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.IDCARD.getCode());
+            attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+            if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
+                pkMemberDto.setIdcard(attachmentList.get(0).getUrl());
+            }
+            return ResponseEntity.ok(new CommonResp<PkMemberDto>(pkMemberDto));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<PkMemberDto>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
 }

@@ -3,10 +3,6 @@ package com.stylefeng.guns.rest.common.util.response;/**
  */
 
 
-import org.springframework.http.HttpStatus;
-import org.springframework.util.MultiValueMap;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,44 +12,47 @@ import java.util.List;
  * @create 2017-07-20 10:57
  **/
 public class CommonResp<T> {
-    private String code = ResponseCode.SUCCESS.getCode();
+    private String status = ResponseCode.SUCCESS.getCode();
     private String msg = ResponseCode.SUCCESS.getMsg();
-    private T result;
-    private List<T> resultList;
+    private T data;
+    private List<T> datas;
 
     public CommonResp(T body) {
-        this.result = body;
+        this.data = body;
     }
+
     public CommonResp(List<T> list) {
-        this.resultList = list;
+        this.datas = list;
     }
-    public CommonResp(String code,String msg) {
-        this.code = code;
+
+    public CommonResp(String status, String msg) {
+        this.status = status;
         this.msg = msg;
     }
 
-    public T getResult() {
-        return result;
+
+    public T getData() {
+        return data;
     }
 
-    public void setResult(T result) {
-        this.result = result;
+    public void setData(T data) {
+        this.data = data;
     }
 
-    public List<T> getResultList() {
-        return resultList;
+    public List<T> getDatas() {
+        return datas;
     }
 
-    public void setResultList(List<T> resultList) {
-        this.resultList = resultList;
+    public void setDatas(List<T> datas) {
+        this.datas = datas;
     }
 
-    public String getCode() {
-        return code;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getMsg() {

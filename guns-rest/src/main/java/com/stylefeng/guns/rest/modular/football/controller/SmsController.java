@@ -41,7 +41,7 @@ public class SmsController {
      * @param mobile
      * @return
      */
-    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    @RequestMapping(value = "/getCode", method = RequestMethod.POST)
     @ApiOperation(value = "发送短信验证码", notes = "返回码:20000成功;")
     @ApiImplicitParam(paramType = "query", name = "mobile", value = "手机号", required = true, dataType = "String")
     public ResponseEntity register(@RequestParam String mobile) {
