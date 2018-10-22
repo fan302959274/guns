@@ -109,9 +109,9 @@ public class TeamController {
                 pkAttachment.setUrl(pkTeamDto.getLogo());
                 pkAttachmentMapper.insert(pkAttachment);
             }
-            return ResponseEntity.ok(new CommonResp<PkTeamDto>(pkTeamDto));
+            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeam));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkTeamDto>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
