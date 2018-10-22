@@ -16,6 +16,7 @@
 		<result column="weight" property="weight" />
 		<result column="type" property="type" />
 		<result column="status" property="status" />
+		<result column="openid" property="openid" />
 		<result column="createdate" property="createdate" />
 		<result column="updatedate" property="updatedate" />
 		<result column="creator" property="creator" />

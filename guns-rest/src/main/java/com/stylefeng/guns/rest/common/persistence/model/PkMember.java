@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-17
+ * @since 2018-10-22
  */
 @TableName("pk_member")
 public class PkMember extends Model<PkMember> {
@@ -72,6 +72,10 @@ public class PkMember extends Model<PkMember> {
      * 队员状态:0:禁用1:启用
      */
 	private String status;
+    /**
+     * openid
+     */
+	private String openid;
     /**
      * 创建时间
      */
@@ -190,6 +194,14 @@ public class PkMember extends Model<PkMember> {
 		this.status = status;
 	}
 
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
+	}
+
 	public Date getCreatedate() {
 		return createdate;
 	}
@@ -250,6 +262,7 @@ public class PkMember extends Model<PkMember> {
 			", weight=" + weight +
 			", type=" + type +
 			", status=" + status +
+			", openid=" + openid +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +
 			", creator=" + creator +

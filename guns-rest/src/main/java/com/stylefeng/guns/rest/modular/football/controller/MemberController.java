@@ -145,7 +145,7 @@ public class MemberController {
      * @param mobile
      * @return
      */
-    @RequestMapping(value = "/Login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation(value = "队员登录", notes = "返回码:20000成功;")
     @ApiImplicitParam(paramType = "query", name = "mobile", value = "队员登录", required = true, dataType = "String")
     public ResponseEntity search(@RequestParam String mobile,@RequestParam String openid,@RequestParam String verifiy) {

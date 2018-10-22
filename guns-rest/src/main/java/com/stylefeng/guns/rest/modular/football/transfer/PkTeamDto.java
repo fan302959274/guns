@@ -100,6 +100,8 @@ public class PkTeamDto extends Model<PkTeamDto> {
 
 	private String logo;
 
+	private String openid;//登录者的openid
+
 
 	public Long getId() {
 		return id;
@@ -259,6 +261,14 @@ public class PkTeamDto extends Model<PkTeamDto> {
 
 	public void setLogo(String logo) {
 		this.logo = logo;
+	}
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 
 	@Override

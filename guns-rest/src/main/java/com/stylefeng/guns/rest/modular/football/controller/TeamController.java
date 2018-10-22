@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.PkMemberMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
 import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.rest.common.persistence.model.PkMember;
@@ -47,6 +48,8 @@ public class TeamController {
     @Autowired
     PkAttachmentMapper pkAttachmentMapper;
     @Autowired
+    PkMemberMapper pkMemberMapper;
+    @Autowired
     JwtProperties jwtProperties;
     @Autowired
     RedisTemplate redisTemplate;
@@ -86,8 +89,14 @@ public class TeamController {
         log.info("添加球队请求参数为:{}", JSONObject.toJSONString(pkTeamDto));
         try {
             Assert.notNull(pkTeamDto.getName(), "名称不能为空");
+            Assert.notNull(pkTeamDto.getOpenid(), "openid不能为空");
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", pkTeamDto.getOpenid());
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
+            pkTeam.setOwnerid(pkMembers.get(0).getId());
             pkTeamMapper.insert(pkTeam);
             //        保存logo
             if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
@@ -119,6 +128,8 @@ public class TeamController {
     public ResponseEntity detail(@PathVariable String id) {
         log.info("球队详情参数为:{}", id);
         try {
+            PkTeam pkTeam = pkTeamMapper.selectById(id);
+            Assert.notNull(pkTeam, "不存在该球队");
             return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeamMapper.selectById(id)));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));

@@ -94,6 +94,8 @@ CREATE TABLE `pk_member` (
   COMMENT '队员类型:1:队长;2:普通球员',
   `status`     VARCHAR(1)          DEFAULT '0'
   COMMENT '队员状态:0:禁用1:启用',
+  `openid`   VARCHAR(100)        DEFAULT NULL
+  COMMENT 'openid',
   `createdate`       TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
   COMMENT '创建时间',
   `updatedate`       TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
