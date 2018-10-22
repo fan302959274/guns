@@ -1,6 +1,7 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.stylefeng.guns.rest.common.util.httpclient.HttpClientUtil;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import com.stylefeng.guns.rest.modular.football.transfer.SmsEntity;
@@ -11,11 +12,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +37,12 @@ public class SmsController {
 
     @Autowired
     RedisTemplate redisTemplate;
+    @Value("${sms.url}")
+    private String smsUrl;
+    @Value("${sms.charset}")
+    private String charset;
+    @Value("${sms.codemsg}")
+    private String codemsg;
 
     /**
      * 短信发送接口
@@ -54,9 +63,13 @@ public class SmsController {
             String smsCode = random1 + "" + random2 + "" + random3 + "" + random4;
             redisTemplate.opsForValue().set(mobile + "_registercode", smsCode, 120, TimeUnit.SECONDS);
             //发送第三方 TODO
+            String result = new HttpClientUtil().doPost(smsUrl+"smsMob="+mobile+"&smsText="+codemsg+":"+smsCode,new HashMap<>(),charset);
+            if (Integer.parseInt(result)<=0){
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(),"验证码发送失败(code:{"+result+"})!"));
+            }
             return ResponseEntity.ok(new CommonResp<String>(smsCode));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<String>(""));
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

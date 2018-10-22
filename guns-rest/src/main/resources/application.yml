@@ -45,3 +45,8 @@ logging:
   level.com.stylefeng: debug
   path: logs/
   file: guns-rest.log
+
+sms:
+  url: http://utf8.api.smschinese.cn/?Uid=123&Key=124&
+  charset: utf-8
+  codemsg: 【球王决】尊敬的用户，您的验证码为
