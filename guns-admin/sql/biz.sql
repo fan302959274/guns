@@ -147,7 +147,8 @@ CREATE TABLE `pk_team_member` (
   COMMENT '球队id',
   `memberid` BIGINT(20) NOT NULL
   COMMENT '队员id',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `pk_team_member_quique` (`teamid`,`memberid`)
 )
   ENGINE = INNODB
   AUTO_INCREMENT = 15

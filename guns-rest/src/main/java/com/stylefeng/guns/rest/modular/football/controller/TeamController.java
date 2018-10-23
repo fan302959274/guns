@@ -5,12 +5,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
-import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkMemberMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
-import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
-import com.stylefeng.guns.rest.common.persistence.model.PkMember;
-import com.stylefeng.guns.rest.common.persistence.model.PkTeam;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
+import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import com.stylefeng.guns.rest.config.properties.JwtProperties;
@@ -18,7 +14,6 @@ import com.stylefeng.guns.rest.modular.football.transfer.PkTeamDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -49,6 +44,10 @@ public class TeamController {
     PkAttachmentMapper pkAttachmentMapper;
     @Autowired
     PkMemberMapper pkMemberMapper;
+    @Autowired
+    AreasMapper areasMapper;
+    @Autowired
+    PkTeamMemberMapper pkTeamMemberMapper;
     @Autowired
     JwtProperties jwtProperties;
     @Autowired
@@ -145,17 +144,41 @@ public class TeamController {
      */
     @RequestMapping(value = "/join", method = RequestMethod.POST)
     @ApiOperation(value = "加入球队", notes = "返回码:20000成功;")
-    @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "String")
-    public ResponseEntity join(@RequestParam String id, HttpServletRequest request) {
-        log.info("球队详情参数为:{}", id);
+    @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "Long")
+    public ResponseEntity join(@RequestParam Long id, @RequestParam String openid) {
+        log.info("加入球队请求参数为:{}", id);
         try {
-            String requestHeader = request.getHeader(jwtProperties.getHeader());
-            String authToken = requestHeader.substring(7);
-            PkMember pkMember = (PkMember) redisTemplate.opsForValue().get(authToken);
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+            PkTeamMember pkTeamMember = new PkTeamMember();
+            pkTeamMember.setMemberid(pkMembers.get(0).getId());
+            pkTeamMember.setTeamid(id);
+            pkTeamMemberMapper.insert(pkTeamMember);
 
-            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeamMapper.selectById(id)));
+            return ResponseEntity.ok(new CommonResp<PkTeamMember>(pkTeamMember));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonResp<PkTeamMember>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+    /**
+     * 球队区域
+     *
+     * @return
+     */
+    @RequestMapping(value = "/area", method = RequestMethod.POST)
+    @ApiOperation(value = "球队区域", notes = "返回码:20000成功;")
+    public ResponseEntity area() {
+        try {
+            Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
+            List<Areas> list = areasMapper.selectList(wrapper);
+
+            return ResponseEntity.ok(new CommonResp<Areas>(list));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
