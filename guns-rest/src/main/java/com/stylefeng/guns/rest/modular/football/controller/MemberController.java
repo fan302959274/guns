@@ -20,12 +20,15 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 会员控制器
@@ -43,6 +46,8 @@ public class MemberController {
     private PkMemberMapper pkMemberMapper;
     @Resource
     private PkAttachmentMapper pkAttachmentMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     /**
      * 队员注册接口
@@ -91,9 +96,9 @@ public class MemberController {
                 pkAttachment.setUrl(pkMemberDto.getIdcard());
                 pkAttachmentMapper.insert(pkAttachment);
             }
-            return ResponseEntity.ok(new CommonResp<PkMemberDto>(pkMemberDto));
+            return ResponseEntity.ok(new CommonResp<PkMember>(pkMember));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkMemberDto>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
@@ -148,7 +153,7 @@ public class MemberController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation(value = "队员登录", notes = "返回码:20000成功;")
     @ApiImplicitParam(paramType = "query", name = "mobile", value = "队员登录", required = true, dataType = "String")
-    public ResponseEntity search(@RequestParam String mobile,@RequestParam String openid,@RequestParam String verifiy) {
+    public ResponseEntity login(@RequestParam String mobile,@RequestParam String openid,@RequestParam String verifiy) {
         log.info("队员登录手机号码请求参数{}", JSONObject.toJSONString(mobile));
         try {
             Assert.notNull(mobile, "手机号不能为空");
@@ -157,6 +162,14 @@ public class MemberController {
             List<PkMember> list = pkMemberMapper.selectList(wrapper);
             if (CollectionUtils.isEmpty(list)) {
                 return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "未获取到队员信息"));
+            }
+
+            String smscode = (String) redisTemplate.opsForValue().get(mobile + "_registercode");
+            if (StringUtils.isBlank(smscode)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_INVALID.getCode(), ResponseCode.SMSCODE_INVALID.getMsg()));
+            }
+            if (!Objects.equals(smscode, verifiy)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_ERROR.getCode(), ResponseCode.SMSCODE_ERROR.getMsg()));
             }
 
             PkMemberDto pkMemberDto = new PkMemberDto();
