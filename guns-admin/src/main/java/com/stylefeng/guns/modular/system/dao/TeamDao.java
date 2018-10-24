@@ -29,4 +29,28 @@ public interface TeamDao {
      */
     List<Map<String, Object>> selectTeamsMembers(@Param("teamId") Long teamId);
 
+    /**
+     * 通过账号获取用户
+     *
+     * @param memberId
+     * @return
+     * @date 2017年2月17日 下午11:07:46
+     */
+    Map<String, Object> getTeamInfo(@Param("memberId") Integer memberId);
+    /**
+     * 查询所有区
+     *
+     * @param
+     * @return
+     * @date 2017年2月17日 下午11:07:46
+     */
+    List<Map<String, Object>> getAreaInfos();
+    /**
+     * 删除球队下队友的队友关系
+     *
+     * @param teamId
+     * @return
+     * @date 2017年2月17日 下午11:07:46
+     */
+    int deleteTeamMembers(Integer teamId);
 }

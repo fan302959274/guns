@@ -12,15 +12,15 @@ import java.util.Map;
  * @author fengshuonan
  * @Date 2018-10-08 22:51:10
  */
-public interface ParkDao {
+public interface MemberDao {
 
     /**
-     * 根据条件查询广告列表
+     * 根据条件查询队员/队长列表
      *
      * @return
-     * @date 2017年2月12日 下午9:14:34
+     * @date 2018年10月18日 下午9:14:34
      */
-    List<Map<String, Object>> selectParks(@Param("condition") String condition);
+    List<Map<String, Object>> selectMembers(@Param("account") String account,@Param("type") String type);
 
     /**
      * 修改球场状态
@@ -30,5 +30,5 @@ public interface ParkDao {
      */
     int setStatus(@Param("parkId") Integer parkId, @Param("status") int status);
 
-    List<Map<String, Object>> selectParksRelation(@Param("parkId") Integer parkId);
+
 }

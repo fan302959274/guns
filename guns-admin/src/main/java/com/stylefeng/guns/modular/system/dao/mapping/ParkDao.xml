@@ -3,7 +3,7 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.ParkDao">
 
     <sql id="Base_Column_List">
-        id, pkname  , prov, city, area, pkdesc, pkaddr,businesstime,createdate,updatedate,creator,updator,isDeleted
+        a.id, pkname  , prov, city, pkdesc, pkaddr,businesstime,createdate,updatedate,creator,updator,isDeleted
     </sql>
 
     <select id="selectParks" resultType="map">
@@ -16,15 +16,30 @@
         ELSE
         '禁用'
         END
-        ) "status"
-        from pk_park
+        ) "status",
+        b.area as  area
+        from pk_park a
+        LEFT  JOIN  areas  b  ON   a.area =b.areaid
         <if test="condition != null">
             where name like CONCAT('%',#{condition},'%')
         </if>
+        ORDER  by a.id DESC
     </select>
 
     <update id="setStatus">
         update pk_park set status = #{status} where id =
         #{parkId}
     </update>
+
+    <select id="selectParksRelation" resultType="map">
+        select
+       id, parkid,usetime
+        from pk_park_relation
+        where 1=1
+        <if test="parkId != null">
+         AND  parkid = ${parkId}
+        </if>
+    </select>
+
+
 </mapper>

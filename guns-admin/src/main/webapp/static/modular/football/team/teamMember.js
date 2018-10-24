@@ -14,7 +14,6 @@ var TeamMember = {
  */
 TeamMember.initColumn = function () {
     var columns = [
-        {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
         {title: '头像', field: 'position', align: 'center' , valign: 'middle', sortable: true,
             formatter: function (value, row) {
@@ -24,11 +23,30 @@ TeamMember.initColumn = function () {
         {title: '姓名', field: 'name', align: 'center', valign: 'middle', sortable: true},
         {title: '位置', field: 'position', align: 'center', valign: 'middle', sortable: true},
         {title: '状态', field: 'status', align: 'center', valign: 'middle', sortable: true},
-        {title: '审核状态', field: 'winnum', align: 'center', valign: 'middle', sortable: true}
+        {title: '审核状态', field: 'cstauts', align: 'center', valign: 'middle', sortable: true},
+        {title: '操作', field: 'cstauts', align: 'center', valign: 'middle', sortable: true,
+            formatter: function (value, row) {
+                return  '<a class="btn" href="javascript:deleteMember('+row.id+')" >删除</a>';
+            }
+        }
     ]
     return columns;
 };
 
+
+function  deleteMember(id) {
+        var operation = function(){
+            var ajax = new $ax(Feng.ctxPath + "/team/removeMember", function () {
+                Feng.success("删除队员成功!");
+                TeamMember.table.refresh();
+            }, function (data) {
+                Feng.error("删除队员失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("id", id);
+            ajax.start();
+        };
+        Feng.confirm("是否删除该队员?",operation);
+};
 /**
  * 检查是否选中
  */

@@ -16,15 +16,16 @@
 
 								<div class="row">
 									<div class="col-sm-6 b-r">
-										<#input id="account" name="球场名" underline="true" value=""  />
-										<#select id="sex" name="球场区域" underline="true" value="">
-											<option value="1">男</option>
-											<option value="2">女</option>
+										<#input id="pkname" name="球场名" underline="true" value=""  />
+										<#select id="area" name="球场区域" underline="true" value="">
+											@for(item in areaInfo){
+											<option value="${item.areaid}">${item.area}</option>
+											@}
 										</#select>
 										<div class="form-group">
 											<label class="col-sm-3 control-label">球场地址</label>
 											<div class="col-sm-9">
-												<textarea class="form-control" id="deblock_udid" name="deblock_udid" rows="3" style="min-width: 90%"></textarea>
+												<textarea class="form-control" id="pkaddr" name="deblock_udid" rows="3" style="min-width: 90%"></textarea>
 											</div>
 										</div>
 
@@ -36,7 +37,7 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label">球场简介</label>
 												<div class="col-sm-9">
-													<textarea class="form-control" id="deblock_udid" name="deblock_udid" rows="3" style="min-width: 90%"></textarea>
+													<textarea class="form-control" id="pkdesc" name="deblock_udid" rows="3" style="min-width: 90%"></textarea>
 												</div>
 											</div>
 
@@ -44,17 +45,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-sm-6 b-r">
-										<#avatar id="avatar" name="球场图片" underline="true" avatarImg="5d8343ea-5be9-4b31-a9c2-fadfe0bec4c5.jpg"/>
-
-										<#avatar id="avatar" name="" underline="true" avatarImg="5d8343ea-5be9-4b31-a9c2-fadfe0bec4c5.jpg"/>
-									</div>
-									<div class="col-sm-6">
-										<div id="driverInfoContent">
-
-											<#avatar id="avatar" name="" underline="true" avatarImg="5d8343ea-5be9-4b31-a9c2-fadfe0bec4c5.jpg"/>
-										</div>
-									</div>
+									<#ad id="imgs" name="图片上传" underline="true" />
 								</div>
 								<div class="row">
 										<div class="col-sm-6" >

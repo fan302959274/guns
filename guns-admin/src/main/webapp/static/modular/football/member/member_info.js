@@ -60,7 +60,9 @@ MemberInfoDlg.close = function() {
  * 收集数据
  */
 MemberInfoDlg.collectData = function() {
-    this.set('id').set('account').set('name').set('birth').set('height').set('weight').set('position').set('habitfeet').set('type').set('avatar').set('idcard');
+    this.set('id').set('account').set('name').set('birth').set('height').set('teamId')
+        .set('weight').set('position').set('habitfeet').set('type').set('avatar').set('idcard')
+        .set('area').set('teamname').set('teamlogo');
 }
 
 /**
@@ -141,5 +143,10 @@ $(function() {
     var teamlogoUp = new $WebUpload("teamlogo");
     teamlogoUp.init();
 
+    //初始化SELECT选项
+    $("#type").val($("#typeValue").val());
+    $("#habitfeet").val($("#habitfeetValue").val());
+    $("#position").val($("#positionValue").val());
+    $("#area").val($("#areaValue").val());
 
 });

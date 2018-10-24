@@ -164,7 +164,7 @@ public class AdController extends BaseController {
 
 
     /**
-     * 获取所有部门列表
+     * 获取所有广告列表
      */
     @RequestMapping(value = "/list")
     @Permission
@@ -175,7 +175,7 @@ public class AdController extends BaseController {
     }
 
     /**
-     * 部门详情
+     * 广告详情
      */
     @RequestMapping(value = "/detail/{adId}")
     @Permission
@@ -185,7 +185,7 @@ public class AdController extends BaseController {
     }
 
     /**
-     * 修改部门
+     * 修改广告
      */
 //    @BussinessLog(value = "修改部门", key = "simplename", dict = PkAd.class)
     @RequestMapping(value = "/update")
@@ -219,7 +219,7 @@ public class AdController extends BaseController {
     }
 
     /**
-     * 删除部门
+     * 删除广告
      */
 //    @BussinessLog(value = "删除部门", key = "adId", dict = pkAdMapper.class)
     @RequestMapping(value = "/delete")

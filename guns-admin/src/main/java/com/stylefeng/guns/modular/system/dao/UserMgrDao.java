@@ -56,4 +56,6 @@ public interface UserMgrDao {
      * @date 2017年2月17日 下午11:07:46
      */
     User getByAccount(@Param("account") String account);
+
+
 }

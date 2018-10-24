@@ -1,11 +1,12 @@
 /**
- * 广告管理初始化
+ * 队员管理初始化
  */
 var Member = {
     id: "MemberTable",	//表格id
     seItem: null,		//选中的条目
     table: null,
-    layerIndex: -1
+    layerIndex: -1,
+    type : $('#type').val()
 };
 
 /**
@@ -16,7 +17,10 @@ Member.initColumn = function () {
         {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
         {title: '账号', field: 'account', align: 'center', valign: 'middle', sortable: true},
-        {title: '姓名', field: 'name', align: 'center', valign: 'middle', sortable: true}];
+        {title: '姓名', field: 'name', align: 'center', valign: 'middle', sortable: true},
+        {title: '球队名称', field: 'teamName', align: 'center', valign: 'middle', sortable: true},
+        {title: '创建时间', field: 'createdate', align: 'center', valign: 'middle', sortable: true}
+        ];
 };
 
 /**
@@ -34,32 +38,32 @@ Member.check = function () {
 };
 
 /**
- * 点击添加广告
+ * 点击添加队员
  */
 Member.openAddMember = function () {
     var index = layer.open({
         type: 2,
-        title: '添加广告',
-        area: ['800px', '420px'], //宽高
+        title: '添加队员',
+        area: ['900px', '600px'], //宽高
         fix: false, //不固定
         maxmin: true,
-        content: Feng.ctxPath + '/member/member_add'
+        content: Feng.ctxPath + '/member/member_add?type='+Member.type
     });
     this.layerIndex = index;
 };
 
 /**
- * 打开查看广告详情（编辑）
+ * 打开查看队员详情（编辑）
  */
 Member.openMemberDetail = function () {
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '广告详情',
-            area: ['800px', '420px'], //宽高
+            title: '队员详情',
+            area: ['900px', '600px'], //宽高
             fix: false, //不固定
             maxmin: true,
-            content: Feng.ctxPath + '/member/member_update/' + Member.seItem.id
+            content: Feng.ctxPath + '/member/member_update/' + Member.seItem.id+'?type='+Member.type
         });
         this.layerIndex = index;
     }
@@ -67,7 +71,7 @@ Member.openMemberDetail = function () {
 
 
 /**
- * 打开查看广告详情
+ * 打开查看队员详情
  */
 Member.openMemberView = function () {
     if (this.check()) {
@@ -77,14 +81,14 @@ Member.openMemberView = function () {
             area: ['800px', '420px'], //宽高
             fix: false, //不固定
             maxmin: true,
-            content: Feng.ctxPath + '/member/member_view/' + Member.seItem.id
+            content: Feng.ctxPath + '/member/member_view/' + Member.seItem.id+'?type='+Member.type
         });
         this.layerIndex = index;
     }
 };
 
 /**
- * 删除广告
+ * 删除队员
  */
 Member.delete = function () {
     if (this.check()) {
@@ -105,7 +109,7 @@ Member.delete = function () {
 };
 
 /**
- * 查询广告列表
+ * 查询队员列表
  */
 Member.search = function () {
     var queryData = {};
@@ -115,7 +119,7 @@ Member.search = function () {
 
 $(function () {
     var defaultColunms = Member.initColumn();
-    var table = new BSTable(Member.id, "/member/list", defaultColunms);
+    var table = new BSTable(Member.id, "/member/list?type="+Member.type, defaultColunms);
     table.setPaginationType("client");
     table.init();
     Member.table = table;

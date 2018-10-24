@@ -8,16 +8,20 @@ import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.common.persistence.dao.PkMemberMapper;
+import com.stylefeng.guns.common.persistence.dao.PkTeamMapper;
 import com.stylefeng.guns.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.common.persistence.model.PkMember;
+import com.stylefeng.guns.common.persistence.model.PkTeam;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.support.BeanKit;
 import com.stylefeng.guns.core.util.ToolUtil;
+import com.stylefeng.guns.modular.system.dao.MemberDao;
+import com.stylefeng.guns.modular.system.dao.TeamDao;
 import com.stylefeng.guns.modular.system.transfer.PkMemberDto;
+import com.stylefeng.guns.modular.system.warpper.MemberWarpper;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -49,31 +53,42 @@ public class MemberController extends BaseController {
     PkMemberMapper pkMemberMapper;
     @Resource
     PkAttachmentMapper pkAttachmentMapper;
+    @Resource
+    MemberDao memberDao;
+    @Resource
+    PkTeamMapper pkTeamMapper;
+    @Resource
+    TeamDao teamDao;
 
 
     /**
      * 跳转到广告管理首页
      */
     @RequestMapping("")
-    public String index() {
+    public String index(String type,Model  model) {
+        model.addAttribute("type",type);
         return PREFIX + "member.html";
     }
 
     /**
-     * 跳转到添加广告
+     * 跳转到添加队员
      */
     @RequestMapping("/member_add")
-    public String memberAdd() {
+    public String memberAdd(String type,Model  model) {
+        List<Map<String, Object>> areaInfo = this.teamDao.getAreaInfos();
+        model.addAttribute("type",type);
+        model.addAttribute("areaInfo",areaInfo);
         return PREFIX + "member_add.html";
     }
 
     /**
-     * 跳转到修改广告
+     * 跳转到修改队员
      */
     @RequestMapping("/member_update/{memberId}")
-    public String memberUpdate(@PathVariable Integer memberId, Model model) {
+    public String memberUpdate(@PathVariable Integer memberId, Model model ) {
+        Map<String, Object> teamInfo = this.teamDao.getTeamInfo(memberId);
         PkMember pkMember = pkMemberMapper.selectById(memberId);
-
+        List<Map<String, Object>> areaInfo = this.teamDao.getAreaInfos();
         Map<String, Object> menuMap = BeanKit.beanToMap(pkMember);
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
         wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
@@ -87,16 +102,30 @@ public class MemberController extends BaseController {
         if (!CollectionUtils.isEmpty(list)) {
             menuMap.put("idcard", list.get(0).getUrl());
         }
+        Long teamId= (Long)teamInfo.get("id");
+        if(teamId!=null){
+            Wrapper<PkAttachment> teamwrapper = new EntityWrapper<>();
+            teamwrapper = teamwrapper.eq("linkid", teamId).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+            List<PkAttachment> teamList = pkAttachmentMapper.selectList(teamwrapper);
+            if (!CollectionUtils.isEmpty(teamList)) {
+                teamInfo.put("teamLog", teamList.get(0).getUrl());
+            }
+        }
         model.addAttribute("member", menuMap);
+        model.addAttribute("areaInfo", areaInfo);
+        model.addAttribute("teamInfo", teamInfo);
         LogObjectHolder.me().set(pkMember);
         return PREFIX + "member_edit.html";
     }
 
     /**
-     * 跳转到修改广告
+     * 跳转到修改队员
      */
     @RequestMapping("/member_view/{memberId}")
-    public String memberView(@PathVariable Integer memberId, Model model) {
+    public String memberView(@PathVariable Integer memberId, Model model,String type) {
+
+        Map<String, Object> teamInfo = this.teamDao.getTeamInfo(memberId);
+
         PkMember pkMember = pkMemberMapper.selectById(memberId);
 
         Map<String, Object> menuMap = BeanKit.beanToMap(pkMember);
@@ -112,18 +141,30 @@ public class MemberController extends BaseController {
         if (!CollectionUtils.isEmpty(list)) {
             menuMap.put("idcard", list.get(0).getUrl());
         }
+        Long teamId= (Long)teamInfo.get("id");
+        if(teamId!=null){
+            Wrapper<PkAttachment> teamwrapper = new EntityWrapper<>();
+            teamwrapper = teamwrapper.eq("linkid", teamId).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+            List<PkAttachment> teamList = pkAttachmentMapper.selectList(teamwrapper);
+            if (!CollectionUtils.isEmpty(teamList)) {
+                teamInfo.put("teamLog", teamList.get(0).getUrl());
+            }
+        }
+
         model.addAttribute("member", menuMap);
+        model.addAttribute("type", type);
+        model.addAttribute("teamInfo", teamInfo);
         LogObjectHolder.me().set(pkMember);
         return PREFIX + "member_view.html";
     }
 
 
     /**
-     * 新增广告
+     * 新增队员
      */
     @RequestMapping(value = "/add")
     @ResponseBody
-    public Object add(PkMemberDto pkMemberDto) throws ParseException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public Object add(PkMemberDto pkMemberDto, PkTeam pkTeam) throws ParseException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (ToolUtil.isOneEmpty(pkMemberDto, pkMemberDto.getName())) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
@@ -145,7 +186,6 @@ public class MemberController extends BaseController {
         }
         //        保存身份证
         if (StringUtils.isNoneBlank(pkMemberDto.getIdcard())) {
-
             PkAttachment pkAttachment = new PkAttachment();
             pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
             pkAttachment.setType(AttachTypeEnum.IDCARD.getCode());
@@ -154,7 +194,23 @@ public class MemberController extends BaseController {
             pkAttachment.setSuffix(pkMemberDto.getIdcard().substring(pkMemberDto.getIdcard().lastIndexOf(".") + 1));
             pkAttachment.setUrl(pkMemberDto.getIdcard());
             pkAttachmentMapper.insert(pkAttachment);
-
+        }
+        //新增球隊信息
+        if (StringUtils.isNoneBlank(pkMemberDto.getTeamlogo())) {
+            PkAttachment pkAttachment = new PkAttachment();
+            pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
+            pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
+            pkAttachment.setLinkid(record.getId());
+            pkAttachment.setName("球队logo");
+            pkAttachment.setSuffix(pkMemberDto.getTeamlogo().substring(pkMemberDto.getTeamlogo().lastIndexOf(".") + 1));
+            pkAttachment.setUrl(pkMemberDto.getTeamlogo());
+            pkAttachmentMapper.insert(pkAttachment);
+        }
+        if (StringUtils.isNoneBlank(pkMemberDto.getTeamname())) {
+            pkTeam.setName(pkMemberDto.getTeamname());
+            pkTeam.setOwnerid(record.getId());
+            pkTeam.setArea(pkMemberDto.getArea());
+            pkTeamMapper.insert(pkTeam);
         }
 
 
@@ -163,22 +219,17 @@ public class MemberController extends BaseController {
 
 
     /**
-     * 获取所有部门列表
+     * 获取所有队员列表
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(required = false) String account, Integer page, Integer pageSize) {
-        RowBounds rowBounds = new RowBounds();
-        Wrapper<PkMember> wrapper = new EntityWrapper<>();
-        if (StringUtils.isNoneBlank(account)) {
-            wrapper = wrapper.like("account", account);
-        }
-        List<PkMember> list = this.pkMemberMapper.selectPage(rowBounds, wrapper);
-        return list;
+    public Object list(@RequestParam(required = false) String account,String type) {
+        List<Map<String, Object>> banners = this.memberDao.selectMembers(account,type);
+        return super.warpObject(new MemberWarpper(banners));
     }
 
     /**
-     * 部门详情
+     * 队员详情
      */
     @RequestMapping(value = "/detail/{memberId}")
     @ResponseBody
@@ -187,7 +238,7 @@ public class MemberController extends BaseController {
     }
 
     /**
-     * 修改部门
+     * 修改队员信息
      */
     @RequestMapping(value = "/update")
     @ResponseBody
@@ -198,6 +249,32 @@ public class MemberController extends BaseController {
         PkMember record = new PkMember();
         PropertyUtils.copyProperties(record, pkMemberDto);
         pkMemberMapper.updateById(record);
+
+        if(pkMemberDto.getTeamId()!=null){
+            PkTeam pkTeam = new PkTeam();
+            pkTeam.setId(pkMemberDto.getTeamId());
+            pkTeam.setName(pkMemberDto.getTeamname());
+            pkTeam.setArea(pkMemberDto.getArea());
+            pkTeamMapper.updateById(pkTeam);
+        }
+
+        //1、删除
+        Wrapper<PkAttachment> wrappers = new EntityWrapper<>();
+        wrappers = wrappers.eq("linkid", pkMemberDto.getTeamId());
+        wrappers = wrappers.eq("category", AttachCategoryEnum.TEAM.getCode());
+        pkAttachmentMapper.delete(wrappers);
+        //新增球隊信息
+        if (StringUtils.isNoneBlank(pkMemberDto.getTeamlogo())) {
+            PkAttachment pkAttachment = new PkAttachment();
+            pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
+            pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
+            pkAttachment.setLinkid(pkMemberDto.getTeamId());
+            pkAttachment.setName("球队logo");
+            pkAttachment.setSuffix(pkMemberDto.getTeamlogo().substring(pkMemberDto.getTeamlogo().lastIndexOf(".") + 1));
+            pkAttachment.setUrl(pkMemberDto.getTeamlogo());
+            pkAttachmentMapper.insert(pkAttachment);
+        }
+
         //1、删除
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
         wrapper = wrapper.eq("linkid", record.getId());

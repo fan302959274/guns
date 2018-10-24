@@ -1,7 +1,7 @@
 package com.stylefeng.guns.modular.system.controller;
 
-import com.stylefeng.guns.common.constant.factory.ConstantFactory;
 import com.stylefeng.guns.common.persistence.dao.PkTeamMapper;
+import com.stylefeng.guns.common.persistence.dao.PkTeamMemberMapper;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.modular.system.dao.TeamDao;
 import com.stylefeng.guns.modular.system.warpper.TeamWarpper;
@@ -31,11 +31,14 @@ public class TeamController extends BaseController {
     TeamDao teamDao;
     @Resource
     PkTeamMapper pkTeamMapper;
+    @Resource
+    PkTeamMemberMapper pkTeamMemberMapper;
     /**
      * 跳转到球队管理首页
      */
     @RequestMapping("")
     public String index() {
+
         return PREFIX + "team.html";
     }
     @RequestMapping("teamMember/{teamId}")
@@ -57,8 +60,8 @@ public class TeamController extends BaseController {
     @RequestMapping(value = "/memberList")
     @ResponseBody
     public Object memberList(Long teamId) {
-        List<Map<String, Object>> banners = this.teamDao.selectTeamsMembers(teamId);
-        return super.warpObject(new TeamWarpper(banners));
+        List<Map<String, Object>> members = this.teamDao.selectTeamsMembers(teamId);
+        return super.warpObject(new TeamWarpper(members));
     }
     /**
      * 跳转到修改球队
@@ -74,8 +77,19 @@ public class TeamController extends BaseController {
      */
     @RequestMapping(value = "/remove")
     @ResponseBody
-    public Object delete(@RequestParam Long teamId) {
+    public Object delete(@RequestParam Integer teamId) {
         this.pkTeamMapper.deleteById(teamId);
+        this.teamDao.deleteTeamMembers(teamId);
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 删除球队成员
+     */
+    @RequestMapping(value = "/removeMember")
+    @ResponseBody
+    public Object deleteMember(@RequestParam Long id) {
+        this.pkTeamMemberMapper.deleteById(id);
         return SUCCESS_TIP;
     }
     /**

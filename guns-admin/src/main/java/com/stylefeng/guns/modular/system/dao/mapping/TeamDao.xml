@@ -3,21 +3,24 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.TeamDao">
 
     <sql id="Base_Column_List">
-        id, name,level, membernum, winnum, debtnum, drawnum,point,prov,city,area,descteam,ownerid,status,createdate,updatedate,creator,updator
+        a.id, name,level, membernum, winnum, debtnum, drawnum,point,prov,city,descteam,ownerid,status,createdate,updatedate,creator,updator
     </sql>
 
     <select id="selectTeams" resultType="map">
         select
-        <include refid="Base_Column_List" />
-        from pk_team
+        <include refid="Base_Column_List" />,  b.area as  area
+        from pk_team a
+        LEFT  JOIN  areas  b  ON   a.area =b.areaid
         <if test="name != null">
             where name like CONCAT('%',#{name},'%')
         </if>
+        ORDER  BY a.id DESC
+
     </select>
 
     <select id="selectTeamsMembers" resultType="map">
         select
-        a.id as  id ,b.name as name,b.position as position,
+        a.id as  id ,b.name as name,
         (
         CASE
         WHEN b.type = 1  THEN
@@ -25,13 +28,58 @@
         ELSE
         '队员'
         END
-        ) "status"
+        ) "status",
+        (
+        CASE
+        WHEN b.position = 1  THEN '中前卫'
+        WHEN b.position = 2  THEN '前腰'
+        WHEN b.position = 3  THEN '边前卫'
+        WHEN b.position = 4  THEN '边锋'
+        WHEN b.position = 5  THEN '后腰'
+        WHEN b.position = 6  THEN '影前锋'
+        WHEN b.position = 7  THEN '中后卫'
+        WHEN b.position = 8  THEN '边后卫'
+        WHEN b.position = 9  THEN '清道夫'
+        WHEN b.position = 10  THEN '中锋'
+        WHEN b.position = 11  THEN '前锋'
+        END
+        ) "position",
+        (
+        CASE
+        WHEN a.status = 1  THEN
+        '审核通过'
+        ELSE
+        '待审核'
+        END
+        ) "cstauts"
         from pk_team_member a
         INNER  JOIN   pk_member  b ON  b.id=a.memberid
         <if test="teamId != null">
             where a.teamid =${teamId}
         </if>
     </select>
+
+    <select id="getTeamInfo" resultType="map">
+        select
+        b.id,b.name,d.area, b.area as areaid
+        from
+        pk_team_member a
+        INNER  JOIN  pk_team b ON  a.teamid= b.id
+        LEFT  JOIN  areas d ON d.areaid = b.area
+        <if test="memberId != null">
+            where a.memberid =#{memberId}
+        </if>
+    </select>
+
+    <select id="getAreaInfos" resultType="map">
+        select
+       a.areaid,a.area
+        from  areas a
+    </select>
+
+    <delete id="deleteTeamMembers" >
+        DELETE FROM pk_team_member WHERE teamid = #{teamId}
+    </delete>
 
 
 </mapper>

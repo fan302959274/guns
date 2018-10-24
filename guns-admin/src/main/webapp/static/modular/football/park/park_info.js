@@ -3,52 +3,9 @@
  */
 var ParkInfoDlg = {
     parkInfoData: {},
-    validateFields: {
-        account: {
-            validators: {
-                notEmpty: {
-                    message: '账户不能为空'
-                }
-            }
-        },
-        name: {
-            validators: {
-                notEmpty: {
-                    message: '姓名不能为空'
-                }
-            }
-        },
-        citySel: {
-            validators: {
-                notEmpty: {
-                    message: '部门不能为空'
-                }
-            }
-        },
-        password: {
-            validators: {
-                notEmpty: {
-                    message: '密码不能为空'
-                },
-                identical: {
-                    field: 'rePassword',
-                    message: '两次密码不一致'
-                },
-            }
-        },
-        rePassword: {
-            validators: {
-                notEmpty: {
-                    message: '密码不能为空'
-                },
-                identical: {
-                    field: 'password',
-                    message: '两次密码不一致'
-                },
-            }
-        }
-    }
+    mutiString: ''
 };
+
 
 /**
  * 清除数据
@@ -89,18 +46,29 @@ ParkInfoDlg.close = function () {
  * 收集数据
  */
 ParkInfoDlg.collectData = function () {
-    this.set('id').set('pkname').set('area').set('pkdesc').set('avatar')
+    this.set('id').set('pkname').set('area').set('pkdesc').set('imgs')
         .set('pkaddr');
+    var mutiString = "";
+    $("[name='dictItem']").each(function(){
+        var value = $(this).find("[name='itemName']").val();
+        if(mutiString){
+            mutiString = mutiString + "," + value ;
+        }else{
+            mutiString=value;
+        }
+
+    });
+    this.mutiString = mutiString;
 };
 
 /**
  * 验证数据是否为空
- */
+
 ParkInfoDlg.validate = function () {
     $('#parkInfoForm').data("bootstrapValidator").resetForm();
     $('#parkInfoForm').bootstrapValidator('validate');
     return $("#parkInfoForm").data('bootstrapValidator').isValid();
-};
+};*/
 
 /**
  * 提交添加球场
@@ -108,9 +76,9 @@ ParkInfoDlg.validate = function () {
 ParkInfoDlg.addSubmit = function () {
     this.clearData();
     this.collectData();
-    if (!this.validate()) {
+    /*if (!this.validate()) {
         return;
-    }
+    }*/
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/park/add", function (data) {
         Feng.success("添加成功!");
@@ -120,6 +88,7 @@ ParkInfoDlg.addSubmit = function () {
         Feng.error("添加失败!" + data.responseJSON.message + "!");
     });
     ajax.set(this.parkInfoData);
+    ajax.set('usetime',this.mutiString);
     ajax.start();
 };
 
@@ -129,9 +98,9 @@ ParkInfoDlg.addSubmit = function () {
 ParkInfoDlg.editSubmit = function () {
     this.clearData();
     this.collectData();
-    if (!this.validate()) {
+   /* if (!this.validate()) {
         return;
-    }
+    }*/
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/park/edit", function (data) {
         Feng.success("修改成功!");
@@ -170,11 +139,11 @@ function onBodyDown(event) {
 }
 
 $(function () {
-    Feng.initValidator("parkInfoForm", ParkInfoDlg.validateFields);
-    //初始化性别选项
-    $("#sex").val($("#sexValue").val());
+   // Feng.initValidator("parkInfoForm", ParkInfoDlg.validateFields);
+    //初始化区选项
+    $("#area").val($("#areaValue").val());
     // 初始化头像上传
-    var avatarUp = new $WebUpload("ads");
+    var avatarUp = new $WebUploadAd("imgs");
     avatarUp.setUploadBarId("progressBar");
     avatarUp.init();
 });

@@ -6,8 +6,10 @@ package com.stylefeng.guns.common.enums;
  */
 public enum AttachCategoryEnum {
 
-    AD("AD", "队员"),
-    MEMBER("MEMBER","队员");
+    AD("AD", "广告"),
+    MEMBER("MEMBER","队员"),
+    TEAM("TEAM","球队"),
+    PARK("PARK","球场");
 
     String code;
     String message;

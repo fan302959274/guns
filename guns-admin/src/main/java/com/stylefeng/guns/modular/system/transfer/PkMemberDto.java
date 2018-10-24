@@ -105,6 +105,44 @@ public class PkMemberDto extends Model<PkMemberDto> {
      */
     private String idcard;
 
+    private String teamlogo;
+
+    private String teamname;
+
+    private String area;
+    private Long teamId;
+
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
+    }
+
+    public String getTeamname() {
+        return teamname;
+    }
+
+    public void setTeamname(String teamname) {
+        this.teamname = teamname;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getTeamlogo() {
+        return teamlogo;
+    }
+
+    public void setTeamlogo(String teamlogo) {
+        this.teamlogo = teamlogo;
+    }
 
     public Long getId() {
         return id;

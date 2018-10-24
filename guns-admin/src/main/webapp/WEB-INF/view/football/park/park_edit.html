@@ -16,9 +16,11 @@
 								<div class="row">
 									<div class="col-sm-6 b-r">
 										<#input id="pkname" name="球场名" underline="true" value="${pkPark.pkname}"  />
+										<input type="hidden" id="areaValue" value="${pkPark.area}">
 										<#select id="area" name="球场区域" underline="true" value="">
-											<option value="1">男</option>
-											<option value="2">女</option>
+											@for(item in areaInfo){
+											<option value="${item.areaid}">${item.area}</option>
+											@}
 										</#select>
 										<div class="form-group">
 											<label class="col-sm-3 control-label">球场地址</label>
@@ -45,15 +47,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-sm-6 b-r">
-										<#ad id="avatar" name="球场图片" underline="true" />
-									</div>
-									<div class="col-sm-6">
-										<div id="driverInfoContent">
-											<#avatar id="" name="" underline="true" avatarImg="5d8343ea-5be9-4b31-a9c2-fadfe0bec4c5.jpg"/>
-										</div>
-
-									</div>
+									<#ad id="imgs" name="图片上传" underline="true" adsImg="${adsImg}" ads = "${ads}" />
 								</div>
 								<div class="row">
 
@@ -62,6 +56,17 @@
 										<#button btnCss="info" name="增加" icon="fa-plus" clickFun="DictInfoDlg.addItem()"/>
 									    </div>
 									<div class="col-sm-12" id="itemsArea" >
+										@for(item in relation){
+										<div class="form-group" name="dictItem" id="">
+											<label class="col-sm-3 control-label"></label>
+											<div class="col-sm-4">
+												<input class="form-control" type="text" name="itemName" value="${item.usetime}">
+											</div>
+											<div class="col-sm-4">
+												<#button btnCss="danger" name="删除" id="cancel" icon="fa-remove" clickFun="DictInfoDlg.deleteItem(event)"/>
+											</div>
+										</div>
+										@}
 									</div>
 								</div>
 								<div class="progress progress-striped" id="progressTipArea" style="margin-top: 20px;">

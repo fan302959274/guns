@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.MemberDao">
+
+    <sql id="Base_Column_List">
+        a.id, a.account  , a.name, a.type, a.createdate
+    </sql>
+
+    <select id="selectMembers" resultType="map">
+        select
+        <include refid="Base_Column_List" />,
+        c.name as teamName
+        from pk_member a
+
+        <if test="type == 1">
+            LEFT  JOIN  pk_team c on   c.ownerid=a.id
+        </if>
+        <if test="type == 2">
+            LEFT  JOIN  pk_team_member b on   a.id=b.memberid
+            LEFT  JOIN  pk_team c on   c.id=b.teamid
+        </if>
+        where 1=1
+        <if test="type != null">
+           AND  a.type=${type}
+        </if>
+    </select>
+
+    <update id="setStatus">
+        update pk_park set status = #{status} where id =
+        #{parkId}
+    </update>
+</mapper>

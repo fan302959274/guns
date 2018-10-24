@@ -55,7 +55,7 @@ Team.teamMember = function () {
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '添加球场',
+            title: '球队成员信息',
             area: ['900px', '650px'], //宽高
             fix: false, //不固定
             maxmin: true,
@@ -77,7 +77,7 @@ Team.delTeam = function () {
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("parkId", Team.seItem.id);
+            ajax.set("teamId", Team.seItem.id);
             ajax.start();
         };
         Feng.confirm("是否删除球场 " + Team.seItem.pkname + "?",operation);
