@@ -9,7 +9,6 @@ import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
-import com.stylefeng.guns.rest.config.properties.JwtProperties;
 import com.stylefeng.guns.rest.modular.football.transfer.PkTeamDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,11 +18,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,9 +49,8 @@ public class TeamController {
     @Autowired
     PkTeamMemberMapper pkTeamMemberMapper;
     @Autowired
-    JwtProperties jwtProperties;
-    @Autowired
-    RedisTemplate redisTemplate;
+    PkMatchMapper pkMatchMapper;
+
 
     /**
      * 查询球队
@@ -139,14 +138,14 @@ public class TeamController {
     /**
      * 加入球队
      *
-     * @param id
+     * @param teamid
      * @return
      */
     @RequestMapping(value = "/join", method = RequestMethod.POST)
     @ApiOperation(value = "加入球队", notes = "返回码:20000成功;")
-    @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "Long")
-    public ResponseEntity join(@RequestParam Long id, @RequestParam String openid) {
-        log.info("加入球队请求参数为:{}", id);
+    @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
+    public ResponseEntity join(@RequestParam Long teamid, @RequestParam String openid) {
+        log.info("加入球队请求参数为:{}", teamid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -154,7 +153,7 @@ public class TeamController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
             PkTeamMember pkTeamMember = new PkTeamMember();
             pkTeamMember.setMemberid(pkMembers.get(0).getId());
-            pkTeamMember.setTeamid(id);
+            pkTeamMember.setTeamid(teamid);
             pkTeamMemberMapper.insert(pkTeamMember);
 
             return ResponseEntity.ok(new CommonResp<PkTeamMember>(pkTeamMember));
@@ -163,6 +162,7 @@ public class TeamController {
         }
 
     }
+
 
     /**
      * 球队区域
@@ -179,6 +179,55 @@ public class TeamController {
             return ResponseEntity.ok(new CommonResp<Areas>(list));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+    /**
+     * 查询约战资格
+     *
+     * @return
+     */
+    @RequestMapping(value = "/qualify", method = RequestMethod.POST)
+    @ApiOperation(value = "球队约战资格", notes = "返回码:20000成功;")
+    public ResponseEntity qualify(@RequestParam Long teamid, @RequestParam String openid) {
+        try {
+            PkTeam pkTeam = pkTeamMapper.selectById(teamid);
+            Assert.notNull(pkTeam, "未获取到球队");
+            Integer matchSum = (null==pkTeam.getWinnum()?0:pkTeam.getWinnum()) + (null==pkTeam.getDebtnum()?0:pkTeam.getDebtnum()) + (null==pkTeam.getDrawnum()?0:pkTeam.getDrawnum());
+            if (matchSum < 5) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "队伍比赛未满5次"));
+            }
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            if (CollectionUtils.isEmpty(pkMembers)){
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "openid未获取到用户"));
+            }
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            if (!"1".equals(pkMembers.get(0).getType())) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该队员不是队长"));
+            }
+            //东道主
+            Wrapper<PkMatch> pkMatchWrapperHost = new EntityWrapper<PkMatch>();
+            pkMatchWrapperHost = pkMatchWrapperHost.eq("hostteamid", teamid);
+            List<PkMatch> pkMatchesHost = pkMatchMapper.selectList(pkMatchWrapperHost);
+            if (CollectionUtils.isNotEmpty(pkMatchesHost)){
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
+            }
+            //被挑战
+            Wrapper<PkMatch> pkMatchWrapperChallenge = new EntityWrapper<PkMatch>();
+            pkMatchWrapperChallenge = pkMatchWrapperChallenge.eq("challengeteamid", teamid);
+            List<PkMatch> pkMatchesChallenge = pkMatchMapper.selectList(pkMatchWrapperChallenge);
+            if (CollectionUtils.isNotEmpty(pkMatchesChallenge)){
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
+            }
+
+
+            return ResponseEntity.ok(new CommonResp<String>("可约战"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

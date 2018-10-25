@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.rest.common.persistence.dao.PkMatchMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.common.persistence.model.PkMatch">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="time" property="time" />
+		<result column="place" property="place" />
+		<result column="initiatorid" property="initiatorid" />
+		<result column="hostteamid" property="hostteamid" />
+		<result column="challengeteamid" property="challengeteamid" />
+		<result column="prov" property="prov" />
+		<result column="city" property="city" />
+		<result column="area" property="area" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+		<result column="parkid" property="parkid" />
+		<result column="status" property="status" />
+		<result column="createdate" property="createdate" />
+		<result column="hostpaystatus" property="hostpaystatus" />
+		<result column="challengepaystatus" property="challengepaystatus" />
+		<result column="updatedate" property="updatedate" />
+		<result column="creator" property="creator" />
+		<result column="updator" property="updator" />
+		<result column="isdeleted" property="isdeleted" />
+	</resultMap>
+
+</mapper>
