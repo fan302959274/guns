@@ -15,8 +15,12 @@ Match.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
-        {title: '账号', field: 'account', align: 'center', valign: 'middle', sortable: true},
-        {title: '姓名', field: 'name', align: 'center', valign: 'middle', sortable: true}];
+        {title: '挑战方', field: 'challengeteam', align: 'center', valign: 'middle', width: '200px',sortable: true},
+        {title: '球场区域', field: 'area', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '球场', field: 'parkname', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '比赛状态', field: 'status', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '比赛时间', field: 'time', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '支付状态', field: 'challengepaystatus', align: 'center', valign: 'middle',width: '200px', sortable: true}];
 };
 
 /**
@@ -109,18 +113,15 @@ Match.delete = function () {
  */
 Match.search = function () {
     var queryData = {};
-    queryData['account'] = $("#condition").val();
+    queryData['status'] = $("#status").val();
+    queryData['paystatus'] = $("#paystatus").val();
     Match.table.refresh({query: queryData});
 };
 
 $(function () {
     var defaultColunms = Match.initColumn();
-    var table = new BSTreeTable(Match.id, "/match/list", defaultColunms);
-    table.setExpandColumn(2);
-    table.setIdField("id");
-    table.setCodeField("id");
-    table.setParentCodeField("pid");
-    table.setExpandAll(true);
+    var table = new BSTable(Match.id, "/match/list", defaultColunms);
+    table.setPaginationType("client");
     table.init();
     Match.table = table;
 });

@@ -1,7 +1,5 @@
 package com.stylefeng.guns.modular.system.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.PkMatchMapper;
@@ -9,10 +7,11 @@ import com.stylefeng.guns.common.persistence.model.PkMatch;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.util.ToolUtil;
+import com.stylefeng.guns.modular.system.dao.MatchDao;
 import com.stylefeng.guns.modular.system.transfer.PkMatchDto;
+import com.stylefeng.guns.modular.system.warpper.AdWarpper;
+import com.stylefeng.guns.modular.system.warpper.MatchWarpper;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * 比赛控制器
@@ -39,6 +40,8 @@ public class MatchController extends BaseController {
 
     @Resource
     PkMatchMapper pkMatchMapper;
+    @Resource
+    MatchDao matchDao;
 
 
     /**
@@ -78,14 +81,16 @@ public class MatchController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(required = false) String account, Integer page, Integer pageSize) {
-        RowBounds rowBounds = new RowBounds();
-        Wrapper<PkMatch> wrapper = new EntityWrapper<>();
-        if (StringUtils.isNoneBlank(account)) {
-            wrapper = wrapper.like("account", account);
+    public Object list(@RequestParam(required = false) String status, @RequestParam(required = false) String paystatus, Integer page, Integer pageSize) {
+
+        Integer start = 0;
+        Integer size = 10;
+        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
+            start = (page - 1) * pageSize;
+            size = pageSize;
         }
-        List<PkMatch> list = this.pkMatchMapper.selectPage(rowBounds, wrapper);
-        return list;
+        List<Map<String, Object>> list = this.matchDao.selects(status, paystatus, start, size);
+        return super.warpObject(new MatchWarpper(list));
     }
 
     /**

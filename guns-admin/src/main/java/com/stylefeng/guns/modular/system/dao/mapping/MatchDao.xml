@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.MatchDao">
+    <sql id="Base_Column_List">
+        t.id,
+        tm.name as challengeteam,
+        tm2.name as hostteam,
+        area.area,
+        park.name as parkname,
+        t.status,
+        t.time,
+        t.challengepaystatus
+    </sql>
+
+    <select id="selects" resultType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pk_match t LEFT JOIN pk_team tm ON t.challengeteamid = tm.id
+        LEFT JOIN pk_team tm2 ON t.hostteamid = tm2.id
+        LEFT JOIN pk_park park ON t.parkid = park.id
+        LEFT JOIN areas area ON park.area = area.id
+        where 1=1
+        <if test="status != null and status != ''">
+            AND  t.status=#{status}
+        </if>
+        LIMIT #{start}, #{size}
+    </select>
+
+</mapper>
