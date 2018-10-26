@@ -136,7 +136,6 @@ public class AdController extends BaseController {
      * 新增广告
      */
     @RequestMapping(value = "/add")
-    @Permission
     @ResponseBody
     public Object add(PkAdDto pkAdDto, @RequestParam(required = false) String ads) throws ParseException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (ToolUtil.isOneEmpty(pkAdDto, pkAdDto.getMainhead())) {
@@ -167,7 +166,6 @@ public class AdController extends BaseController {
      * 获取所有广告列表
      */
     @RequestMapping(value = "/list")
-    @Permission
     @ResponseBody
     public Object list(@RequestParam(required = false) String adMainHead,String type) {
         List<Map<String, Object>> ads = this.adDao.selectAds(type,adMainHead);
@@ -178,7 +176,6 @@ public class AdController extends BaseController {
      * 广告详情
      */
     @RequestMapping(value = "/detail/{adId}")
-    @Permission
     @ResponseBody
     public Object detail(@PathVariable("adId") Integer adId) {
         return pkAdMapper.selectById(adId);
@@ -189,7 +186,6 @@ public class AdController extends BaseController {
      */
 //    @BussinessLog(value = "修改部门", key = "simplename", dict = PkAd.class)
     @RequestMapping(value = "/update")
-    @Permission
     @ResponseBody
     public Object update(PkAdDto pkAdDto, @RequestParam(required = false) String ads) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (ToolUtil.isEmpty(pkAdDto) || pkAdDto.getId() == null) {
@@ -223,7 +219,6 @@ public class AdController extends BaseController {
      */
 //    @BussinessLog(value = "删除部门", key = "adId", dict = pkAdMapper.class)
     @RequestMapping(value = "/delete")
-    @Permission
     @ResponseBody
     public Object delete(@RequestParam Long adId) {
         pkAdMapper.deleteById(adId);
