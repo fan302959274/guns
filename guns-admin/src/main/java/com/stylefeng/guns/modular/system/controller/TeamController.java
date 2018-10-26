@@ -2,7 +2,9 @@ package com.stylefeng.guns.modular.system.controller;
 
 import com.stylefeng.guns.common.persistence.dao.PkTeamMapper;
 import com.stylefeng.guns.common.persistence.dao.PkTeamMemberMapper;
+import com.stylefeng.guns.common.persistence.model.PkTeam;
 import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.support.BeanKit;
 import com.stylefeng.guns.modular.system.dao.TeamDao;
 import com.stylefeng.guns.modular.system.warpper.TeamWarpper;
 import org.springframework.stereotype.Controller;
@@ -104,9 +106,11 @@ public class TeamController extends BaseController {
     /**
      * 球队详情
      */
-    @RequestMapping(value = "/detail")
-    @ResponseBody
-    public Object detail() {
-        return null;
+    @RequestMapping(value = "/detail/{teamId}")
+    public String detail(@PathVariable Integer teamId, Model model) {
+        PkTeam  pkTeam = pkTeamMapper.selectById(teamId);
+        Map<String, Object> teamMap = BeanKit.beanToMap(pkTeam);
+        model.addAttribute("team", teamMap);
+        return PREFIX +"team_view.html";
     }
 }

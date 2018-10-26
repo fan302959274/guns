@@ -58,18 +58,9 @@ public class PkAd extends Model<PkAd> {
      * 更新时间
      */
 	private Date updatedate;
-    /**
-     * 创建人
-     */
-	private String creator;
-    /**
-     * 更新人
-     */
-	private String updator;
-    /**
-     * 是否删除
-     */
-	private String isdeleted;
+	/**
+	 * 活动类型 0 约战 1 联盟广告 2联盟活动
+	 */
     private String type;
 
 	public Long getId() {
@@ -152,30 +143,6 @@ public class PkAd extends Model<PkAd> {
 		this.updatedate = updatedate;
 	}
 
-	public String getCreator() {
-		return creator;
-	}
-
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
-	public String getUpdator() {
-		return updator;
-	}
-
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
-
-	public String getIsdeleted() {
-		return isdeleted;
-	}
-
-	public void setIsdeleted(String isdeleted) {
-		this.isdeleted = isdeleted;
-	}
-
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -193,9 +160,6 @@ public class PkAd extends Model<PkAd> {
 			", status=" + status +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +
-			", creator=" + creator +
-			", updator=" + updator +
-			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

@@ -1,13 +1,12 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -70,7 +69,7 @@ public class PkTeam extends Model<PkTeam> {
     /**
      * 球队描述
      */
-	private String desc;
+	private String teamdesc;
     /**
      * 所属人
      */
@@ -87,18 +86,6 @@ public class PkTeam extends Model<PkTeam> {
      * 更新时间
      */
 	private Date updatedate;
-    /**
-     * 创建人
-     */
-	private String creator;
-    /**
-     * 更新人
-     */
-	private String updator;
-    /**
-     * 是否删除
-     */
-	private String isdeleted;
 
 
 	public Long getId() {
@@ -189,12 +176,12 @@ public class PkTeam extends Model<PkTeam> {
 		this.area = area;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getTeamdesc() {
+		return teamdesc;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setTeamdesc(String teamdesc) {
+		this.teamdesc = teamdesc;
 	}
 
 	public Long getOwnerid() {
@@ -229,29 +216,6 @@ public class PkTeam extends Model<PkTeam> {
 		this.updatedate = updatedate;
 	}
 
-	public String getCreator() {
-		return creator;
-	}
-
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
-	public String getUpdator() {
-		return updator;
-	}
-
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
-
-	public String getIsdeleted() {
-		return isdeleted;
-	}
-
-	public void setIsdeleted(String isdeleted) {
-		this.isdeleted = isdeleted;
-	}
 
 	@Override
 	protected Serializable pkVal() {
@@ -272,14 +236,11 @@ public class PkTeam extends Model<PkTeam> {
 			", prov=" + prov +
 			", city=" + city +
 			", area=" + area +
-			", desc=" + desc +
+			", teamdesc=" + teamdesc +
 			", ownerid=" + ownerid +
 			", status=" + status +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +
-			", creator=" + creator +
-			", updator=" + updator +
-			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

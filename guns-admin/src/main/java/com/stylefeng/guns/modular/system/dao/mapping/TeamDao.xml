@@ -3,12 +3,23 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.TeamDao">
 
     <sql id="Base_Column_List">
-        a.id, name,level, membernum, winnum, debtnum, drawnum,point,prov,city,descteam,ownerid,status,createdate,updatedate,creator,updator
+        a.id, name, membernum, winnum, debtnum, drawnum,point,prov,city,teamdesc,ownerid,status,createdate,updatedate
     </sql>
 
     <select id="selectTeams" resultType="map">
         select
         <include refid="Base_Column_List" />,  b.area as  area
+        ,(
+        CASE
+        WHEN a.level = 1  THEN '使者'
+        WHEN a.level = 2  THEN '守卫'
+        WHEN a.level = 3  THEN '战士'
+        WHEN a.level = 4  THEN '统治'
+        WHEN a.level = 5  THEN '经典'
+        WHEN a.level = 6  THEN '传奇'
+        WHEN a.level = 7  THEN '神灵'
+        END
+        ) "level"
         from pk_team a
         LEFT  JOIN  areas  b  ON   a.area =b.areaid
         <if test="name != null">

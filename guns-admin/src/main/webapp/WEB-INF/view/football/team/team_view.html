@@ -3,26 +3,30 @@
     <div class="ibox-content">
         <div class="form-horizontal" id="adInfoForm">
 
-            <input type="hidden" id="id" value="${ad.id}">
+            <input type="hidden" id="id" value="${team.id}">
 
             <div class="row">
                 <div class="col-sm-12 b-r">
 
-                    <#input id="mainhead" name="球队名称" underline="true" value="${ad.mainhead}"/>
+                    <#input id="mainhead" name="球队名称" underline="true" value="${team.name}" disabled="disabled"/>
 
-                    <#input id="subhead" name="级别" underline="true" value="${ad.subhead}"/>
-
-                    <#input id="starttime" name="出生日期" underline="true" type="date"
-                            value="${ad.starttime}"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
-
-                    <#input id="endtime" name="出生日期" underline="true" type="date"
-                            value="${ad.endtime}"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
-
-                    <#input id="url" name="广告链接" underline="true" value="${ad.url}"/>
-
-                    <#adview id="ads" name="球队log" underline="true" adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
+                    <#select id="level" name="级别" underline="true" value="" disabled="disabled">
+                        <option value="1">使者</option>
+                        <option value="2">守卫</option>
+                        <option value="3">战士</option>
+                        <option value="4">统治</option>
+                        <option value="5">经典</option>
+                        <option value="6">传奇</option>
+                        <option value="7">神灵</option>
+                    </#select>
+                    <#input id="mainhead" name="排名" underline="true" value="${team.name}"  disabled="disabled"/>
+                    <#input id="mainhead" name="胜负" underline="true" value="${team.name}"  disabled="disabled"/>
+                    <#input id="mainhead" name="积分" underline="true" value="${team.point}" disabled="disabled" />
+                    <#input id="mainhead" name="球队简介" underline="true" value="${team.teamdesc}" disabled="disabled"/>
+                    <#avatarview id="avatar" name="球队LOGO" underline="true" avatarImg=""/>
+                    <#input id="endtime" name="创建时间" underline="true" type="date"
+                            value="${team.createdate}"
+                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})"  disabled="disabled"/>
                 </div>
 
             </div>

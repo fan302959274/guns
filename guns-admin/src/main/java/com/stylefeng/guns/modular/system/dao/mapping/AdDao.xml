@@ -3,7 +3,7 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.AdDao">
 
     <sql id="Base_Column_List">
-        id, mainhead,subhead, starttime, endtime, url, createdate,updatedate,creator,creator,isdeleted,type
+        id, mainhead,subhead, starttime, endtime, url, createdate,updatedate,type
     </sql>
 
     <select id="selectAds" resultType="map">

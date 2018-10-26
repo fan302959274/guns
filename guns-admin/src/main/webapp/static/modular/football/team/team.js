@@ -15,7 +15,7 @@ Team.initColumn = function () {
     var columns = [
         {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
-        {title: '球队名称', field: 'descteam', align: 'center', valign: 'middle', sortable: true},
+        {title: '球队名称', field: 'name', align: 'center', valign: 'middle', sortable: true},
         {title: '球队级别', field: 'level', align: 'center', valign: 'middle', sortable: true},
         {title: '球场区域', field: 'area', align: 'center', valign: 'middle', sortable: true},
         {title: '排名', field: 'ad_start_time', align: 'center', valign: 'middle', sortable: true},
@@ -65,6 +65,23 @@ Team.teamMember = function () {
     }
 };
 
+
+/**
+ * 打开查看球队详情
+ */
+Team.openTeamDetail = function () {
+    if (this.check()) {
+        var index = layer.open({
+            type: 2,
+            title: '球队详情',
+            area: ['800px', '420px'], //宽高
+            fix: false, //不固定
+            maxmin: true,
+            content: Feng.ctxPath + '/team/detail/' + Team.seItem.id
+        });
+        this.layerIndex = index;
+    }
+};
 /**
  * 删除球队
  */
