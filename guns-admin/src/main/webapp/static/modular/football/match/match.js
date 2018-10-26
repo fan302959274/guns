@@ -2,7 +2,7 @@
  * 广告管理初始化
  */
 var Match = {
-    id: "MatchTable",	//表格id
+    id: "matchTable",	//表格id
     seItem: null,		//选中的条目
     table: null,
     layerIndex: -1
@@ -27,7 +27,7 @@ Match.initColumn = function () {
  * 检查是否选中
  */
 Match.check = function () {
-    var selected = $('#' + this.id).bootstrapTreeTable('getSelections');
+    var selected = $('#' + this.id).bootstrapTable('getSelections');
     if (selected.length == 0) {
         Feng.info("请先选中表格中的某一记录！");
         return false;
@@ -37,20 +37,6 @@ Match.check = function () {
     }
 };
 
-/**
- * 点击添加广告
- */
-Match.openAddMatch = function () {
-    var index = layer.open({
-        type: 2,
-        title: '添加广告',
-        area: ['800px', '420px'], //宽高
-        fix: false, //不固定
-        maxmin: true,
-        content: Feng.ctxPath + '/match/match_add'
-    });
-    this.layerIndex = index;
-};
 
 /**
  * 打开查看广告详情（编辑）

@@ -1,10 +1,10 @@
 package com.stylefeng.guns.modular.system.dao;
 
 
-        import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Param;
 
-        import java.util.List;
-        import java.util.Map;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 比赛Dao
@@ -22,4 +22,12 @@ public interface MatchDao {
      */
     List<Map<String, Object>> selects(@Param("status") String status, @Param("hostpaystatus") String hostpaystatus, @Param("start") Integer start, @Param("size") Integer size);
 
+
+    /**
+     * 根据id获取比赛详情
+     *
+     * @return
+     * @date 2017年2月12日 下午9:14:34
+     */
+    Map<String, Object> selectById(@Param("id") Long id);
 }

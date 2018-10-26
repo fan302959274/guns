@@ -57,22 +57,22 @@ public class MatchController extends BaseController {
      * 跳转到修改比赛
      */
     @RequestMapping("/match_update/{matchId}")
-    public String matchUpdate(@PathVariable Integer matchId, Model model) {
-        PkMatch pkMatch = pkMatchMapper.selectById(matchId);
+    public String matchUpdate(@PathVariable Long matchId, Model model) {
+        Map pkMatch = matchDao.selectById(matchId);
         model.addAttribute("match", pkMatch);
         LogObjectHolder.me().set(pkMatch);
-        return PREFIX + "pkMatch_edit.html";
+        return PREFIX + "match_edit.html";
     }
 
     /**
      * 跳转到查询比赛
      */
-    @RequestMapping("/pkMatch_view/{matchId}")
-    public String pkMatchView(@PathVariable Integer matchId, Model model) {
-        PkMatch pkMatch = pkMatchMapper.selectById(matchId);
+    @RequestMapping("/match_view/{matchId}")
+    public String pkMatchView(@PathVariable Long matchId, Model model) {
+        Map pkMatch = matchDao.selectById(matchId);
         model.addAttribute("match", pkMatch);
         LogObjectHolder.me().set(pkMatch);
-        return PREFIX + "member_view.html";
+        return PREFIX + "match_view.html";
     }
 
 

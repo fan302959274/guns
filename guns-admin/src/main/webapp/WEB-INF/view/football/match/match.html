@@ -10,21 +10,31 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-3">
-                                <#NameCon id="status" name="比赛状态" />
+                                <#SelectCon id="status" name="比赛状态" >
+                                    <option value="">全部</option>
+                                    <option value="1">匹配中</option>
+                                    <option value="2">待比赛</option>
+                                    <option value="3">约战中</option>
+                                    <option value="2">约战完成</option>
+                                </#SelectCon>
                             </div>
                             <div class="col-sm-3">
-                                <#NameCon id="paystatus" name="支付状态" />
+                                <#SelectCon id="paystatus" name="支付状态" >
+                                    <option value="">全部</option>
+                                    <option value="1">已支付</option>
+                                    <option value="2">未支付</option>
+                                </#SelectCon>
                             </div>
                             <div class="col-sm-3">
                                 <#button name="搜索" icon="fa-search" clickFun="Match.search()"/>
                             </div>
                         </div>
-                        <div class="hidden-xs" id="MatchTableToolbar" role="group">
+                        <div class="hidden-xs" id="matchTableToolbar" role="group">
                             <#button name="查看" icon="fa-plus" clickFun="Match.openMatchView()" space="true"/>
                             <#button name="修改" icon="fa-plus" clickFun="Match.openMatchDetail()" space="true"/>
                             <#button name="删除" icon="fa-plus" clickFun="Match.delete()" space="true"/>
                         </div>
-                        <#table id="MatchTable"/>
+                        <#table id="matchTable"/>
                     </div>
                 </div>
             </div>

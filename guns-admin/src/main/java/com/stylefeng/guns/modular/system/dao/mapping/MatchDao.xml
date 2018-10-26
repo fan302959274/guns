@@ -6,10 +6,12 @@
         tm.name as challengeteam,
         tm2.name as hostteam,
         area.area,
-        park.name as parkname,
+        park.pkname as parkname,
+        park.pkaddr as pkaddr,
         t.status,
         t.time,
-        t.challengepaystatus
+        t.challengepaystatus,
+        t.hostpaystatus
     </sql>
 
     <select id="selects" resultType="map">
@@ -25,5 +27,17 @@
         </if>
         LIMIT #{start}, #{size}
     </select>
+
+    <select id="selectById" resultType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM pk_match t LEFT JOIN pk_team tm ON t.challengeteamid = tm.id
+        LEFT JOIN pk_team tm2 ON t.hostteamid = tm2.id
+        LEFT JOIN pk_park park ON t.parkid = park.id
+        LEFT JOIN areas area ON park.area = area.id
+        where t.id=#{id}
+    </select>
+
+
 
 </mapper>
