@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-11
+ * @since 2018-10-27
  */
 @TableName("pk_team_member")
 public class PkTeamMember extends Model<PkTeamMember> {
@@ -34,6 +34,10 @@ public class PkTeamMember extends Model<PkTeamMember> {
      * 队员id
      */
 	private Long memberid;
+    /**
+     * 1 通过 0 驳回
+     */
+	private String status;
 
 
 	public Long getId() {
@@ -60,6 +64,14 @@ public class PkTeamMember extends Model<PkTeamMember> {
 		this.memberid = memberid;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -71,6 +83,7 @@ public class PkTeamMember extends Model<PkTeamMember> {
 			"id=" + id +
 			", teamid=" + teamid +
 			", memberid=" + memberid +
+			", status=" + status +
 			"}";
 	}
 }

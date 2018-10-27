@@ -13,9 +13,7 @@
 		<result column="status" property="status" />
 		<result column="createdate" property="createdate" />
 		<result column="updatedate" property="updatedate" />
-		<result column="creator" property="creator" />
-		<result column="updator" property="updator" />
-		<result column="isdeleted" property="isdeleted" />
+		<result column="type" property="type" />
 	</resultMap>
 
 </mapper>

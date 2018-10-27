@@ -1,12 +1,13 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -14,7 +15,7 @@ import java.util.Date;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-11
+ * @since 2018-10-27
  */
 @TableName("pk_ad")
 public class PkAd extends Model<PkAd> {
@@ -58,10 +59,11 @@ public class PkAd extends Model<PkAd> {
      * 更新时间
      */
 	private Date updatedate;
-	/**
-	 * 活动类型 0 约战 1 联盟广告 2联盟活动
-	 */
-    private String type;
+    /**
+     * 0 约战 1 联盟广告 2联盟活动
+     */
+	private String type;
+
 
 	public Long getId() {
 		return id;
@@ -103,14 +105,6 @@ public class PkAd extends Model<PkAd> {
 		this.endtime = endtime;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public String getUrl() {
 		return url;
 	}
@@ -143,6 +137,14 @@ public class PkAd extends Model<PkAd> {
 		this.updatedate = updatedate;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -160,6 +162,7 @@ public class PkAd extends Model<PkAd> {
 			", status=" + status +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +
+			", type=" + type +
 			"}";
 	}
 }

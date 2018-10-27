@@ -1,12 +1,14 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.enums.IdType;
+import java.math.BigDecimal;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -14,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-11
+ * @since 2018-10-27
  */
 @TableName("pk_team")
 public class PkTeam extends Model<PkTeam> {
@@ -74,6 +76,22 @@ public class PkTeam extends Model<PkTeam> {
      * 所属人
      */
 	private Long ownerid;
+    /**
+     * 文明评分 1-5分
+     */
+	private BigDecimal culture;
+    /**
+     * 准时评分 1-5分
+     */
+	private BigDecimal ontime;
+    /**
+     * 球队面貌评分 1-5
+     */
+	private BigDecimal friendly;
+    /**
+     * 参评队伍总数
+     */
+	private Integer reviewcount;
     /**
      * 球队状态:0:禁用1:启用
      */
@@ -192,6 +210,38 @@ public class PkTeam extends Model<PkTeam> {
 		this.ownerid = ownerid;
 	}
 
+	public BigDecimal getCulture() {
+		return culture;
+	}
+
+	public void setCulture(BigDecimal culture) {
+		this.culture = culture;
+	}
+
+	public BigDecimal getOntime() {
+		return ontime;
+	}
+
+	public void setOntime(BigDecimal ontime) {
+		this.ontime = ontime;
+	}
+
+	public BigDecimal getFriendly() {
+		return friendly;
+	}
+
+	public void setFriendly(BigDecimal friendly) {
+		this.friendly = friendly;
+	}
+
+	public Integer getReviewcount() {
+		return reviewcount;
+	}
+
+	public void setReviewcount(Integer reviewcount) {
+		this.reviewcount = reviewcount;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -216,7 +266,6 @@ public class PkTeam extends Model<PkTeam> {
 		this.updatedate = updatedate;
 	}
 
-
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -238,6 +287,10 @@ public class PkTeam extends Model<PkTeam> {
 			", area=" + area +
 			", teamdesc=" + teamdesc +
 			", ownerid=" + ownerid +
+			", culture=" + culture +
+			", ontime=" + ontime +
+			", friendly=" + friendly +
+			", reviewcount=" + reviewcount +
 			", status=" + status +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-11
+ * @since 2018-10-27
  */
 @TableName("pk_attachment")
 public class PkAttachment extends Model<PkAttachment> {

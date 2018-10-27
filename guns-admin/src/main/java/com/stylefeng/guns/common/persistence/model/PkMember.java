@@ -1,13 +1,14 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.enums.IdType;
 import java.math.BigDecimal;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-11
+ * @since 2018-10-27
  */
 @TableName("pk_member")
 public class PkMember extends Model<PkMember> {
@@ -79,7 +80,6 @@ public class PkMember extends Model<PkMember> {
      * 更新时间
      */
 	private Date updatedate;
-
 
 
 	public Long getId() {
@@ -193,8 +193,6 @@ public class PkMember extends Model<PkMember> {
 	public void setUpdatedate(Date updatedate) {
 		this.updatedate = updatedate;
 	}
-
-
 
 	@Override
 	protected Serializable pkVal() {

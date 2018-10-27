@@ -1,56 +1,45 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
- * 队员附件表
+ * 球场可用时间表
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-11
+ * @since 2018-10-27
  */
 @TableName("pk_park_relation")
 public class PkParkRelation extends Model<PkParkRelation> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
 	@TableId(value="id", type= IdType.AUTO)
-	private Long id;
-    /**
-     * 球场Id
-     */
-	private Long parkid;
-    /**
-     * 可用时间
-     */
+	private Integer id;
+	private Integer parkid;
 	private String usetime;
-	@Override
-	protected Serializable pkVal() {
-		return this.id;
-	}
-	public Long getId() {
+
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Long getParkid() {
+	public Integer getParkid() {
 		return parkid;
 	}
 
-	public void setParkid(Long parkid) {
+	public void setParkid(Integer parkid) {
 		this.parkid = parkid;
 	}
 
@@ -60,5 +49,19 @@ public class PkParkRelation extends Model<PkParkRelation> {
 
 	public void setUsetime(String usetime) {
 		this.usetime = usetime;
+	}
+
+	@Override
+	protected Serializable pkVal() {
+		return this.id;
+	}
+
+	@Override
+	public String toString() {
+		return "PkParkRelation{" +
+			"id=" + id +
+			", parkid=" + parkid +
+			", usetime=" + usetime +
+			"}";
 	}
 }

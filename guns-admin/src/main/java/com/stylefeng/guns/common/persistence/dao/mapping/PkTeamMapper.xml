@@ -15,14 +15,15 @@
 		<result column="prov" property="prov" />
 		<result column="city" property="city" />
 		<result column="area" property="area" />
-		<result column="desc" property="desc" />
+		<result column="teamdesc" property="teamdesc" />
 		<result column="ownerid" property="ownerid" />
+		<result column="culture" property="culture" />
+		<result column="ontime" property="ontime" />
+		<result column="friendly" property="friendly" />
+		<result column="reviewcount" property="reviewcount" />
 		<result column="status" property="status" />
 		<result column="createdate" property="createdate" />
 		<result column="updatedate" property="updatedate" />
-		<result column="creator" property="creator" />
-		<result column="updator" property="updator" />
-		<result column="isdeleted" property="isdeleted" />
 	</resultMap>
 
 </mapper>

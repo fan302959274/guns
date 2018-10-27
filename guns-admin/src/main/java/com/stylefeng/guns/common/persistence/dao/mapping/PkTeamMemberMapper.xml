@@ -7,6 +7,7 @@
 		<id column="id" property="id" />
 		<result column="teamid" property="teamid" />
 		<result column="memberid" property="memberid" />
+		<result column="status" property="status" />
 	</resultMap>
 
 </mapper>
