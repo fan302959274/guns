@@ -5,11 +5,7 @@ style : 附加的css属性
 @*/
 <div class="form-group">
     <label class="col-sm-3 control-label">${name}</label>
-    <label class="col-sm-9 control-label"
-
-           @if(isNotEmpty(style)){
-           style="${style}"
-           @}
+    <label class="col-sm-9 control-label" style="text-align:left;"
     >
         ${value}
     </label>

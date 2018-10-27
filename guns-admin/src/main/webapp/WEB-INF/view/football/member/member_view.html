@@ -7,47 +7,27 @@
 
             <div class="row">
                 <div class="col-sm-12 b-r">
-
-                    <#input id="account" name="账号" underline="true" value="${member.account}" disabled="disabled"/>
-
-                    <#input id="name" name="姓名" underline="true" value="${member.name}" disabled="disabled"/>
-
-                    <#input id="birth" name="出生年月" underline="true" type="date" value="${member.birth}"
+                    <#label id="account" name="账号" underline="true" value="${member.account}" disabled="disabled"/>
+                    <#label id="name" name="姓名" underline="true" value="${member.name}" disabled="disabled"/>
+                    <#label id="birth" name="出生年月" underline="true" type="date" value="${member.birth}"
                             clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" disabled="disabled" />
-
-                    <#input id="height" name="身高" underline="true" value="${member.height}" disabled="disabled"/>
-                    <#input id="weight" name="体重" underline="true" value="${member.weight}" disabled="disabled"/>
-                    <#select id="position" name="所踢位置" underline="true" value="${member.position}" disabled="disabled">
-                        <option value="1">前锋</option>
-                        <option value="2">中锋</option>
-                    </#select>
-                    <#select id="habitfeet" name="惯用脚" underline="true" value="${member.habitfeet}" disabled="disabled">
-                        <option value="1">左</option>
-                        <option value="2">右</option>
-                    </#select>
+                    <#label id="height" name="身高" underline="true" value="${member.height}" disabled="disabled"/>
+                    <#label id="weight" name="体重" underline="true" value="${member.weight}" disabled="disabled"/>
+                    <#label id="position" name="所踢位置" underline="true" value="${member.position}" />
+                    <#label id="habitfeet" name="惯用脚" underline="true" value="${member.habitfeet}" />
                     @if(isNotEmpty(type) && type == '1'){
-                    <#select id="type" name="状态" underline="true" value="${member.type}" disabled="disabled">
-                        <option value="1">队长</option>
-                    </#select>
+                    <#label id="type" name="状态" underline="true" value="队长" />
                     @}else{
-                    <#select id="type" name="状态" underline="true" value="${member.type}" disabled="disabled">
-                        <option value="2">球员</option>
-                    </#select>
+                    <#label id="type" name="状态" underline="true" value="队员" />
                     @}
-
                     <#avatarview id="avatar" name="头像" underline="true" avatarImg="${member.avatar}" />
                     <#avatarview id="idcard" name="身份证照" underline="true" avatarImg="${member.idcard}"/>
-
-
-                    <#input id="teamname" name="球队名称" underline="true" value="${teamInfo.name}" disabled="disabled"/>
-
+                    <#label id="teamname" name="球队名称" underline="true" value="${teamInfo.name}" disabled="disabled"/>
                     <#avatarview id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog}"/>
-
-                    <#input id="teamname" name="球队区域" underline="true" value="${teamInfo.area}" disabled="disabled"/>
+                    <#label id="teamname" name="球队区域" underline="true" value="${teamInfo.area}" disabled="disabled"/>
                 </div>
 
             </div>
-
 
 
         </div>

@@ -8,20 +8,20 @@
             <div class="row">
                 <div class="col-sm-12 b-r">
 
-                    <#input id="mainhead" name="广告标题" underline="true" value="${ad.mainhead}"/>
+                    <#label id="mainhead" name="广告标题" underline="true" value="${ad.mainhead}"/>
 
-                    <#input id="subhead" name="广告副标题" underline="true" value="${ad.subhead}"/>
+                    <#label id="subhead" name="广告副标题" underline="true" value="${ad.subhead}"/>
 
-                    <#input id="starttime" name="出生日期" underline="true" type="date"
+                    <#label id="starttime" name="出生日期" underline="true" type="date"
                             value="${ad.starttime}"
                             clickFun="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})" />
 
-                    <#input id="endtime" name="出生日期" underline="true" type="date"
+                    <#label id="endtime" name="出生日期" underline="true" type="date"
                             value="${ad.endtime}"
                             clickFun="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})" />
 
 
-                    <#input id="url" name="广告链接" underline="true" value="${ad.url}"/>
+                    <#label id="url" name="广告链接" underline="true" value="${ad.url}"/>
 
                     <#adview id="ads" name="图片上传" underline="true" adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
 
