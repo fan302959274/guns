@@ -10,15 +10,19 @@
             <div class="row">
                 <div class="col-sm-12 b-r">
 
-                    <#input id="challengeteam" name="发起方" underline="true" value="${match.challengeteam}"/>
-                    <#input id="hostteam" name="匹配方" underline="true" value="${match.hostteam}"/>
-                    <#input id="area" name="球场区域" underline="true" value="${match.area}"/>
-                    <#input id="parkname" name="球场" underline="true" value="${match.parkname}"/>
-                    <#input id="pkaddr" name="球场地址" underline="true" value="${match.pkaddr}"/>
-                    <#input id="status" name="比赛状态" underline="true" value="${match.status}"/>
-                    <#input id="time" name="时间" underline="true" value="${match.time}"/>
-                    <#input id="hostteam" name="发起方评分" underline="true" value="${match.hostteam}"/>
-                    <#input id="hostteam" name="匹配方评分" underline="true" value="${match.hostteam}"/>
+                    <#label id="challengeteam" name="发起方" underline="true" value="${match.challengeteam}"/>
+                    <#label id="hostteam" name="匹配方" underline="true" value="${match.hostteam}"/>
+                    <#label id="area" name="球场区域" underline="true" value="${match.area}"/>
+                    <#label id="parkname" name="球场" underline="true" value="${match.parkname}"/>
+                    <#label id="pkaddr" name="球场地址" underline="true" value="${match.pkaddr}"/>
+                    <#label id="status" name="比赛状态" underline="true" value="${match.status}"/>
+                    <#label id="time" name="时间" underline="true" value="${match.time}"/>
+                    <#label id="hostteam" name="发起方文明评分"  value="${match.challengeculture}"/>
+                    <#label id="hostteam" name="发起方准时评分"  value="${match.challengeontime}"/>
+                    <#label id="hostteam" name="发起方球队面貌评分" underline="true" value="${match.challengefriendly}"/>
+                    <#label id="hostteam" name="匹配方文明评分"  value="${match.hostculture}"/>
+                    <#label id="hostteam" name="匹配方准时评分"  value="${match.hostontime}"/>
+                    <#label id="hostteam" name="匹配方球队面貌评分" underline="true" value="${match.hostfriendly}"/>
                     <#select id="challengepaystatus" name="发起方支付状态" underline="true" >
                         <option value="0">未支付</option>
                         <option value="1">已支付</option>

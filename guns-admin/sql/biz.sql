@@ -178,8 +178,8 @@ CREATE TABLE `pk_park` (
 -- 6-1、球场可用时间表
 DROP TABLE IF EXISTS `pk_park_relation`;
 CREATE TABLE `pk_park_relation` (
-  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
-  `parkid` tinyint(4) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `parkid` BIGINT(20) NOT NULL,
   `usetime` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='球场可用时间表';

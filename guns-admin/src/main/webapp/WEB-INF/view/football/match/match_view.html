@@ -15,8 +15,12 @@
                     <#label id="pkaddr" name="球场地址" underline="true" value="${match.pkaddr}"/>
                     <#label id="status" name="比赛状态" underline="true" value="${match.status}"/>
                     <#label id="time" name="时间" underline="true" value="${match.time}"/>
-                    <#label id="hostteam" name="发起方评分" underline="true" value="${match.hostteam}"/>
-                    <#label id="hostteam" name="匹配方评分" underline="true" value="${match.hostteam}"/>
+                    <#label id="hostteam" name="发起方文明评分"  value="${match.challengeculture}"/>
+                    <#label id="hostteam" name="发起方准时评分"  value="${match.challengeontime}"/>
+                    <#label id="hostteam" name="发起方球队面貌评分" underline="true" value="${match.challengefriendly}"/>
+                    <#label id="hostteam" name="匹配方文明评分"  value="${match.hostculture}"/>
+                    <#label id="hostteam" name="匹配方准时评分"  value="${match.hostontime}"/>
+                    <#label id="hostteam" name="匹配方球队面貌评分" underline="true" value="${match.hostfriendly}"/>
                     <#label id="challengepaystatus" name="发起方支付状态" underline="true" value="${match.challengepaystatus}"/>
                     <#label id="hostpaystatus" name="匹配方支付状态" underline="true" value="${match.hostpaystatus}"/>
 

@@ -4,7 +4,13 @@
     <sql id="Base_Column_List">
         t.id,
         tm.name as challengeteam,
+        tm.culture as challengeculture,
+        tm.ontime as challengeontime,
+        tm.friendly as challengefriendly,
         tm2.name as hostteam,
+        tm2.culture as hostculture,
+        tm2.ontime as hostontime,
+        tm2.friendly as hostfriendly,
         area.area,
         park.pkname as parkname,
         park.pkaddr as pkaddr,
@@ -23,7 +29,7 @@
         LEFT JOIN areas area ON park.area = area.id
         where 1=1
         <if test="status != null and status != ''">
-            AND  t.status=#{status}
+            AND t.status=#{status}
         </if>
         LIMIT #{start}, #{size}
     </select>
@@ -37,7 +43,6 @@
         LEFT JOIN areas area ON park.area = area.id
         where t.id=#{id}
     </select>
-
 
 
 </mapper>

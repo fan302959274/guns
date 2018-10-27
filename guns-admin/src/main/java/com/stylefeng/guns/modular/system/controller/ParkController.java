@@ -11,7 +11,7 @@ import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.common.persistence.dao.PkParkMapper;
-import com.stylefeng.guns.common.persistence.dao.mapping.PkParkRelationMapper;
+import com.stylefeng.guns.common.persistence.dao.PkParkRelationMapper;
 import com.stylefeng.guns.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.common.persistence.model.PkPark;
 import com.stylefeng.guns.common.persistence.model.PkParkRelation;

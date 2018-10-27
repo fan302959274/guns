@@ -45,7 +45,7 @@ Match.openMatchDetail = function () {
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '广告详情',
+            title: '比赛详情',
             area: ['800px', '420px'], //宽高
             fix: false, //不固定
             maxmin: true,
@@ -63,7 +63,7 @@ Match.openMatchView = function () {
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '广告详情',
+            title: '比赛详情',
             area: ['800px', '420px'], //宽高
             fix: false, //不固定
             maxmin: true,
@@ -90,12 +90,12 @@ Match.delete = function () {
             ajax.start();
         };
 
-        Feng.confirm("是否刪除该广告?", operation);
+        Feng.confirm("是否刪除该比赛?", operation);
     }
 };
 
 /**
- * 查询广告列表
+ * 查询比赛列表
  */
 Match.search = function () {
     var queryData = {};
