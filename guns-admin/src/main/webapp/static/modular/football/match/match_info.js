@@ -2,7 +2,7 @@
  * 初始化部门详情对话框
  */
 var MatchInfoDlg = {
-    adInfoData : {},
+    adInfoData: {},
     validateFields: {
         name: {
             validators: {
@@ -24,7 +24,7 @@ var MatchInfoDlg = {
 /**
  * 清除数据
  */
-MatchInfoDlg.clearData = function() {
+MatchInfoDlg.clearData = function () {
     this.adInfoData = {};
 }
 
@@ -34,7 +34,7 @@ MatchInfoDlg.clearData = function() {
  * @param key 数据的名称
  * @param val 数据的具体值
  */
-MatchInfoDlg.set = function(key, val) {
+MatchInfoDlg.set = function (key, val) {
     this.adInfoData[key] = (typeof value == "undefined") ? $("#" + key).val() : value;
     return this;
 }
@@ -45,22 +45,22 @@ MatchInfoDlg.set = function(key, val) {
  * @param key 数据的名称
  * @param val 数据的具体值
  */
-MatchInfoDlg.get = function(key) {
+MatchInfoDlg.get = function (key) {
     return $("#" + key).val();
 }
 
 /**
  * 关闭此对话框
  */
-MatchInfoDlg.close = function() {
+MatchInfoDlg.close = function () {
     parent.layer.close(window.parent.Match.layerIndex);
 }
 
 /**
  * 收集数据
  */
-MatchInfoDlg.collectData = function() {
-    this.set('id').set('account').set('name').set('birth').set('height').set('weight').set('position').set('habitfeet').set('type').set('avatar').set('idcard');
+MatchInfoDlg.collectData = function () {
+    this.set('id').set('challengepaystatus').set('hostpaystatus');
 }
 
 /**
@@ -75,7 +75,7 @@ MatchInfoDlg.validate = function () {
 /**
  * 提交添加部门
  */
-MatchInfoDlg.addSubmit = function() {
+MatchInfoDlg.addSubmit = function () {
 
     this.clearData();
     this.collectData();
@@ -85,11 +85,11 @@ MatchInfoDlg.addSubmit = function() {
     }
 
     //提交信息
-    var ajax = new $ax(Feng.ctxPath + "/match/add", function(data){
+    var ajax = new $ax(Feng.ctxPath + "/match/add", function (data) {
         Feng.success("添加成功!");
         window.parent.Match.table.refresh();
         MatchInfoDlg.close();
-    },function(data){
+    }, function (data) {
         Feng.error("添加失败!" + data.responseJSON.message + "!");
     });
     ajax.set(this.adInfoData);
@@ -99,7 +99,7 @@ MatchInfoDlg.addSubmit = function() {
 /**
  * 提交修改
  */
-MatchInfoDlg.editSubmit = function() {
+MatchInfoDlg.editSubmit = function () {
 
     this.clearData();
     this.collectData();
@@ -109,11 +109,11 @@ MatchInfoDlg.editSubmit = function() {
     }
 
     //提交信息
-    var ajax = new $ax(Feng.ctxPath + "/match/update", function(data){
+    var ajax = new $ax(Feng.ctxPath + "/match/update", function (data) {
         Feng.success("修改成功!");
         window.parent.Match.table.refresh();
         MatchInfoDlg.close();
-    },function(data){
+    }, function (data) {
         Feng.error("修改失败!" + data.responseJSON.message + "!");
     });
     ajax.set(this.adInfoData);
@@ -127,7 +127,18 @@ function onBodyDown(event) {
     }
 }
 
-$(function() {
+$(function () {
     Feng.initValidator("matchInfoForm", MatchInfoDlg.validateFields);
+    //初始化是否支付菜单
+    if ($("#challengepaystatusVal").val() == undefined) {
+        $("#challengepaystatus").val(0);
+    } else {
+        $("#challengepaystatus").val($("#challengepaystatusVal").val());
+    }
 
+    if ($("#hostpaystatusVal").val() == undefined) {
+        $("#hostpaystatus").val(0);
+    } else {
+        $("#hostpaystatus").val($("#hostpaystatusVal").val());
+    }
 });
