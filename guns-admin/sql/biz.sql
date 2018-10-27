@@ -217,7 +217,7 @@ CREATE TABLE `pk_attachment` (
   COMMENT = '队员附件表';
 
 
-
+DROP TABLE IF EXISTS `provinces`;
 CREATE TABLE `provinces` (
    `id` int(11) NOT NULL AUTO_INCREMENT,
    `provinceid` int(11) NOT NULL,
@@ -225,6 +225,7 @@ CREATE TABLE `provinces` (
    PRIMARY KEY (`id`)
  ) ENGINE=MyISAM AUTO_INCREMENT=392 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `cities`;
 CREATE TABLE `cities` (
    `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
    `cityid` char(6) NOT NULL COMMENT '城市编码',

@@ -15,7 +15,7 @@ var Member = {
 Member.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
+        {title: 'id', field: 'id', align: 'center', valign: 'middle'},
         {title: '账号', field: 'account', align: 'center', valign: 'middle', sortable: true},
         {title: '姓名', field: 'name', align: 'center', valign: 'middle', sortable: true},
         {title: '球队名称', field: 'teamName', align: 'center', valign: 'middle', sortable: true},
