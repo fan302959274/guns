@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-25
+ * @since 2018-10-27
  */
 @TableName("pk_match")
 public class PkMatch extends Model<PkMatch> {
@@ -78,7 +78,7 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 比赛状态(待定)
      */
-	private String status;
+	private Integer status;
     /**
      * 创建时间
      */
@@ -86,11 +86,11 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 发起方支付状态
      */
-	private String hostpaystatus;
+	private Integer hostpaystatus;
     /**
      * 挑战者支付状态
      */
-	private String challengepaystatus;
+	private Integer challengepaystatus;
     /**
      * 更新时间
      */
@@ -213,11 +213,11 @@ public class PkMatch extends Model<PkMatch> {
 		this.parkid = parkid;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
@@ -229,19 +229,19 @@ public class PkMatch extends Model<PkMatch> {
 		this.createdate = createdate;
 	}
 
-	public String getHostpaystatus() {
+	public Integer getHostpaystatus() {
 		return hostpaystatus;
 	}
 
-	public void setHostpaystatus(String hostpaystatus) {
+	public void setHostpaystatus(Integer hostpaystatus) {
 		this.hostpaystatus = hostpaystatus;
 	}
 
-	public String getChallengepaystatus() {
+	public Integer getChallengepaystatus() {
 		return challengepaystatus;
 	}
 
-	public void setChallengepaystatus(String challengepaystatus) {
+	public void setChallengepaystatus(Integer challengepaystatus) {
 		this.challengepaystatus = challengepaystatus;
 	}
 
