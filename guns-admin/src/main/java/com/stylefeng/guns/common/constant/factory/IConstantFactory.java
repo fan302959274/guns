@@ -96,6 +96,11 @@ public interface IConstantFactory {
     String getStatusName(Integer status);
 
     /**
+     * 获取支付状态
+     */
+    String getPayStatusName(Integer status);
+
+    /**
      * 获取菜单状态
      */
     String getMenuStatusName(Integer status);

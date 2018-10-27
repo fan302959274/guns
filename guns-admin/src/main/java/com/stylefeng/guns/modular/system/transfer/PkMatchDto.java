@@ -77,7 +77,7 @@ public class PkMatchDto extends Model<PkMatchDto> {
     /**
      * 比赛状态(待定)
      */
-    private String status;
+    private Integer status;
     /**
      * 创建时间
      */
@@ -85,11 +85,11 @@ public class PkMatchDto extends Model<PkMatchDto> {
     /**
      * 发起方支付状态
      */
-    private String hostpaystatus;
+    private Integer hostpaystatus;
     /**
      * 挑战者支付状态
      */
-    private String challengepaystatus;
+    private Integer challengepaystatus;
     /**
      * 更新时间
      */
@@ -212,12 +212,28 @@ public class PkMatchDto extends Model<PkMatchDto> {
         this.parkid = parkid;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getHostpaystatus() {
+        return hostpaystatus;
+    }
+
+    public void setHostpaystatus(Integer hostpaystatus) {
+        this.hostpaystatus = hostpaystatus;
+    }
+
+    public Integer getChallengepaystatus() {
+        return challengepaystatus;
+    }
+
+    public void setChallengepaystatus(Integer challengepaystatus) {
+        this.challengepaystatus = challengepaystatus;
     }
 
     public Date getCreatedate() {
@@ -228,21 +244,7 @@ public class PkMatchDto extends Model<PkMatchDto> {
         this.createdate = createdate;
     }
 
-    public String getHostpaystatus() {
-        return hostpaystatus;
-    }
 
-    public void setHostpaystatus(String hostpaystatus) {
-        this.hostpaystatus = hostpaystatus;
-    }
-
-    public String getChallengepaystatus() {
-        return challengepaystatus;
-    }
-
-    public void setChallengepaystatus(String challengepaystatus) {
-        this.challengepaystatus = challengepaystatus;
-    }
 
     public Date getUpdatedate() {
         return updatedate;

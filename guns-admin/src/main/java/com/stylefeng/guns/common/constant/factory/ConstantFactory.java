@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.common.constant.state.ManagerStatus;
 import com.stylefeng.guns.common.constant.state.MenuStatus;
+import com.stylefeng.guns.common.constant.state.PayStatus;
 import com.stylefeng.guns.common.persistence.dao.*;
 import com.stylefeng.guns.common.persistence.model.*;
 import com.stylefeng.guns.core.log.LogObjectHolder;
@@ -251,6 +252,14 @@ public class ConstantFactory implements IConstantFactory {
     @Override
     public String getStatusName(Integer status) {
         return ManagerStatus.valueOf(status);
+    }
+
+    /**
+     * 获取支付状态
+     */
+    @Override
+    public String getPayStatusName(Integer status) {
+        return PayStatus.valueOf(status);
     }
 
     /**

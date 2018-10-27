@@ -11,6 +11,7 @@ import com.stylefeng.guns.modular.system.dao.MatchDao;
 import com.stylefeng.guns.modular.system.transfer.PkMatchDto;
 import com.stylefeng.guns.modular.system.warpper.AdWarpper;
 import com.stylefeng.guns.modular.system.warpper.MatchWarpper;
+import com.stylefeng.guns.modular.system.warpper.UserWarpper;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,7 +91,7 @@ public class MatchController extends BaseController {
             size = pageSize;
         }
         List<Map<String, Object>> list = this.matchDao.selects(status, paystatus, start, size);
-        return super.warpObject(new MatchWarpper(list));
+        return new MatchWarpper(list).warp();
     }
 
     /**

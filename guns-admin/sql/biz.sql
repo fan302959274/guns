@@ -135,13 +135,13 @@ CREATE TABLE `pk_match` (
   COMMENT '球赛结束时间',
   `parkid`           BIGINT(20)   NOT NULL
   COMMENT '球场id',
-  `status`            VARCHAR(10)           DEFAULT NULL
+  `status`            int(11)           DEFAULT NULL
   COMMENT '比赛状态(待定)',
   `createdate`             TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
   COMMENT '创建时间',
-  `hostpaystatus`      VARCHAR(10)   DEFAULT NULL
+  `hostpaystatus`      int(11)  DEFAULT NULL
   COMMENT '发起方支付状态',
-  `challengepaystatus`      VARCHAR(10)   DEFAULT NULL
+  `challengepaystatus`      int(11)   DEFAULT NULL
   COMMENT '挑战者支付状态',
   `updatedate`             TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   COMMENT '更新时间',

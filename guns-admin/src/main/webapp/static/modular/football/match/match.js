@@ -20,7 +20,8 @@ Match.initColumn = function () {
         {title: '球场', field: 'parkname', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛状态', field: 'status', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛时间', field: 'time', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '支付状态', field: 'challengepaystatus', align: 'center', valign: 'middle',width: '200px', sortable: true}];
+        {title: '发起方支付状态', field: 'challengepaystatusName', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '匹配方支付状态', field: 'hostpaystatusName', align: 'center', valign: 'middle',width: '200px', sortable: true}];
 };
 
 /**

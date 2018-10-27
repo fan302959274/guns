@@ -31,6 +31,10 @@
         <if test="status != null and status != ''">
             AND t.status=#{status}
         </if>
+        <if test="paystatus != null and paystatus != ''">
+            AND t.challengepaystatus =#{paystatus}
+            AND t.hostpaystatus =#{paystatus}
+        </if>
         LIMIT #{start}, #{size}
     </select>
 
