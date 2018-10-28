@@ -3,7 +3,14 @@
     <div class="col-sm-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>队员管理</h5>
+                <h5>
+                    @if(type=='1'){
+                       队长管理
+                    @}
+                    @if(type=='2'){
+                       队员管理
+                    @}
+                </h5>
             </div>
             <div class="ibox-content">
                 <div class="row row-lg">

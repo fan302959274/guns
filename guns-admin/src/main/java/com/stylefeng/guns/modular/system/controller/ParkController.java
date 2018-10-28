@@ -149,8 +149,8 @@ public class ParkController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(String condition) {
-        List<Map<String, Object>> banners = this.parkDao.selectParks(super.getPara("roleName"));
+    public Object list(String parkname) {
+        List<Map<String, Object>> banners = this.parkDao.selectParks(parkname);
         return super.warpObject(new ParkWarpper(banners));
     }
 

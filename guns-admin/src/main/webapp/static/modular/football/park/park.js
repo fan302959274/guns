@@ -95,8 +95,8 @@ Park.delPark = function () {
  */
 Park.search = function () {
     var queryData = {};
-    queryData['roleName'] = $("#roleName").val();
-    Role.table.refresh({query: queryData});
+    queryData['parkname'] = $("#parkname").val();
+    Park.table.refresh({query: queryData});
 }
 
 $(function () {

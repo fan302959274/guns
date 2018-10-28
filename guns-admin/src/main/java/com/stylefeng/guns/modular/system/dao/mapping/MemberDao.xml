@@ -23,6 +23,10 @@
         <if test="type != null">
            AND  a.type=${type}
         </if>
+        <if test="account != null">
+            AND account like CONCAT('%',#{account},'%')
+        </if>
+        ORDER BY a.id
     </select>
 
     <update id="setStatus">

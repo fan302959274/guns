@@ -4,7 +4,7 @@ name : 名称
 id : 头像的id
 @*/
 <div class="form-group">
-    <label class="col-sm-3 control-label head-scu-label">${name}</label>
+    <label class="col-sm-2 control-label head-scu-label" style="width: 80px;">${name}</label>
     <div class="col-sm-8">
         <div id="${id}PreId">
             @if(isEmpty(ads)){

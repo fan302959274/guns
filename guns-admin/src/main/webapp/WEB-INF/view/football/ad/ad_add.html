@@ -6,27 +6,29 @@
             <input type="hidden" id="type" value="${type}">
 
             <div class="row">
-                <div class="col-sm-12 b-r">
-
-                    <#input id="mainhead" name="广告标题" underline="true"/>
-
-                    <#input id="subhead" name="广告副标题" underline="true"/>
-
-                    <#input id="url" name="广告链接" underline="true"/>
-
+                <div class="col-sm-6 b-r">
+                    <#input id="mainhead" name="标题" underline="true"/>
+                    <#input id="subhead" name="副标题" underline="true"/>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">广告链接</label>
+                        <div class="col-sm-9">
+                            <textarea  id="url"  class="form-control"  name="url" rows="3" style="min-width: 90%"></textarea>
+                        </div>
+                    </div>
+                 </div>
+                <div class="col-sm-6 b-r">
                     <#input id="starttime" name="开始时间" underline="true" placeholder="yyyy-MM-dd HH:mm:ss" type="datetime"
-                            clickFun="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
-
+                            clickFun="laydate({istime: true,  format: 'YYYY-MM-DD hh:mm:ss'})" />
                     <#input id="endtime" name="结束时间" underline="true" type="datetime" placeholder="yyyy-MM-dd HH:mm:ss"
                             clickFun="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
-
-                    <#ad id="ads" name="图片上传" underline="true" />
-
-
                 </div>
+            </div>
 
-
-
+            <div class="col-sm-12">
+                <label class="col-sm-13 control-label">图片上传</label>
+                <div>
+                      <#ad id="ads" name="" underline="true" />
+                </div>
             </div>
 
 

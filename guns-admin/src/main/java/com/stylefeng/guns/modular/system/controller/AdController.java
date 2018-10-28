@@ -2,7 +2,6 @@ package com.stylefeng.guns.modular.system.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.common.annotion.Permission;
 import com.stylefeng.guns.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
@@ -26,9 +25,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +79,7 @@ public class AdController extends BaseController {
     @RequestMapping("/ad_update/{adId}")
     public String adUpdate(@PathVariable Integer adId, Model model) {
         PkAd pkAd = pkAdMapper.selectById(adId);
-
+        SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> menuMap = BeanKit.beanToMap(pkAd);
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
         wrapper = wrapper.eq("linkid", adId).eq("category",AttachCategoryEnum.AD.getCode());
@@ -97,6 +98,8 @@ public class AdController extends BaseController {
         menuMap.put("adsImg", list);
         menuMap.put("ads", ads);
         model.addAttribute("ad", menuMap);
+        model.addAttribute("endtime", ss.format(pkAd.getEndtime()));
+        model.addAttribute( "starttime", ss.format(pkAd.getStarttime()));
 //        model.addAttribute(pkAd);
         LogObjectHolder.me().set(pkAd);
         return PREFIX + "ad_edit.html";
@@ -109,7 +112,7 @@ public class AdController extends BaseController {
     @RequestMapping("/ad_view/{adId}")
     public String adView(@PathVariable Integer adId, Model model) {
         PkAd pkAd = pkAdMapper.selectById(adId);
-
+        SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> menuMap = BeanKit.beanToMap(pkAd);
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
         wrapper = wrapper.eq("linkid", adId).eq("category",AttachCategoryEnum.AD.getCode());
@@ -125,8 +128,11 @@ public class AdController extends BaseController {
             }
 
         }
-        menuMap.put("adsImg", list);
+         menuMap.put("adsImg", list);
         menuMap.put("ads", ads);
+        model.addAttribute("ad", menuMap);
+        model.addAttribute("endtime", ss.format(pkAd.getEndtime()));
+        model.addAttribute( "starttime", ss.format(pkAd.getStarttime()));
         model.addAttribute("ad", menuMap);
         LogObjectHolder.me().set(pkAd);
         return PREFIX + "ad_view.html";
@@ -167,7 +173,7 @@ public class AdController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(required = false) String adMainHead,String type) {
+    public Object list(@RequestParam(required = false) String adMainHead,Integer type) {
         List<Map<String, Object>> ads = this.adDao.selectAds(type,adMainHead);
         return super.warpObject(new AdWarpper(ads));
     }

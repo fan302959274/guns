@@ -10,10 +10,10 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-3">
-                                <#NameCon id="roleName" name="主标题" />
+                                <#NameCon id="parkname" name="球场名称" />
                             </div>
                             <div class="col-sm-3">
-                                <#button name="搜索" icon="fa-search" clickFun="Role.search()"/>
+                                <#button name="搜索" icon="fa-search" clickFun="Park.search()"/>
                             </div>
                         </div>
                         <div class="hidden-xs" id="parkTableToolbar" role="group">
@@ -27,7 +27,7 @@
                             <#button name="禁用" icon="fa-warning" clickFun="Park.freezePark()" space="true"/>
                             @}
                             @if(shiro.hasPermission("/mgr/unfreeze")){
-                            <#button name="解除禁用" icon="fa-check-circle" clickFun="Park.unfreezePark()" space="true"/>
+                            <#button name="启用" icon="fa-check-circle" clickFun="Park.unfreezePark()" space="true"/>
                             @}
                             @if(shiro.hasPermission("/role/remove")){
                                 <#button name="删除" icon="fa-remove" clickFun="Park.delPark()" space="true"/>

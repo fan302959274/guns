@@ -2,37 +2,33 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <div class="form-horizontal" id="adInfoForm">
-
-            <input type="hidden" id="id" value="${ad.id}">
-            <input type="hidden" id="type" value="${ad.type}">
             <div class="row">
-                <div class="col-sm-12 b-r">
-
-                    <#label id="mainhead" name="广告标题" underline="true" value="${ad.mainhead}"/>
-
-                    <#label id="subhead" name="广告副标题" underline="true" value="${ad.subhead}"/>
-
-                    <#label id="starttime" name="出生日期" underline="true" type="date"
-                            value="${ad.starttime}"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})" />
-
-                    <#label id="endtime" name="出生日期" underline="true" type="date"
-                            value="${ad.endtime}"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD hh:mm:ss'})" />
-
-
-                    <#label id="url" name="广告链接" underline="true" value="${ad.url}"/>
-
-                    <#adview id="ads" name="图片上传" underline="true" adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
-
+                <div class="col-sm-6 b-r">
+                    <#input id="mainhead" name="标题" underline="true" value="${ad.mainhead}"   disabled="disabled"/>
+                    <#input id="subhead" name="副标题" underline="true" value="${ad.subhead}"   disabled="disabled"/>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">广告链接</label>
+                        <div class="col-sm-9">
+                            <textarea  id="url"  class="form-control"  name="url" rows="3"  style="min-width: 90%" disabled="disabled" >${ad.url}</textarea>
+                        </div>
+                    </div>
                 </div>
-
+                <div class="col-sm-6 b-r">
+                    <#input id="starttime" name="开始时间" underline="true" placeholder="yyyy-MM-dd HH:mm:ss" disabled="disabled"
+                            value="${starttime}"/>
+                    <#input id="endtime" name="结束时间" underline="true"   placeholder="yyyy-MM-dd HH:mm:ss"    value="${endtime}"
+                            disabled="disabled"/>
+                </div>
             </div>
-
-
-
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="col-sm-13 control-label">图片上传</label>
+                    <div>
+                        <#adview id="ads" name="" underline="true"   adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 </div>
 <script src="${ctxPath}/static/modular/football/ad/ad_info.js"></script>

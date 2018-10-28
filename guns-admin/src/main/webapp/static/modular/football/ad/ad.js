@@ -15,7 +15,7 @@ var Ad = {
 Ad.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
+        {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
         {title: '广告标题', field: 'mainhead', align: 'center', valign: 'middle', sortable: true, width: '200px'},
         {title: '广告副标题', field: 'subhead', align: 'center', valign: 'center',align: 'center', sortable: true,width: '200px'},
         {title: '开始时间', field: 'starttime', align: 'center', valign: 'center', align: 'center',sortable: true, width: '200px'},
@@ -45,7 +45,7 @@ Ad.openAddAd = function () {
     var index = layer.open({
         type: 2,
         title: '添加广告',
-        area: ['800px', '420px'], //宽高
+        area: ['790px', '570px'], //宽高
         fix: false, //不固定
         maxmin: true,
         content: Feng.ctxPath + '/ad/ad_add?type='+Ad.type
@@ -61,7 +61,7 @@ Ad.openAdDetail = function () {
         var index = layer.open({
             type: 2,
             title: '广告详情',
-            area: ['800px', '420px'], //宽高
+            area: ['790px', '570px'], //宽高
             fix: false, //不固定
             maxmin: true,
             content: Feng.ctxPath + '/ad/ad_update/' + Ad.seItem.id
@@ -78,7 +78,7 @@ Ad.openAdView = function () {
         var index = layer.open({
             type: 2,
             title: '广告详情',
-            area: ['800px', '420px'], //宽高
+            area: ['790px', '570px'], //宽高
             fix: false, //不固定
             maxmin: true,
             content: Feng.ctxPath + '/ad/ad_view/' + Ad.seItem.id
@@ -115,7 +115,7 @@ Ad.delete = function () {
  */
 Ad.search = function () {
     var queryData = {};
-    queryData['adMainHead'] = $("#condition").val();
+    queryData['adMainHead'] = $("#adMainHead").val();
     queryData['type'] = $("#adType").val();
     Ad.table.refresh({query: queryData});
 };

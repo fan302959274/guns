@@ -20,7 +20,7 @@ public interface ParkDao {
      * @return
      * @date 2017年2月12日 下午9:14:34
      */
-    List<Map<String, Object>> selectParks(@Param("condition") String condition);
+    List<Map<String, Object>> selectParks(@Param("parkname") String parkname);
 
     /**
      * 修改球场状态

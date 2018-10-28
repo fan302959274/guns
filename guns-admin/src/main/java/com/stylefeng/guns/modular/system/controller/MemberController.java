@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -85,8 +86,9 @@ public class MemberController extends BaseController {
      * 跳转到修改队员
      */
     @RequestMapping("/member_update/{memberId}")
-    public String memberUpdate(@PathVariable Integer memberId, Model model ) {
-        Map<String, Object> teamInfo = this.teamDao.getTeamInfo(memberId);
+    public String memberUpdate(@PathVariable Integer memberId, Model model,Integer type ) {
+        SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd");
+        Map<String, Object> teamInfo = this.teamDao.getTeamInfo(memberId,type);
         PkMember pkMember = pkMemberMapper.selectById(memberId);
         List<Map<String, Object>> areaInfo = this.teamDao.getAreaInfos();
         Map<String, Object> menuMap = BeanKit.beanToMap(pkMember);
@@ -114,6 +116,7 @@ public class MemberController extends BaseController {
         model.addAttribute("member", menuMap);
         model.addAttribute("areaInfo", areaInfo);
         model.addAttribute("teamInfo", teamInfo);
+        model.addAttribute("birth", ss.format(pkMember.getBirth()));
         LogObjectHolder.me().set(pkMember);
         return PREFIX + "member_edit.html";
     }
@@ -124,8 +127,8 @@ public class MemberController extends BaseController {
     @RequestMapping("/member_view/{memberId}")
     public String memberView(@PathVariable Integer memberId, Model model,String type) {
 
-        Map<String, Object> teamInfo = this.teamDao.getTeamInfo(memberId);
-
+        Map<String, Object> teamInfo = this.teamDao.getTeamInfo(memberId,Integer.valueOf(type));
+        SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd");
         PkMember pkMember = pkMemberMapper.selectById(memberId);
 
         Map<String, Object> menuMap = BeanKit.beanToMap(pkMember);
@@ -154,6 +157,7 @@ public class MemberController extends BaseController {
         model.addAttribute("member", menuMap);
         model.addAttribute("type", type);
         model.addAttribute("teamInfo", teamInfo);
+        model.addAttribute("birth", ss.format(pkMember.getBirth()));
         LogObjectHolder.me().set(pkMember);
         return PREFIX + "member_view.html";
     }
@@ -176,7 +180,7 @@ public class MemberController extends BaseController {
 
             PkAttachment pkAttachment = new PkAttachment();
             pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
-            pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
+            pkAttachment.setType(AttachTypeEnum.LOGO.getCode());
             pkAttachment.setLinkid(record.getId());
             pkAttachment.setName(pkMemberDto.getAvatar());
             pkAttachment.setSuffix(pkMemberDto.getAvatar().substring(pkMemberDto.getAvatar().lastIndexOf(".") + 1));
@@ -195,25 +199,24 @@ public class MemberController extends BaseController {
             pkAttachment.setUrl(pkMemberDto.getIdcard());
             pkAttachmentMapper.insert(pkAttachment);
         }
-        //新增球隊信息
-        if (StringUtils.isNoneBlank(pkMemberDto.getTeamlogo())) {
-            PkAttachment pkAttachment = new PkAttachment();
-            pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
-            pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
-            pkAttachment.setLinkid(record.getId());
-            pkAttachment.setName("球队logo");
-            pkAttachment.setSuffix(pkMemberDto.getTeamlogo().substring(pkMemberDto.getTeamlogo().lastIndexOf(".") + 1));
-            pkAttachment.setUrl(pkMemberDto.getTeamlogo());
-            pkAttachmentMapper.insert(pkAttachment);
-        }
+
         if (StringUtils.isNoneBlank(pkMemberDto.getTeamname())) {
             pkTeam.setName(pkMemberDto.getTeamname());
             pkTeam.setOwnerid(record.getId());
             pkTeam.setArea(pkMemberDto.getArea());
             pkTeamMapper.insert(pkTeam);
+            //新增球隊信息
+            if (StringUtils.isNoneBlank(pkMemberDto.getTeamlogo())) {
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
+                pkAttachment.setType(AttachTypeEnum.LOGO.getCode());
+                pkAttachment.setLinkid(pkTeam.getId());
+                pkAttachment.setName("球队logo");
+                pkAttachment.setSuffix(pkMemberDto.getTeamlogo().substring(pkMemberDto.getTeamlogo().lastIndexOf(".") + 1));
+                pkAttachment.setUrl(pkMemberDto.getTeamlogo());
+                pkAttachmentMapper.insert(pkAttachment);
+            }
         }
-
-
         return result;
     }
 

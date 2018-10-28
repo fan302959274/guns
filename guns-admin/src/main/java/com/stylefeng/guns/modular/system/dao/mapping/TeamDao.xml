@@ -74,12 +74,23 @@
         select
         b.id,b.name,d.area, b.area as areaid
         from
-        pk_team_member a
-        INNER  JOIN  pk_team b ON  a.teamid= b.id
-        LEFT  JOIN  areas d ON d.areaid = b.area
-        <if test="memberId != null">
-            where a.memberid =#{memberId}
+
+        <if test="type == 1">
+             pk_team b
+             LEFT  JOIN  areas d ON d.areaid = b.area
+            <if test="memberId != null">
+                where b.ownerid =#{memberId}
+            </if>
         </if>
+        <if test="type == 2">
+            pk_team_member a
+            INNER  JOIN  pk_team b ON  a.teamid= b.id
+            LEFT  JOIN  areas d ON d.areaid = b.area
+            <if test="memberId != null">
+                where a.memberid =#{memberId}
+            </if>
+        </if>
+
     </select>
 
     <select id="getAreaInfos" resultType="map">

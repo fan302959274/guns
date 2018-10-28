@@ -36,7 +36,7 @@ public interface TeamDao {
      * @return
      * @date 2017年2月17日 下午11:07:46
      */
-    Map<String, Object> getTeamInfo(@Param("memberId") Integer memberId);
+    Map<String, Object> getTeamInfo(@Param("memberId") Integer memberId,@Param("type") Integer type);
     /**
      * 查询所有区
      *
