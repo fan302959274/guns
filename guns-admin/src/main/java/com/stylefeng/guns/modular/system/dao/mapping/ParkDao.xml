@@ -17,7 +17,14 @@
         '禁用'
         END
         ) "status",
-        b.area as  area
+        (
+        CASE
+        WHEN a.area = 1 THEN
+        '城南'
+        ELSE
+        '城北'
+        END
+        ) "area"
         from pk_park a
         LEFT  JOIN  areas  b  ON   a.area =b.areaid
         <if test="parkname != null">

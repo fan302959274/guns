@@ -6,15 +6,34 @@
             <input type="hidden" id="id" value="${member.id}">
 
             <div class="row">
-                <div class="col-sm-12 b-r">
+                <div class="col-sm-6 b-r">
                     <#label id="account" name="账号" underline="true" value="${member.account}" disabled="disabled"/>
                     <#label id="name" name="姓名" underline="true" value="${member.name}" disabled="disabled"/>
                     <#label id="birth" name="出生年月" underline="true" type="date" value="${birth}"
                             clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" disabled="disabled" />
-                    <#label id="height" name="身高" underline="true" value="${member.height}" disabled="disabled"/>
-                    <#label id="weight" name="体重" underline="true" value="${member.weight}" disabled="disabled"/>
-                    <#label id="position" name="所踢位置" underline="true" value="${member.position}" />
-                    <#label id="habitfeet" name="惯用脚" underline="true" value="${member.habitfeet}" />
+                    <#label id="height" name="身高" underline="true" value="${member.height}cm" disabled="disabled"/>
+                    <#label id="weight" name="体重" underline="true" value="${member.weight}kg" disabled="disabled"/>
+                    @if(isNotEmpty(member.position) && member.position == '1'){
+                    <#label id="position" name="所踢位置" underline="true" value="前锋" />
+                    @}
+                    @if(isNotEmpty(member.position) && member.position == '2'){
+                    <#label id="position" name="所踢位置" underline="true" value="后卫" />
+                    @}
+                    @if(isNotEmpty(member.position) && member.position == '3'){
+                    <#label id="position" name="所踢位置" underline="true" value="中场" />
+                    @}
+                    @if(isNotEmpty(member.position) && member.position == '4'){
+                    <#label id="position" name="所踢位置" underline="true" value="门将" />
+                    @}
+
+                </div>
+                <div class="col-sm-6 b-r">
+                    @if(isNotEmpty(member.habitfeet) && member.habitfeet == '1'){
+                    <#label id="habitfeet" name="惯用脚" underline="true" value="左" />
+                    @}else{
+                    <#label id="habitfeet" name="惯用脚" underline="true" value="右" />
+                    @}
+
                     @if(isNotEmpty(type) && type == '1'){
                     <#label id="type" name="状态" underline="true" value="队长" />
                     @}else{
@@ -22,13 +41,24 @@
                     @}
                     <#avatarview id="avatar" name="头像" underline="true" avatarImg="${member.avatar}" />
                     <#avatarview id="idcard" name="身份证照" underline="true" avatarImg="${member.idcard}"/>
-                    <#label id="teamname" name="球队名称" underline="true" value="${teamInfo.name}" disabled="disabled"/>
-                    <#avatarview id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog}"/>
-                    <#label id="teamname" name="球队区域" underline="true" value="${teamInfo.area}" disabled="disabled"/>
+
                 </div>
 
             </div>
 
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#label id="teamname" name="球队名称" underline="true" value="${teamInfo.name}" disabled="disabled"/>
+                    <#avatarview id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog}"/>
+                </div>
+                <div class="col-sm-6 b-r">
+                    @if(isNotEmpty(teamInfo.areaid) && teamInfo.areaid == '1'){
+                    <#label id="teamname" name="球队区域" underline="true" value="南京" disabled="disabled"/>
+                    @}else{
+                    <#label id="teamname" name="球队区域" underline="true" value="合肥" disabled="disabled"/>
+                    @}
+                </div>
+            </div>
 
         </div>
 

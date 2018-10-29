@@ -79,7 +79,7 @@ public class TeamController extends BaseController {
      */
     @RequestMapping(value = "/remove")
     @ResponseBody
-    public Object delete(@RequestParam Integer teamId) {
+    public Object delete(@RequestParam Long teamId) {
         this.pkTeamMapper.deleteById(teamId);
         this.teamDao.deleteTeamMembers(teamId);
         return SUCCESS_TIP;

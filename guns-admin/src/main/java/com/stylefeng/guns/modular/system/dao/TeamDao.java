@@ -52,5 +52,5 @@ public interface TeamDao {
      * @return
      * @date 2017年2月17日 下午11:07:46
      */
-    int deleteTeamMembers(Integer teamId);
+    int deleteTeamMembers(Long teamId);
 }

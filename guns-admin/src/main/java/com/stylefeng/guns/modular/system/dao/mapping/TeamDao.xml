@@ -8,7 +8,13 @@
 
     <select id="selectTeams" resultType="map">
         select
-        <include refid="Base_Column_List" />,  b.area as  area
+        <include refid="Base_Column_List" />,
+        (
+        CASE
+        WHEN  a.area  = 1  THEN '南京'
+        WHEN  a.area  = 2  THEN '合肥'
+        END
+        ) "area"
         ,(
         CASE
         WHEN a.level = 1  THEN '使者'
@@ -42,17 +48,10 @@
         ) "status",
         (
         CASE
-        WHEN b.position = 1  THEN '中前卫'
-        WHEN b.position = 2  THEN '前腰'
-        WHEN b.position = 3  THEN '边前卫'
-        WHEN b.position = 4  THEN '边锋'
-        WHEN b.position = 5  THEN '后腰'
-        WHEN b.position = 6  THEN '影前锋'
-        WHEN b.position = 7  THEN '中后卫'
-        WHEN b.position = 8  THEN '边后卫'
-        WHEN b.position = 9  THEN '清道夫'
-        WHEN b.position = 10  THEN '中锋'
-        WHEN b.position = 11  THEN '前锋'
+        WHEN b.position = 1  THEN '前锋'
+        WHEN b.position = 2  THEN '后卫'
+        WHEN b.position = 3  THEN '中场'
+        WHEN b.position = 4  THEN '门将'
         END
         ) "position",
         (

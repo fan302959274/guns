@@ -18,9 +18,8 @@
 									<div class="col-sm-6 b-r">
 										<#input id="pkname" name="球场名" underline="true" value=""  />
 										<#select id="area" name="球场区域" underline="true" value="">
-											@for(item in areaInfo){
-											<option value="${item.areaid}">${item.area}</option>
-											@}
+											<option value="1">城南</option>
+											<option value="2">城北</option>
 										</#select>
 										<div class="form-group">
 											<label class="col-sm-3 control-label">球场地址</label>

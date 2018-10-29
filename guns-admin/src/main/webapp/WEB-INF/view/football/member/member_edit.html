@@ -8,9 +8,7 @@
 
             <div class="row">
                 <div class="col-sm-12 b-r">
-
                     <#input id="account" name="账号" underline="true" value="${member.account}"/>
-
                     <#input id="name" name="姓名" underline="true" value="${member.name}"/>
 
                     <#input id="birth" name="出生年月" underline="true" type="date" value="${birth}"
@@ -21,7 +19,9 @@
                     <input type="hidden" id="positionValue" value="${member.position}">
                     <#select id="position" name="所踢位置" underline="true" value="${member.position}">
                         <option value="1">前锋</option>
-                        <option value="2">中锋</option>
+                        <option value="2">后卫</option>
+                        <option value="3">中场</option>
+                        <option value="4">门将</option>
                     </#select>
                     <input type="hidden" id="habitfeetValue" value="${member.habitfeet}">
                     <#select id="habitfeet" name="惯用脚" underline="true" value="${member.habitfeet}">
@@ -43,13 +43,8 @@
                     <#avatar id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog}"/>
                     <input type="hidden" id="areaValue" value="${teamInfo.areaid}">
                     <#select id="area" name="球队区域" underline="true" >
-                        @for(item in areaInfo){
-                        <option value="${item.areaid}"
-                                @if(teamInfo.areaid == item.areaid){
-                                selected="selected"
-                                @}
-                        >${item.area}</option>
-                        @}
+                        <option value="1">南京</option>
+                        <option value="2">合肥</option>
                     </#select>
                     @}
                 </div>

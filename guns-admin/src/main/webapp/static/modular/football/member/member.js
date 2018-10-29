@@ -74,11 +74,17 @@ Member.openMemberDetail = function () {
  * 打开查看队员详情
  */
 Member.openMemberView = function () {
+    var title="";
+    if(Member.type=='1'){
+        title='队长详情'
+    }else{
+        title='队员详情'
+    }
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '广告详情',
-            area: ['800px', '420px'], //宽高
+            title: title,
+            area: ['800px', '600px'], //宽高
             fix: false, //不固定
             maxmin: true,
             content: Feng.ctxPath + '/member/member_view/' + Member.seItem.id+'?type='+Member.type
