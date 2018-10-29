@@ -4,8 +4,8 @@ name : 名称
 id : 头像的id
 @*/
 <div class="form-group">
-    <label class="col-sm-2 control-label head-scu-label" style="width: 80px;">${name}</label>
-    <div class="col-sm-8">
+    <label class="col-sm-3 control-label" >${name}</label>
+    <div class="col-sm-9 control-label">
         <div id="${id}PreId">
             @if(isEmpty(ads)){
             <div style="float:left;text-align: right;height:120px;" class="file-item thumbnail draggable-element"><img

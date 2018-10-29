@@ -4,29 +4,26 @@
         <div class="form-horizontal" id="adInfoForm">
             <div class="row">
                 <div class="col-sm-6 b-r">
-                    <#input id="mainhead" name="标题" underline="true" value="${ad.mainhead}"   disabled="disabled"/>
-                    <#input id="subhead" name="副标题" underline="true" value="${ad.subhead}"   disabled="disabled"/>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">广告链接</label>
-                        <div class="col-sm-9">
-                            <textarea  id="url"  class="form-control"  name="url" rows="3"  style="min-width: 90%" disabled="disabled" >${ad.url}</textarea>
-                        </div>
-                    </div>
+                    <#label id="mainhead" name="标题" underline="true" value="${ad.mainhead}"   disabled="disabled"/>
+                    <#label id="subhead" name="副标题" underline="true" value="${ad.subhead}"   disabled="disabled"/>
+                    <!--<div class="form-group">-->
+                        <#label  name="广告链接" value="${ad.url}"/>
+
+                    <!--</div>-->
                 </div>
                 <div class="col-sm-6 b-r">
-                    <#input id="starttime" name="开始时间" underline="true" placeholder="yyyy-MM-dd HH:mm:ss" disabled="disabled"
+                    <#label id="starttime" name="开始时间" underline="true" placeholder="yyyy-MM-dd HH:mm:ss" disabled="disabled"
                             value="${starttime}"/>
-                    <#input id="endtime" name="结束时间" underline="true"   placeholder="yyyy-MM-dd HH:mm:ss"    value="${endtime}"
+                    <#label id="endtime" name="结束时间" underline="true"   placeholder="yyyy-MM-dd HH:mm:ss"    value="${endtime}"
                             disabled="disabled"/>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12">
-                    <label class="col-sm-13 control-label">图片上传</label>
-                    <div>
-                        <#adview id="ads" name="" underline="true"   adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
-                    </div>
+                <div class="col-sm-6 b-r">
+
+                        <#adview id="ads" name="广告图片" underline="true"   adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
                 </div>
+
             </div>
         </div>
     </div>
