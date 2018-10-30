@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-22
+ * @since 2018-10-30
  */
 @TableName("pk_member")
 public class PkMember extends Model<PkMember> {
@@ -69,13 +69,13 @@ public class PkMember extends Model<PkMember> {
      */
 	private String type;
     /**
-     * 队员状态:0:禁用1:启用
-     */
-	private String status;
-    /**
      * openid
      */
 	private String openid;
+    /**
+     * 队员状态:0:禁用1:启用
+     */
+	private String status;
     /**
      * 创建时间
      */
@@ -84,18 +84,6 @@ public class PkMember extends Model<PkMember> {
      * 更新时间
      */
 	private Date updatedate;
-    /**
-     * 创建人
-     */
-	private String creator;
-    /**
-     * 更新人
-     */
-	private String updator;
-    /**
-     * 是否删除
-     */
-	private String isdeleted;
 
 
 	public Long getId() {
@@ -186,20 +174,20 @@ public class PkMember extends Model<PkMember> {
 		this.type = type;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public String getOpenid() {
 		return openid;
 	}
 
 	public void setOpenid(String openid) {
 		this.openid = openid;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Date getCreatedate() {
@@ -216,30 +204,6 @@ public class PkMember extends Model<PkMember> {
 
 	public void setUpdatedate(Date updatedate) {
 		this.updatedate = updatedate;
-	}
-
-	public String getCreator() {
-		return creator;
-	}
-
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
-	public String getUpdator() {
-		return updator;
-	}
-
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
-
-	public String getIsdeleted() {
-		return isdeleted;
-	}
-
-	public void setIsdeleted(String isdeleted) {
-		this.isdeleted = isdeleted;
 	}
 
 	@Override
@@ -261,13 +225,10 @@ public class PkMember extends Model<PkMember> {
 			", height=" + height +
 			", weight=" + weight +
 			", type=" + type +
-			", status=" + status +
 			", openid=" + openid +
+			", status=" + status +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +
-			", creator=" + creator +
-			", updator=" + updator +
-			", isdeleted=" + isdeleted +
 			"}";
 	}
 }

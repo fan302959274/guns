@@ -208,7 +208,7 @@ public class MemberController {
      */
     @RequestMapping(value = "/review", method = RequestMethod.POST)
     @ApiOperation(value = "评价", notes = "返回码:20000成功;")
-    @ApiImplicitParam(paramType = "query", name = "mobile", value = "队员评价", required = true, dataType = "String")
+    @ApiImplicitParam(paramType = "query", name = "openid", value = "队员评价", required = true, dataType = "String")
     public ResponseEntity review(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Long oppoid, @RequestParam BigDecimal culture, @RequestParam BigDecimal ontime, @RequestParam BigDecimal friendly) {
         log.info("队员评价请求参数{}", JSONObject.toJSONString(openid));
         try {
