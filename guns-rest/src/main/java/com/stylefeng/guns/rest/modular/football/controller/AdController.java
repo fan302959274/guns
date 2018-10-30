@@ -12,6 +12,8 @@ import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +62,10 @@ public class AdController {
             Assert.notNull(type, "轮播图类型不能为空");
             Wrapper<PkAd> wrapper = new EntityWrapper<PkAd>();
             wrapper.eq("type", type);
+            wrapper.groupBy("createdate desc");
             List<PkAd> list = pkAdMapper.selectList(wrapper);
-            list.forEach(pkAd -> {
+            if (CollectionUtils.isNotEmpty(list)) {
+                PkAd pkAd = list.get(0);
                 Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<PkAttachment>();
                 pkAttachmentWrapper.eq("linkid", pkAd.getId()).eq("category", AttachCategoryEnum.AD.getCode());
                 List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
@@ -71,8 +75,7 @@ public class AdController {
                     map.put("url", pkAd.getUrl());
                     results.add(map);
                 });
-            });
-
+            }
             return ResponseEntity.ok(new CommonResp<Map>(results));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
@@ -93,19 +96,29 @@ public class AdController {
         try {
             Wrapper<PkAd> wrapper = new EntityWrapper<PkAd>();
             wrapper.eq("type", 2);
-            List<PkAd> list = pkAdMapper.selectList(wrapper);
+            Integer count = pkAdMapper.selectCount(wrapper);
+
+            if (page <= 0) {
+                page = 1;
+            }
+            if (page > count / 10 + 1) {
+                page = count / 10 + 1;
+            }
+            RowBounds rowBounds = new RowBounds((page - 1) * 10, 10);
+            List<PkAd> list = pkAdMapper.selectPage(rowBounds, wrapper);
             list.forEach(pkAd -> {
                 Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<PkAttachment>();
                 pkAttachmentWrapper.eq("linkid", pkAd.getId()).eq("category", AttachCategoryEnum.AD.getCode());
                 List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
-                attachmentList.forEach(pkAttachment -> {
+                if (CollectionUtils.isNotEmpty(attachmentList)) {
                     Map map = new HashMap();
-                    map.put("image", pkAttachment.getUrl());
+                    map.put("image", attachmentList.get(0).getUrl());
                     map.put("name", pkAd.getMainhead());
                     map.put("date", DateUtil.formatDate(pkAd.getStarttime(), "YYYY-MM-dd") + "至" + DateUtil.formatDate(pkAd.getEndtime(), "YYYY-MM-dd"));
                     map.put("url", pkAd.getUrl());
                     results.add(map);
-                });
+                }
+
             });
 
             return ResponseEntity.ok(new CommonResp<Map>(results));
