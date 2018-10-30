@@ -1,27 +1,20 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
-import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
-import com.stylefeng.guns.rest.common.persistence.dao.*;
-import com.stylefeng.guns.rest.common.persistence.model.*;
+import com.stylefeng.guns.rest.common.persistence.dao.AreasMapper;
+import com.stylefeng.guns.rest.common.persistence.model.Areas;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
-import com.stylefeng.guns.rest.modular.football.transfer.PkTeamDto;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -42,9 +35,6 @@ public class AreaController {
     AreasMapper areasMapper;
 
 
-
-
-
     /**
      * 球队区域,约战区域
      *
@@ -63,8 +53,6 @@ public class AreaController {
         }
 
     }
-
-
 
 
 }

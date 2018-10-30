@@ -12,7 +12,6 @@ import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.http.client.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +102,7 @@ public class AdController {
                     Map map = new HashMap();
                     map.put("image", pkAttachment.getUrl());
                     map.put("name", pkAd.getMainhead());
-                    map.put("date", DateUtil.formatDate(pkAd.getStarttime(),"YYYY-MM-dd") + "至" +  DateUtil.formatDate(pkAd.getEndtime(),"YYYY-MM-dd"));
+                    map.put("date", DateUtil.formatDate(pkAd.getStarttime(), "YYYY-MM-dd") + "至" + DateUtil.formatDate(pkAd.getEndtime(), "YYYY-MM-dd"));
                     map.put("url", pkAd.getUrl());
                     results.add(map);
                 });
