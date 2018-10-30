@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 广告控制器
@@ -62,6 +59,8 @@ public class AdController {
             Assert.notNull(type, "轮播图类型不能为空");
             Wrapper<PkAd> wrapper = new EntityWrapper<PkAd>();
             wrapper.eq("type", type);
+            wrapper.lt("starttime", new Date());
+            wrapper.gt("endtime", new Date());
             wrapper.groupBy("createdate desc");
             List<PkAd> list = pkAdMapper.selectList(wrapper);
             if (CollectionUtils.isNotEmpty(list)) {
@@ -96,6 +95,8 @@ public class AdController {
         try {
             Wrapper<PkAd> wrapper = new EntityWrapper<PkAd>();
             wrapper.eq("type", 2);
+            wrapper.lt("starttime", new Date());
+            wrapper.gt("endtime", new Date());
             Integer count = pkAdMapper.selectCount(wrapper);
 
             if (page <= 0) {
