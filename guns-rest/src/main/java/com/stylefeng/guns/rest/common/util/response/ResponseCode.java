@@ -6,7 +6,7 @@ package com.stylefeng.guns.rest.common.util.response;
  * @date 2017/7/20
  */
 public enum ResponseCode {
-    SUCCESS("20000", "操作成功"),
+    SUCCESS("1", "操作成功"),
     FILE_NOT_FOUND("30001", "文件未找到"),
     FILE_IS_EMPTY("30002", "文件为空"),
     COLLECTION_USERINFO_ERROR("40003", "收集用户信息失败"),
