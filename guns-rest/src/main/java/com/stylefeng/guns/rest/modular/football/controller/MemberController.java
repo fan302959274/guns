@@ -7,8 +7,11 @@ import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.PkMemberMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.PkTeamReviewMapper;
 import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.rest.common.persistence.model.PkMember;
+import com.stylefeng.guns.rest.common.persistence.model.PkTeamReview;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import com.stylefeng.guns.rest.modular.football.transfer.PkMemberDto;
@@ -27,6 +30,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,6 +50,10 @@ public class MemberController {
     private PkMemberMapper pkMemberMapper;
     @Resource
     private PkAttachmentMapper pkAttachmentMapper;
+    @Resource
+    private PkTeamMapper pkTeamMapper;
+    @Resource
+    private PkTeamReviewMapper pkTeamReviewMapper;
     @Autowired
     RedisTemplate redisTemplate;
 
@@ -65,7 +73,7 @@ public class MemberController {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("account", pkMemberDto.getMobile());
             Integer count = pkMemberMapper.selectCount(wrapper);
-            if (count>0) {
+            if (count > 0) {
                 return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "手机号已注册过"));
             }
             PkMember pkMember = new PkMember();
@@ -153,7 +161,7 @@ public class MemberController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation(value = "队员登录", notes = "返回码:20000成功;")
     @ApiImplicitParam(paramType = "query", name = "mobile", value = "队员登录", required = true, dataType = "String")
-    public ResponseEntity login(@RequestParam String mobile,@RequestParam String openid,@RequestParam String verifiy) {
+    public ResponseEntity login(@RequestParam String mobile, @RequestParam String openid, @RequestParam String verifiy) {
         log.info("队员登录手机号码请求参数{}", JSONObject.toJSONString(mobile));
         try {
             Assert.notNull(mobile, "手机号不能为空");
@@ -192,5 +200,48 @@ public class MemberController {
             return ResponseEntity.ok(new CommonResp<PkMemberDto>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
     }
+
+    /**
+     * @description 评价接口
+     * @author sh00859
+     * @date 2018/10/30
+     */
+    @RequestMapping(value = "/review", method = RequestMethod.POST)
+    @ApiOperation(value = "评价", notes = "返回码:20000成功;")
+    @ApiImplicitParam(paramType = "query", name = "mobile", value = "队员评价", required = true, dataType = "String")
+    public ResponseEntity review(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Long oppoid, @RequestParam BigDecimal culture, @RequestParam BigDecimal ontime, @RequestParam BigDecimal friendly) {
+        log.info("队员评价请求参数{}", JSONObject.toJSONString(openid));
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            if (CollectionUtils.isEmpty(pkMembers)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "openid未获取到用户"));
+            }
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+            Wrapper<PkTeamReview> pkTeamReviewWrapper = new EntityWrapper<PkTeamReview>();
+            pkTeamReviewWrapper = pkTeamReviewWrapper.eq("openid", openid).eq("teamid", teamid).eq("oppoid", oppoid);
+            List<PkTeamReview> pkTeamReviews = pkTeamReviewMapper.selectList(pkTeamReviewWrapper);
+            if (CollectionUtils.isNotEmpty(pkTeamReviews)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该用户对球队已经评价过"));
+            }
+
+            //存储评价记录
+            PkTeamReview pkTeamReview = new PkTeamReview();
+            pkTeamReview.setOpenid(openid);
+            pkTeamReview.setOppoid(oppoid);
+            pkTeamReview.setCulture(culture);
+            pkTeamReview.setFriendly(friendly);
+            pkTeamReview.setOntime(ontime);
+            pkTeamReview.setTeamid(teamid);
+            pkTeamReviewMapper.insert(pkTeamReview);
+
+            return ResponseEntity.ok(new CommonResp<String>("成功"));
+
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
 
 }

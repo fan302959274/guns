@@ -63,6 +63,7 @@ CREATE TABLE `pk_member` (
   `height` decimal(10,2) DEFAULT NULL COMMENT '身高',
   `weight` decimal(10,2) DEFAULT NULL COMMENT '体重',
   `type` varchar(10) NOT NULL COMMENT '队员类型:1:队长;2:普通球员',
+  `openid` VARCHAR(100) DEFAULT NULL COMMENT 'openid',
   `status` varchar(1) DEFAULT '0' COMMENT '队员状态:0:禁用1:启用',
   `createdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updatedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -106,7 +107,22 @@ DROP TABLE IF EXISTS `pk_team_member`;
    UNIQUE KEY `pk_team_member_quique` (`teamid`,`memberid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='球队队员表';
 
--- 5、比赛表
+
+-- 5、球队评价表
+DROP TABLE IF EXISTS `pk_team_review`;
+CREATE TABLE `pk_team_review` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `teamid` bigint(20) NOT NULL COMMENT '球队id',
+  `oppoid` bigint(20) NOT NULL COMMENT '被评队伍id',
+  `openid`  VARCHAR(100) DEFAULT NULL COMMENT 'openid',
+  `culture` NUMERIC(4,1) DEFAULT 0 COMMENT '文明评分 1-5分',
+  `ontime` NUMERIC(4,1) DEFAULT 0 COMMENT '准时评分 1-5分',
+  `friendly` NUMERIC(4,1) DEFAULT 0 COMMENT '球队面貌评分 1-5',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `pk_team_member_quique` (`teamid`,`oppoid`,`openid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='球队评价表';
+
+-- 6、比赛表
 DROP TABLE IF EXISTS `pk_match`;
 CREATE TABLE `pk_match` (
   `id`                      BIGINT(20)   NOT NULL AUTO_INCREMENT
@@ -158,7 +174,7 @@ CREATE TABLE `pk_match` (
   DEFAULT CHARSET = utf8
   COMMENT = '比赛表';
 
--- 6、球场表
+-- 7、球场表
 DROP TABLE IF EXISTS `pk_park`;
 CREATE TABLE `pk_park` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -175,7 +191,7 @@ CREATE TABLE `pk_park` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='球场表';
 
--- 6-1、球场可用时间表
+-- 7-1、球场可用时间表
 DROP TABLE IF EXISTS `pk_park_relation`;
 CREATE TABLE `pk_park_relation` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -184,7 +200,7 @@ CREATE TABLE `pk_park_relation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='球场可用时间表';
 
--- 7、附件表
+-- 8、附件表
 DROP TABLE IF EXISTS `pk_attachment`;
 CREATE TABLE `pk_attachment` (
   `id`                BIGINT(20)  NOT NULL AUTO_INCREMENT
@@ -238,7 +254,7 @@ CREATE TABLE `cities` (
    PRIMARY KEY (`id`)
  ) ENGINE=InnoDB AUTO_INCREMENT=346 DEFAULT CHARSET=utf8 COMMENT='城市信息表';
 
--- 7、区域表
+-- 8、区域表
 DROP TABLE IF EXISTS `areas`;
 CREATE TABLE `areas`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
