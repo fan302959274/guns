@@ -21,7 +21,7 @@
                                 <#button name="查看" icon="fa-eye" clickFun="Team.openTeamDetail()" />
                             @}
                             @if(shiro.hasPermission("/role/edit")){
-                                <#button name="修改" icon="fa-edit" clickFun="Team.openChangeRole()" space="true"/>
+                                <#button name="修改" icon="fa-edit" clickFun="Team.openEditTeam()" space="true"/>
                             @}
                             @if(shiro.hasPermission("/role/remove")){
                                 <#button name="删除" icon="fa-remove" clickFun="Team.delTeam()" space="true"/>

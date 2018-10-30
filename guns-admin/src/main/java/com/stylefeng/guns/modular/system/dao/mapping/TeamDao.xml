@@ -17,17 +17,23 @@
         ) "area"
         ,(
         CASE
-        WHEN a.level = 1  THEN '使者'
-        WHEN a.level = 2  THEN '守卫'
-        WHEN a.level = 3  THEN '战士'
-        WHEN a.level = 4  THEN '统治'
-        WHEN a.level = 5  THEN '经典'
-        WHEN a.level = 6  THEN '传奇'
-        WHEN a.level = 7  THEN '神灵'
+        WHEN a.point >= 0  and a.point <![CDATA[ <= ]]> 999 THEN
+        '使者'
+        WHEN a.point >= 1000  and a.point<![CDATA[ <= ]]>1499 THEN
+        '守卫'
+        WHEN a.point >= 1500  and a.point<![CDATA[ <= ]]>1999 THEN
+        '战士'
+        WHEN a.point >= 2000  and a.point<![CDATA[ <= ]]>2499 THEN
+        '统治'
+        WHEN a.point >= 2500  and a.point<![CDATA[ <= ]]>2999 THEN
+        '经典'
+        WHEN a.point >= 3000  and a.point<![CDATA[ <= ]]>3499 THEN
+        '传奇'
+        WHEN a.point >= 3500 THEN
+        '神灵'
         END
         ) "level"
         from pk_team a
-        LEFT  JOIN  areas  b  ON   a.area =b.areaid
         <if test="name != null">
             where name like CONCAT('%',#{name},'%')
         </if>

@@ -67,6 +67,23 @@ Team.teamMember = function () {
 
 
 /**
+ * 点击修改按钮时
+ */
+Team.openEditTeam = function () {
+    if (this.check()) {
+        var index = layer.open({
+            type: 2,
+            title: '修改球队',
+            area: ['900px', '650px'], //宽高
+            fix: false, //不固定
+            maxmin: true,
+            content: Feng.ctxPath + '/team/team_edit/' + this.seItem.id
+        });
+        this.layerIndex = index;
+    }
+};
+
+/**
  * 打开查看球队详情
  */
 Team.openTeamDetail = function () {
@@ -74,7 +91,7 @@ Team.openTeamDetail = function () {
         var index = layer.open({
             type: 2,
             title: '球队详情',
-            area: ['800px', '420px'], //宽高
+            area: ['850px', '600px'], //宽高
             fix: false, //不固定
             maxmin: true,
             content: Feng.ctxPath + '/team/detail/' + Team.seItem.id
