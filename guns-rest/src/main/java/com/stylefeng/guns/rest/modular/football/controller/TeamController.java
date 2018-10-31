@@ -144,10 +144,10 @@ public class TeamController {
      * @param teamid
      * @return
      */
-    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    @RequestMapping(value = "/appleList", method = RequestMethod.POST)
     @ApiOperation(value = "加入球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
-    public ResponseEntity join(@RequestParam Long teamid, @RequestParam String openid) {
+    public ResponseEntity appleList(@RequestParam Long teamid, @RequestParam String openid) {
         log.info("加入球队请求参数为:{}", teamid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
@@ -159,13 +159,131 @@ public class TeamController {
             pkTeamMember.setTeamid(teamid);
             pkTeamMemberMapper.insert(pkTeamMember);
 
-            return ResponseEntity.ok(new CommonResp<PkTeamMember>(pkTeamMember));
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid);
+            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+
+            List<Map> datas = new ArrayList<>();
+            pkTeamMembers.forEach(teamMember -> {
+                Map data = new HashMap();
+                PkMember pkMember = pkMemberMapper.selectById(teamMember.getMemberid());
+                data.put("manid", pkMember.getOpenid());
+                data.put("manName", pkMember.getName());
+                data.put("manPlayer", pkMember.getPosition());
+
+                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
+                List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+                if (!org.apache.commons.collections.CollectionUtils.isEmpty(attachmentList)) {
+                    data.put("manImage", attachmentList.get(0).getUrl());
+                }
+                datas.add(data);
+            });
+            return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkTeamMember>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
 
+    /**
+     * 拒绝加入球队
+     *
+     * @param teamid
+     * @return
+     */
+    @RequestMapping(value = "/deleteApple", method = RequestMethod.POST)
+    @ApiOperation(value = "加入球队", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
+    public ResponseEntity deleteApple(@RequestParam Long teamid, @RequestParam String openid, @RequestParam String manid) {
+        log.info("拒绝加入球队请求参数为:{}", teamid);
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
+            pkTeamMemberMapper.delete(pkTeamMemberWrapper);
+
+            return ResponseEntity.ok(new CommonResp<String>("拒绝成功"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+
+    /**
+     * 同意加入球队
+     *
+     * @param teamid
+     * @return
+     */
+    @RequestMapping(value = "/agreeApple", method = RequestMethod.POST)
+    @ApiOperation(value = "同意加入球队", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
+    public ResponseEntity agreeApple(@RequestParam Long teamid, @RequestParam String openid, @RequestParam String manid) {
+        log.info("同意加入球队请求参数为:{}", teamid);
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
+            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+
+            PkTeamMember pkTeamMember = pkTeamMembers.get(0);
+            pkTeamMember.setStatus("1");//同意
+
+            pkTeamMemberMapper.updateById(pkTeamMember);
+            return ResponseEntity.ok(new CommonResp<String>("同意成功"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+
+    /**
+     * 解散球队，退出球队接口
+     *
+     * @param teamid
+     * @return
+     */
+    @RequestMapping(value = "/exitTeam", method = RequestMethod.POST)
+    @ApiOperation(value = "解散球队，退出球队接口", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
+    public ResponseEntity exitTeam(@RequestParam Long teamid, @RequestParam String openid, @RequestParam String type) {
+        log.info("解散球队，退出球队请求参数为:{}", teamid);
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            if ("1".equals(type)) {
+                Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+                pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
+                pkTeamMemberMapper.delete(pkTeamMemberWrapper);
+            }
+
+            if ("2".equals(type)) {
+                Wrapper<PkTeam> pkTeamWrapper = new EntityWrapper<PkTeam>();
+                pkTeamWrapper = pkTeamWrapper.eq("id", teamid);
+                pkTeamMapper.delete(pkTeamWrapper);
+            }
+
+
+            return ResponseEntity.ok(new CommonResp<String>("操作成功"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
 
     /**
      * 球队区域

@@ -98,12 +98,23 @@ public class PkMemberDto extends Model<PkMemberDto> {
      */
     private String avatar;
 
-
     /**
      * 身份证
      */
     private String idcard;
 
+    /**
+     * openid
+     */
+    private String openid;
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
 
     public Long getId() {
         return id;

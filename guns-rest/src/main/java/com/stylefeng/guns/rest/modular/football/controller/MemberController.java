@@ -5,13 +5,9 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
-import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkMemberMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkTeamReviewMapper;
-import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
-import com.stylefeng.guns.rest.common.persistence.model.PkMember;
-import com.stylefeng.guns.rest.common.persistence.model.PkTeamReview;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
+import com.stylefeng.guns.rest.common.persistence.model.*;
+import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import com.stylefeng.guns.rest.modular.football.transfer.PkMemberDto;
@@ -31,8 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 会员控制器
@@ -54,6 +49,10 @@ public class MemberController {
     private PkTeamMapper pkTeamMapper;
     @Resource
     private PkTeamReviewMapper pkTeamReviewMapper;
+    @Resource
+    PkTeamMemberMapper pkTeamMemberMapper;
+    @Autowired
+    PkMatchMapper pkMatchMapper;
     @Autowired
     RedisTemplate redisTemplate;
 
@@ -240,6 +239,216 @@ public class MemberController {
 
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
+
+    /**
+     * 个人信息接口
+     *
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "/getData", method = RequestMethod.POST)
+    @ApiOperation(value = "查询队员", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "openid", value = "队员实体", required = true, dataType = "String")
+    public ResponseEntity getData(@RequestParam String openid) {
+        log.info("队员信息请求参数{}", JSONObject.toJSONString(openid));
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            PkMember pkMember = pkMembers.get(0);
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId());
+            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+
+            Map data = new HashMap();
+            data.put("name", pkMember.getName());
+            if (CollectionUtils.isNotEmpty(pkTeamMembers)) {
+                PkTeam pkTeam = pkTeamMapper.selectById(pkTeamMembers.get(0));
+                data.put("team", pkTeam.getName());
+            }
+            data.put("height", pkMember.getHeight());
+            data.put("weight", pkMember.getWeight());
+            data.put("birth", pkMember.getBirth());
+            data.put("player", pkMember.getPosition());
+            data.put("foot", pkMember.getHabitfeet());
+            return ResponseEntity.ok(new CommonResp<Map>(data));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
+    /**
+     * 修改资料接口
+     *
+     * @param pkMemberDto
+     * @return
+     */
+    @RequestMapping(value = "/editData", method = RequestMethod.POST)
+    @ApiOperation(value = "查询队员", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
+    public ResponseEntity editData(@RequestBody PkMemberDto pkMemberDto) {
+        log.info("队员信息修改请求参数{}", JSONObject.toJSONString(pkMemberDto));
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            PkMember pkMember = new PkMember();
+
+            PropertyUtils.copyProperties(pkMember, pkMemberDto);
+            pkMember.setId(pkMembers.get(0).getId());
+            pkMemberMapper.updateById(pkMember);
+            return ResponseEntity.ok(new CommonResp<String>("修改成功"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
+
+    /**
+     * 我的页面信息接口
+     *
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "/myInfo", method = RequestMethod.POST)
+    @ApiOperation(value = "查询队员", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "openid", value = "openid", required = true, dataType = "String")
+    public ResponseEntity editData(@RequestParam String openid) {
+        log.info("队员信息修改请求参数{}", openid);
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            PkMember pkMember = pkMembers.get(0);
+
+            Map data = new HashMap();
+            data.put("name", pkMember.getName());
+            Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
+            List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+            if (!CollectionUtils.isEmpty(attachmentList)) {
+                data.put("headImage", attachmentList.get(0).getUrl());
+            }
+
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId());
+            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+            if (CollectionUtils.isNotEmpty(pkTeamMembers)) {
+                PkTeam pkTeam = pkTeamMapper.selectById(pkTeamMembers.get(0));
+                data.put("team", pkTeam.getName());
+                data.put("teamid", pkTeam.getId());
+                data.put("teamScore", pkTeam.getPoint());
+                data.put("teamImage", pkTeam.getPoint());
+                data.put("levelid", pkTeam.getLevel());
+                pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+                attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+                if (!CollectionUtils.isEmpty(attachmentList)) {
+                    data.put("teamImage", attachmentList.get(0).getUrl());
+
+                }
+
+            }
+            data.put("isCaptain", "1".equals(pkMember.getType()) ? 1 : 0);
+            return ResponseEntity.ok(new CommonResp<Map>(data));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
+
+    /**
+     * 我的约战信息接口
+     *
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "/myPK", method = RequestMethod.POST)
+    @ApiOperation(value = "查询约战信息", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "openid", value = "队员实体", required = true, dataType = "String")
+    public ResponseEntity myPK(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Integer type) {
+        log.info("我的约战信息请求参数{}", openid);
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
+            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", teamid).eq("status", type);
+            List<PkMatch> pkMatches = pkMatchMapper.selectList(pkMatchWrapper);
+            if (CollectionUtils.isEmpty(pkMatches)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "未获取到比赛信息"));
+            }
+
+            PkTeam pkTeam = pkTeamMapper.selectById(teamid);
+            List<Map> datas = new ArrayList<>();
+            pkMatches.forEach(pkMatch -> {
+                Map data = new HashMap();
+                data.put("team", pkTeam.getName());
+                PkTeam hostTeam = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
+                data.put("opponent", hostTeam.getName());
+                data.put("oppoid", hostTeam.getId());
+
+                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+                List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+                if (!CollectionUtils.isEmpty(attachmentList)) {
+                    data.put("oppoImage", attachmentList.get(0).getUrl());
+                }
+                data.put("address", pkMatch.getPlace());
+                data.put("time", pkMatch.getTime());
+                data.put("pkstatus", pkMatch.getStatus());
+                datas.add(data);
+
+            });
+
+            return ResponseEntity.ok(new CommonListResp<Map>(datas));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
+
+    /**
+     * 取消约战接口
+     *
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "/cancelPK", method = RequestMethod.POST)
+    @ApiOperation(value = "取消约战", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "openid", value = "队员实体", required = true, dataType = "String")
+    public ResponseEntity cancelPK(@RequestParam String openid, @RequestParam Long teamid) {
+        log.info("取消约战请求参数{}", openid);
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+
+//            Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
+//            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", teamid);
+////            pkMatchWrapper.eq("status", type);
+//            List<PkMatch> pkMatches = pkMatchMapper.selectList(pkMatchWrapper);
+//            if (CollectionUtils.isEmpty(pkMatches)) {
+//                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "未获取到比赛信息"));
+//            }
+
+            return ResponseEntity.ok(new CommonResp<String>("取消约战成功"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
     }
 
