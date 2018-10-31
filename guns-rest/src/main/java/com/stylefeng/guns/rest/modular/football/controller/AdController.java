@@ -58,7 +58,7 @@ public class AdController {
         try {
             Assert.notNull(type, "轮播图类型不能为空");
             Wrapper<PkAd> wrapper = new EntityWrapper<PkAd>();
-            wrapper.eq("type", type);
+            wrapper.eq("type", ("1".equals(type))?"0":"1");//文档要求
             wrapper.lt("starttime", new Date());
             wrapper.gt("endtime", new Date());
             wrapper.groupBy("createdate desc");
