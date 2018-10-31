@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.persistence.dao.AreasMapper;
 import com.stylefeng.guns.rest.common.persistence.model.Areas;
+import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import io.swagger.annotations.Api;
@@ -47,9 +48,9 @@ public class AreaController {
             Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
             List<Areas> list = areasMapper.selectList(wrapper);
 
-            return ResponseEntity.ok(new CommonResp<Areas>(list));
+            return ResponseEntity.ok(new CommonListResp<Areas>(list));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

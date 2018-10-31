@@ -8,7 +8,7 @@ import com.stylefeng.guns.rest.common.persistence.dao.PkAdMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.rest.common.persistence.model.PkAd;
 import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
-import com.stylefeng.guns.rest.common.util.response.CommonResp;
+import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -75,9 +75,9 @@ public class AdController {
                     results.add(map);
                 });
             }
-            return ResponseEntity.ok(new CommonResp<Map>(results));
+            return ResponseEntity.ok(new CommonListResp<Map>(results));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
@@ -122,9 +122,9 @@ public class AdController {
 
             });
 
-            return ResponseEntity.ok(new CommonResp<Map>(results));
+            return ResponseEntity.ok(new CommonListResp<Map>(results));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

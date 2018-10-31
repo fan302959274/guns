@@ -7,6 +7,7 @@ import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
+import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import com.stylefeng.guns.rest.modular.football.transfer.PkTeamDto;
@@ -14,16 +15,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,9 +67,9 @@ public class TeamController {
             Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
             wrapper = wrapper.like("name", name);
             List<PkTeam> pkTeams = pkTeamMapper.selectList(wrapper);
-            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeams));
+            return ResponseEntity.ok(new CommonListResp<PkTeam>(pkTeams));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
@@ -176,9 +176,9 @@ public class TeamController {
             Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
             List<Areas> list = areasMapper.selectList(wrapper);
 
-            return ResponseEntity.ok(new CommonResp<Areas>(list));
+            return ResponseEntity.ok(new CommonListResp<Areas>(list));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
@@ -194,14 +194,14 @@ public class TeamController {
         try {
             PkTeam pkTeam = pkTeamMapper.selectById(teamid);
             Assert.notNull(pkTeam, "未获取到球队");
-            Integer matchSum = (null==pkTeam.getWinnum()?0:pkTeam.getWinnum()) + (null==pkTeam.getDebtnum()?0:pkTeam.getDebtnum()) + (null==pkTeam.getDrawnum()?0:pkTeam.getDrawnum());
+            Integer matchSum = (null == pkTeam.getWinnum() ? 0 : pkTeam.getWinnum()) + (null == pkTeam.getDebtnum() ? 0 : pkTeam.getDebtnum()) + (null == pkTeam.getDrawnum() ? 0 : pkTeam.getDrawnum());
             if (matchSum < 5) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "队伍比赛未满5次"));
             }
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
-            if (CollectionUtils.isEmpty(pkMembers)){
+            if (CollectionUtils.isEmpty(pkMembers)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "openid未获取到用户"));
             }
             Assert.notEmpty(pkMembers, "openid未获取到用户");
@@ -213,14 +213,14 @@ public class TeamController {
             Wrapper<PkMatch> pkMatchWrapperHost = new EntityWrapper<PkMatch>();
             pkMatchWrapperHost = pkMatchWrapperHost.eq("hostteamid", teamid);
             List<PkMatch> pkMatchesHost = pkMatchMapper.selectList(pkMatchWrapperHost);
-            if (CollectionUtils.isNotEmpty(pkMatchesHost)){
+            if (CollectionUtils.isNotEmpty(pkMatchesHost)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
             }
             //被挑战
             Wrapper<PkMatch> pkMatchWrapperChallenge = new EntityWrapper<PkMatch>();
             pkMatchWrapperChallenge = pkMatchWrapperChallenge.eq("challengeteamid", teamid);
             List<PkMatch> pkMatchesChallenge = pkMatchMapper.selectList(pkMatchWrapperChallenge);
-            if (CollectionUtils.isNotEmpty(pkMatchesChallenge)){
+            if (CollectionUtils.isNotEmpty(pkMatchesChallenge)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
             }
 

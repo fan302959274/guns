@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.persistence.dao.DictMapper;
 import com.stylefeng.guns.rest.common.persistence.model.Dict;
+import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import io.swagger.annotations.Api;
@@ -47,9 +48,9 @@ public class MatchController {
             wrapper.eq("pid", "43");
             List<Dict> list = dictMapper.selectList(wrapper);
 
-            return ResponseEntity.ok(new CommonResp<Dict>(list));
+            return ResponseEntity.ok(new CommonListResp<Dict>(list));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
