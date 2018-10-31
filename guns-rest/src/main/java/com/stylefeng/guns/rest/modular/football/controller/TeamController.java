@@ -15,16 +15,19 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 球队控制器
@@ -59,7 +62,7 @@ public class TeamController {
      * @return
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    @ApiOperation(value = "查询球队", notes = "返回码:20000成功;")
+    @ApiOperation(value = "查询球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "name", value = "球队名称", required = true, dataType = "String")
     public ResponseEntity register(@RequestParam String name) {
         log.info("查询球队参数为:{}", name);
@@ -81,7 +84,7 @@ public class TeamController {
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ApiOperation(value = "添加球队", notes = "返回码:20000成功;")
+    @ApiOperation(value = "添加球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "body", name = "pkTeamDto", value = "球队实体", required = true, dataType = "PkTeamDto")
     public ResponseEntity valid(@RequestBody PkTeamDto pkTeamDto) {
         log.info("添加球队请求参数为:{}", JSONObject.toJSONString(pkTeamDto));
@@ -121,7 +124,7 @@ public class TeamController {
      * @return
      */
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.POST)
-    @ApiOperation(value = "球队详情", notes = "返回码:20000成功;")
+    @ApiOperation(value = "球队详情", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "String")
     public ResponseEntity detail(@PathVariable String id) {
         log.info("球队详情参数为:{}", id);
@@ -142,7 +145,7 @@ public class TeamController {
      * @return
      */
     @RequestMapping(value = "/join", method = RequestMethod.POST)
-    @ApiOperation(value = "加入球队", notes = "返回码:20000成功;")
+    @ApiOperation(value = "加入球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
     public ResponseEntity join(@RequestParam Long teamid, @RequestParam String openid) {
         log.info("加入球队请求参数为:{}", teamid);
@@ -170,7 +173,7 @@ public class TeamController {
      * @return
      */
     @RequestMapping(value = "/area", method = RequestMethod.POST)
-    @ApiOperation(value = "球队区域", notes = "返回码:20000成功;")
+    @ApiOperation(value = "球队区域", notes = "返回码:1成功;")
     public ResponseEntity area() {
         try {
             Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
@@ -183,51 +186,69 @@ public class TeamController {
 
     }
 
+
     /**
-     * 查询约战资格
+     * 球王榜
      *
      * @return
      */
-    @RequestMapping(value = "/qualify", method = RequestMethod.POST)
-    @ApiOperation(value = "球队约战资格", notes = "返回码:20000成功;")
-    public ResponseEntity qualify(@RequestParam Long teamid, @RequestParam String openid) {
+    @RequestMapping(value = "/rankList", method = RequestMethod.POST)
+    @ApiOperation(value = "球王榜", notes = "返回码:1成功;")
+    public ResponseEntity rankList(@RequestParam Integer levelid) {
         try {
-            PkTeam pkTeam = pkTeamMapper.selectById(teamid);
-            Assert.notNull(pkTeam, "未获取到球队");
-            Integer matchSum = (null == pkTeam.getWinnum() ? 0 : pkTeam.getWinnum()) + (null == pkTeam.getDebtnum() ? 0 : pkTeam.getDebtnum()) + (null == pkTeam.getDrawnum() ? 0 : pkTeam.getDrawnum());
-            if (matchSum < 5) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "队伍比赛未满5次"));
-            }
-            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
-            wrapper = wrapper.eq("openid", openid);
-            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
-            if (CollectionUtils.isEmpty(pkMembers)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "openid未获取到用户"));
-            }
-            Assert.notEmpty(pkMembers, "openid未获取到用户");
-
-            if (!"1".equals(pkMembers.get(0).getType())) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该队员不是队长"));
-            }
-            //东道主
-            Wrapper<PkMatch> pkMatchWrapperHost = new EntityWrapper<PkMatch>();
-            pkMatchWrapperHost = pkMatchWrapperHost.eq("hostteamid", teamid);
-            List<PkMatch> pkMatchesHost = pkMatchMapper.selectList(pkMatchWrapperHost);
-            if (CollectionUtils.isNotEmpty(pkMatchesHost)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
-            }
-            //被挑战
-            Wrapper<PkMatch> pkMatchWrapperChallenge = new EntityWrapper<PkMatch>();
-            pkMatchWrapperChallenge = pkMatchWrapperChallenge.eq("challengeteamid", teamid);
-            List<PkMatch> pkMatchesChallenge = pkMatchMapper.selectList(pkMatchWrapperChallenge);
-            if (CollectionUtils.isNotEmpty(pkMatchesChallenge)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
+            Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
+            switch (levelid) {
+                case 1:
+                    wrapper.eq("level", "使者");
+                    break;
+                case 2:
+                    wrapper.eq("level", "守卫");
+                    break;
+                case 3:
+                    wrapper.eq("level", "战士");
+                    break;
+                case 4:
+                    wrapper.eq("level", "统治");
+                    break;
+                case 5:
+                    wrapper.eq("level", "经典");
+                    break;
+                case 6:
+                    wrapper.eq("level", "传奇");
+                    break;
+                case 7:
+                    wrapper.eq("level", "神灵");
+                    break;
+                default:
+                    wrapper.eq("level", "使者");
+                    break;
             }
 
+            List<PkTeam> list = pkTeamMapper.selectList(wrapper);
 
-            return ResponseEntity.ok(new CommonResp<String>("可约战"));
+            List<Map> datas = new ArrayList<>();
+            list.forEach(pkTeam -> {
+                Map map = new HashMap();
+                map.put("timeid", pkTeam.getId());
+                map.put("teamName", pkTeam.getName());
+                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+                List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+                if (!CollectionUtils.isEmpty(attachmentList)) {
+                    map.put("teamImage", attachmentList.get(0).getUrl());
+                }
+                List<Integer> grades = new ArrayList<>();
+                grades.add(pkTeam.getWinnum());
+                grades.add(pkTeam.getDrawnum());
+                grades.add(pkTeam.getDebtnum());
+                map.put("grade", grades);
+                map.put("teamScore", pkTeam.getPoint());
+                datas.add(map);
+            });
+
+            return ResponseEntity.ok(new CommonListResp<PkTeam>(list));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

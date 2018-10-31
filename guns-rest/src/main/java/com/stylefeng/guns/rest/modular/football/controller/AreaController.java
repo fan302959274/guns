@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 区域控制器
@@ -42,13 +45,21 @@ public class AreaController {
      * @return
      */
     @RequestMapping(value = "/areas", method = RequestMethod.POST)
-    @ApiOperation(value = "球队区域", notes = "返回码:20000成功;")
+    @ApiOperation(value = "球队区域", notes = "返回码:1成功;")
     public ResponseEntity area() {
         try {
             Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
             List<Areas> list = areasMapper.selectList(wrapper);
+            List<Map> datas = new ArrayList<>();
+            list.forEach(areas -> {
+                Map map = new HashMap();
+                map.put("areaid", areas.getId());
+                map.put("areaName", areas.getArea());
+                map.put("areaIntro", areas.getArea());
+                datas.add(map);
+            });
 
-            return ResponseEntity.ok(new CommonListResp<Areas>(list));
+            return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonListResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }

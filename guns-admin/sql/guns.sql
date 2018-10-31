@@ -65,6 +65,9 @@ INSERT INTO `dict` VALUES ('35', '0', '0', '账号状态', null);
 INSERT INTO `dict` VALUES ('36', '1', '35', '启用', null);
 INSERT INTO `dict` VALUES ('37', '2', '35', '冻结', null);
 INSERT INTO `dict` VALUES ('38', '3', '35', '已删除', null);
+INSERT INTO `dict` VALUES ('39', '0', '0', '约战时间段', null);
+INSERT INTO `dict` VALUES ('40', '1', '39', '10:00-12:00', null);
+INSERT INTO `dict` VALUES ('41', '2', '39', '13:00-17:00', null);
 
 -- ----------------------------
 -- Table structure for login_log

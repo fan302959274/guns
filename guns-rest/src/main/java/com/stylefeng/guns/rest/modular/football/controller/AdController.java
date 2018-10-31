@@ -51,7 +51,7 @@ public class AdController {
      * @return
      */
     @RequestMapping(value = "/lunboInfo", method = RequestMethod.POST)
-    @ApiOperation(value = "轮播图接口", notes = "返回码:20000成功;")
+    @ApiOperation(value = "轮播图接口", notes = "返回码:1成功;")
     public ResponseEntity lunboInfo(@RequestParam String type) {
         log.info("轮播图接口请求参数{}", type);
         List<Map> results = new ArrayList<>();
@@ -88,7 +88,7 @@ public class AdController {
      * @return
      */
     @RequestMapping(value = "/activityList", method = RequestMethod.POST)
-    @ApiOperation(value = "联盟活动接口", notes = "返回码:20000成功;")
+    @ApiOperation(value = "联盟活动接口", notes = "返回码:1成功;")
     public ResponseEntity activityList(@RequestParam Integer page) {
         log.info("联盟活动接口请求参数{}", page);
         List<Map> results = new ArrayList<>();

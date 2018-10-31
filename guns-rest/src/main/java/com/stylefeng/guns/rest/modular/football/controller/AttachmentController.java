@@ -37,7 +37,7 @@ public class AttachmentController {
      * 上传图片(上传到项目的webapp/static/img)
      */
 
-    @ApiOperation(value = "上传附件", notes = "返回码:20000成功;")
+    @ApiOperation(value = "上传附件", notes = "返回码:1成功;")
     @PostMapping(value = "/upload", headers = "content-type=multipart/form-data")
     public ResponseEntity upload(@RequestPart("file") MultipartFile file) {
         String pictureName = UUID.randomUUID().toString() + ".jpg";
