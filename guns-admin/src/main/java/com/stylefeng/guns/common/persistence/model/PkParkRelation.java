@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-27
+ * @since 2018-10-31
  */
 @TableName("pk_park_relation")
 public class PkParkRelation extends Model<PkParkRelation> {

@@ -1,0 +1,50 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>球赛管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <#SelectCon id="areas" name="区域" >
+                                    <option value="">全部</option>
+                                </#SelectCon>
+                            </div>
+                            <div class="col-sm-3">
+                                <#SelectCon id="pkstatus" name="比赛状态" >
+                                    <option value="">全部</option>
+                                    <option value="1">匹配中</option>
+                                    <option value="2">待比赛</option>
+                                    <option value="3">约战中</option>
+                                    <option value="2">约战完成</option>
+                                </#SelectCon>
+                            </div>
+                            <div class="col-sm-3">
+                                <#NameCon id="teamid" name="发起方" />
+                            </div>
+
+                            <div class="col-sm-3">
+                                <#NameCon id="no" name="预约订单号" />
+                            </div>
+
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="Order.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="orderTableToolbar" role="group">
+                            <#button name="查看" icon="fa-eye" clickFun="Order.openOrderView()" />
+                            <#button name="删除" icon="fa-remove" clickFun="Order.delete()" space="true"/>
+                        </div>
+                        <#table id="orderTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/football/order/order.js"></script>
+@}

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-27
+ * @since 2018-10-31
  */
 @TableName("pk_park")
 public class PkPark extends Model<PkPark> {
@@ -40,7 +40,7 @@ public class PkPark extends Model<PkPark> {
      */
 	private String city;
     /**
-     * 球场区
+     * 球场区 1 城南、2 城北
      */
 	private String area;
     /**

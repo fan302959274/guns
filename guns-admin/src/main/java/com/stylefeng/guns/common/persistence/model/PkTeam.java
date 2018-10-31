@@ -1,13 +1,14 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.enums.IdType;
 import java.math.BigDecimal;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-27
+ * @since 2018-10-31
  */
 @TableName("pk_team")
 public class PkTeam extends Model<PkTeam> {
@@ -52,13 +53,13 @@ public class PkTeam extends Model<PkTeam> {
      */
 	private Integer drawnum;
     /**
-     * 球队总积分
+     * 起始积分
+     */
+	private Integer startpoint;
+    /**
+     * 球队积分
      */
 	private Integer point;
-	/**
-	 * 球队起始积分
-	 */
-	private Integer startpoint;
     /**
      * 球队省份
      */
@@ -68,7 +69,7 @@ public class PkTeam extends Model<PkTeam> {
      */
 	private String city;
     /**
-     * 球队区
+     * 球队区 1南京、2合肥
      */
 	private String area;
     /**
@@ -163,6 +164,14 @@ public class PkTeam extends Model<PkTeam> {
 
 	public void setDrawnum(Integer drawnum) {
 		this.drawnum = drawnum;
+	}
+
+	public Integer getStartpoint() {
+		return startpoint;
+	}
+
+	public void setStartpoint(Integer startpoint) {
+		this.startpoint = startpoint;
 	}
 
 	public Integer getPoint() {
@@ -269,14 +278,6 @@ public class PkTeam extends Model<PkTeam> {
 		this.updatedate = updatedate;
 	}
 
-	public Integer getStartpoint() {
-		return startpoint;
-	}
-
-	public void setStartpoint(Integer startpoint) {
-		this.startpoint = startpoint;
-	}
-
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -292,6 +293,7 @@ public class PkTeam extends Model<PkTeam> {
 			", winnum=" + winnum +
 			", debtnum=" + debtnum +
 			", drawnum=" + drawnum +
+			", startpoint=" + startpoint +
 			", point=" + point +
 			", prov=" + prov +
 			", city=" + city +

@@ -254,7 +254,7 @@ CREATE TABLE `cities` (
    PRIMARY KEY (`id`)
  ) ENGINE=InnoDB AUTO_INCREMENT=346 DEFAULT CHARSET=utf8 COMMENT='城市信息表';
 
--- 8、区域表
+-- 9、区域表
 DROP TABLE IF EXISTS `areas`;
 CREATE TABLE `areas`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -283,4 +283,20 @@ INSERT INTO `areas` VALUES (814, '320124', '溧水县', '320100');
 INSERT INTO `areas` VALUES (815, '320125', '高淳县', '320100');
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+-- 10、订单表
+DROP TABLE IF EXISTS `pk_order`;
+CREATE TABLE `pk_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `no` varchar(100) DEFAULT NULL COMMENT '订单编号',
+  `teamid` bigint(20) NOT NULL COMMENT '球队id',
+  `matchid` bigint(20) NOT NULL COMMENT '比赛id',
+  `amount` NUMERIC(10,2) DEFAULT 0 COMMENT '订单金额',
+  `status` char(1) DEFAULT 0 COMMENT '支付状态 0未支付 1已支付',
+  `createdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updatedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='订单表';
+
 

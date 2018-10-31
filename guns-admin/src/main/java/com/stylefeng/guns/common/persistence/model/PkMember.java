@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-27
+ * @since 2018-10-31
  */
 @TableName("pk_member")
 public class PkMember extends Model<PkMember> {
@@ -68,6 +68,10 @@ public class PkMember extends Model<PkMember> {
      * 队员类型:1:队长;2:普通球员
      */
 	private String type;
+    /**
+     * openid
+     */
+	private String openid;
     /**
      * 队员状态:0:禁用1:启用
      */
@@ -170,6 +174,14 @@ public class PkMember extends Model<PkMember> {
 		this.type = type;
 	}
 
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -213,6 +225,7 @@ public class PkMember extends Model<PkMember> {
 			", height=" + height +
 			", weight=" + weight +
 			", type=" + type +
+			", openid=" + openid +
 			", status=" + status +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +

@@ -3,6 +3,7 @@ package com.stylefeng.guns.common.persistence.model;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.enums.IdType;
+import java.math.BigDecimal;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -11,14 +12,14 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 广告表
+ * 订单表
  * </p>
  *
  * @author stylefeng
  * @since 2018-10-31
  */
-@TableName("pk_ad")
-public class PkAd extends Model<PkAd> {
+@TableName("pk_order")
+public class PkOrder extends Model<PkOrder> {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,27 +29,23 @@ public class PkAd extends Model<PkAd> {
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
     /**
-     * 广告主标题
+     * 订单编号
      */
-	private String mainhead;
+	private String no;
     /**
-     * 广告副标题
+     * 球队id
      */
-	private String subhead;
+	private Long teamid;
     /**
-     * 开始时间
+     * 比赛id
      */
-	private Date starttime;
+	private Long matchid;
     /**
-     * 结束时间
+     * 订单金额
      */
-	private Date endtime;
+	private BigDecimal amount;
     /**
-     * 广告链接
-     */
-	private String url;
-    /**
-     * 广告状态:0:预上线;1:已上线
+     * 支付状态 0未支付 1已支付
      */
 	private String status;
     /**
@@ -59,10 +56,6 @@ public class PkAd extends Model<PkAd> {
      * 更新时间
      */
 	private Date updatedate;
-    /**
-     * 0 约战 1 联盟广告 2联盟活动
-     */
-	private String type;
 
 
 	public Long getId() {
@@ -73,44 +66,36 @@ public class PkAd extends Model<PkAd> {
 		this.id = id;
 	}
 
-	public String getMainhead() {
-		return mainhead;
+	public String getNo() {
+		return no;
 	}
 
-	public void setMainhead(String mainhead) {
-		this.mainhead = mainhead;
+	public void setNo(String no) {
+		this.no = no;
 	}
 
-	public String getSubhead() {
-		return subhead;
+	public Long getTeamid() {
+		return teamid;
 	}
 
-	public void setSubhead(String subhead) {
-		this.subhead = subhead;
+	public void setTeamid(Long teamid) {
+		this.teamid = teamid;
 	}
 
-	public Date getStarttime() {
-		return starttime;
+	public Long getMatchid() {
+		return matchid;
 	}
 
-	public void setStarttime(Date starttime) {
-		this.starttime = starttime;
+	public void setMatchid(Long matchid) {
+		this.matchid = matchid;
 	}
 
-	public Date getEndtime() {
-		return endtime;
+	public BigDecimal getAmount() {
+		return amount;
 	}
 
-	public void setEndtime(Date endtime) {
-		this.endtime = endtime;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
 
 	public String getStatus() {
@@ -137,14 +122,6 @@ public class PkAd extends Model<PkAd> {
 		this.updatedate = updatedate;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -152,17 +129,15 @@ public class PkAd extends Model<PkAd> {
 
 	@Override
 	public String toString() {
-		return "PkAd{" +
+		return "PkOrder{" +
 			"id=" + id +
-			", mainhead=" + mainhead +
-			", subhead=" + subhead +
-			", starttime=" + starttime +
-			", endtime=" + endtime +
-			", url=" + url +
+			", no=" + no +
+			", teamid=" + teamid +
+			", matchid=" + matchid +
+			", amount=" + amount +
 			", status=" + status +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +
-			", type=" + type +
 			"}";
 	}
 }

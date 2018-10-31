@@ -28,7 +28,7 @@ public class MyBatisPlusGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("D:\\project\\songsong818.foot_924\\branches\\guns\\guns-admin\\src\\main\\java");//这里写你自己的java目录
+        gc.setOutputDir("E:\\project\\songsong818.foot_924\\branches\\guns\\guns-admin\\src\\main\\java");//这里写你自己的java目录
         gc.setFileOverride(true);//是否覆盖
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
@@ -49,8 +49,8 @@ public class MyBatisPlusGenerator {
         });
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("root");
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/guns?characterEncoding=utf8");
+        dsc.setPassword("admin123");
+        dsc.setUrl("jdbc:mysql://47.97.179.26:3306/guns?characterEncoding=utf8");
         mpg.setDataSource(dsc);
 
         // 策略配置

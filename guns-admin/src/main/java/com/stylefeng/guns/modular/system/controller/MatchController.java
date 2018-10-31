@@ -95,7 +95,7 @@ public class MatchController extends BaseController {
     }
 
     /**
-     * 部门详情
+     * 比赛详情
      */
     @RequestMapping(value = "/detail/{matchId}")
     @ResponseBody

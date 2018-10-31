@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-27
+ * @since 2018-10-31
  */
 @TableName("login_log")
 public class LoginLog extends Model<LoginLog> {
