@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.MesgDao">
+
+    <sql id="Base_Column_List">
+        id, mesgname, objtype, createdate, content
+    </sql>
+
+    <select id="selectMesgs" resultType="map">
+        select
+        <include refid="Base_Column_List" />,
+        (
+        CASE
+        WHEN  channel  = 1  THEN '短信'
+        ELSE
+        "其他"
+        END
+        ) "channel"
+        from pk_mesg
+        <if test="mesgname != null">
+            where mesgname like CONCAT('%',#{mesgname},'%')
+        </if>
+        ORDER  BY id DESC
+
+    </select>
+
+</mapper>

@@ -1,0 +1,52 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>消息管理</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content" style="border:none !important; ">
+                        <div class="form-horizontal" id="userInfoForm">
+                            <div class="row">
+                                <div class="col-sm-6 b-r">
+                                    <input type="hidden" id="id" value="${pkMesg.id}">
+                                    <#input id="mesgname" name="消息名称" underline="true" value="${pkMesg.mesgname}"  disabled="disabled" />
+                                    <#input id="channel" name="渠道" underline="true" value="短信"  disabled="disabled" />
+                                    <input type="hidden" id="objtypeValue" value="${pkMesg.objtype}"  disabled="disabled">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">推送对象</label>
+                                        <div class="col-sm-9">
+                                            <select disabled="disabled" class="form-control" id="objtype" name="objtype">
+                                                <option value="0">全部</option>
+                                                <option value="1">队长</option>
+                                                <option value="2">队员</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div id="driverInfoContent">
+                                        <#input id="" name="创建时间" underline="true" value="${creatTime}"  disabled="disabled" />
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">推送内容</label>
+                                            <div class="col-sm-9">
+                                                <textarea  disabled="disabled" class="form-control" id="content" name="deblock_udid" rows="6" style="min-width: 90%">${pkMesg.content}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="${ctxPath}/static/modular/football/mesg/mesg_info.js"></script>
+@}
