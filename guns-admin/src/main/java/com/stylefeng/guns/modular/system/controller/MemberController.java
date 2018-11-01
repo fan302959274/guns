@@ -104,8 +104,8 @@ public class MemberController extends BaseController {
         if (!CollectionUtils.isEmpty(list)) {
             menuMap.put("idcard", list.get(0).getUrl());
         }
-        Long teamId= (Long)teamInfo.get("id");
-        if(teamId!=null){
+        if(teamInfo!=null){
+            Long teamId= (Long)teamInfo.get("id");
             Wrapper<PkAttachment> teamwrapper = new EntityWrapper<>();
             teamwrapper = teamwrapper.eq("linkid", teamId).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
             List<PkAttachment> teamList = pkAttachmentMapper.selectList(teamwrapper);
@@ -133,7 +133,7 @@ public class MemberController extends BaseController {
 
         Map<String, Object> menuMap = BeanKit.beanToMap(pkMember);
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
+        wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
         List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
         if (!CollectionUtils.isEmpty(list)) {
             menuMap.put("avatar", list.get(0).getUrl());
@@ -144,8 +144,9 @@ public class MemberController extends BaseController {
         if (!CollectionUtils.isEmpty(list)) {
             menuMap.put("idcard", list.get(0).getUrl());
         }
-        Long teamId= (Long)teamInfo.get("id");
-        if(teamId!=null){
+
+        if(teamInfo!=null){
+            Long teamId= (Long)teamInfo.get("id");
             Wrapper<PkAttachment> teamwrapper = new EntityWrapper<>();
             teamwrapper = teamwrapper.eq("linkid", teamId).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
             List<PkAttachment> teamList = pkAttachmentMapper.selectList(teamwrapper);
@@ -322,5 +323,23 @@ public class MemberController extends BaseController {
         return SUCCESS_TIP;
     }
 
+    /**
+     * 根据账号查询是否重复
+     */
+    @RequestMapping(value = "/iseExistAcount")
+    @ResponseBody
+    public boolean iseExistAcount(@RequestParam String account ,Long id) {
+        if (id != null) {
+            PkMember oldpkMember = pkMemberMapper.selectById(id);
+            if(account.equals(oldpkMember.getAccount())){
+                return true;
+            }else{
+                PkMember pkMember = this.memberDao.selectMemberByAcount(account);
+                return pkMember!=null?false:true;
+            }
+        }
+        PkMember pkMember = this.memberDao.selectMemberByAcount(account);
+        return pkMember!=null?false:true;
+    }
 
 }

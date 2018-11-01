@@ -2,32 +2,28 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <div class="form-horizontal" id="memberInfoForm">
-
             <input type="hidden" id="id" value="">
-
             <div class="row">
-                <div class="col-sm-12 b-r">
-                    <#input id="account" name="账号" underline="true"/>
+                <div class="col-sm-6 b-r">
+                        <#input id="account" name="账号" underline="true"/>
+                        <#input id="name" name="姓名" underline="true"/>
+                        <#input id="birth" name="出生年月" underline="true" type="date"
+                                clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+                        <#input id="height" name="身高" underline="true"/>
+                        <#input id="weight" name="体重" underline="true"/>
+                        <#select id="position" name="所踢位置" underline="true">
+                            <option value="1">前锋</option>
+                            <option value="2">后卫</option>
+                            <option value="3">中场</option>
+                            <option value="4">门将</option>
+                        </#select>
 
-                    <#input id="name" name="姓名" underline="true"/>
-
-                    <#input id="birth" name="出生年月" underline="true" type="date"
-                            clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
-
-                    <#input id="height" name="身高" underline="true"/>
-                    <#input id="weight" name="体重" underline="true"/>
-                    <#select id="position" name="所踢位置" underline="true">
-                        <option value="1">前锋</option>
-                        <option value="2">后卫</option>
-                        <option value="3">中场</option>
-                        <option value="4">门将</option>
-                    </#select>
+                   </div>
+                <div class="col-sm-6 b-r">
                     <#select id="habitfeet" name="惯用脚" underline="true">
                         <option value="1">左</option>
                         <option value="2">右</option>
                     </#select>
-
-
                     @if(isNotEmpty(type) && type == '1'){
                     <#select id="type" name="状态" underline="true">
                         <option value="1">队长</option>
@@ -40,19 +36,22 @@
                     <#avatar id="avatar" name="头像" underline="true" />
                     <#avatar id="idcard" name="身份证照" underline="true" />
                 </div>
-                @if(isNotEmpty(type) && type == '1'){
-                <#input id="teamname" name="创建球队" underline="true" value=""/>
-
-                <#avatar id="teamlogo" name="球队logo" underline="true" avatarImg=""/>
-
-                <#select id="area" name="球队区域" underline="true" value="">
-                    <option value="1">南京</option>
-                    <option value="2">合肥</option>
-                </#select>
-                @}
-
             </div>
+            @if(isNotEmpty(type) && type == '1'){
+                <div class="row">
+                    <div class="col-sm-6 b-r">
+                        <#input id="teamname" name="创建球队" underline="true" value=""/>
 
+                        <#avatar id="teamlogo" name="球队logo" underline="true" avatarImg=""/>
+                    </div>
+                    <div class="col-sm-6 b-r">
+                        <#select id="area" name="球队区域" underline="true" value="">
+                            <option value="1">南京</option>
+                            <option value="2">合肥</option>
+                        </#select>
+                    </div>
+                </div>
+            @}
 
             <div class="row btn-group-m-t">
                 <div class="col-sm-10">

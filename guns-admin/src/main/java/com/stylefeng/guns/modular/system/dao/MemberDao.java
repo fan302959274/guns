@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.system.dao;
 
 
+import com.stylefeng.guns.common.persistence.model.PkMember;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,12 +24,11 @@ public interface MemberDao {
     List<Map<String, Object>> selectMembers(@Param("account") String account,@Param("type") String type);
 
     /**
-     * 修改球场状态
+     * 根据账户查询用户
      *
      * @param
      * @date 2018年10月9日 下午9:42:31
      */
-    int setStatus(@Param("parkId") Integer parkId, @Param("status") int status);
-
+    PkMember selectMemberByAcount(@Param("account") String account);
 
 }

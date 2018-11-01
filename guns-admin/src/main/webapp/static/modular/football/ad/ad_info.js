@@ -17,6 +17,41 @@ var AdInfoDlg = {
                     message: '广告副标题不能为空'
                 }
             }
+        },starttime: {
+            validators: {
+                notEmpty: {
+                    message: '开始时间不能为空'
+                },
+            callback: {
+                message: '开始时间必须小于结束时间',
+                callback: function (value, validator) {
+                    var other = validator.getFieldElements('endtime').val();//获得另一个的值
+                    var end = new Date(other.replace("-", "/").replace("-", "/"));
+                    var start = new Date(value.replace("-", "/").replace("-", "/"));
+                    if (end <= start ) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+          }
+        },endtime: {
+            validators: {
+                notEmpty: {
+                    message: '结束时间不能为空'
+                },callback: {
+                    message: '结束时间必须大于开始时间',
+                    callback: function (value, validator) {
+                        var other = validator.getFieldElements('starttime').val();//获得另一个的值
+                        var start = new Date(other.replace("-", "/").replace("-", "/"));
+                        var end = new Date(value.replace("-", "/").replace("-", "/"));
+                        if (end <= start ) {
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+            }
         }
     }
 };

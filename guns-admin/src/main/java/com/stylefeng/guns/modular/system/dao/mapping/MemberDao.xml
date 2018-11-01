@@ -29,8 +29,14 @@
         ORDER BY a.id
     </select>
 
-    <update id="setStatus">
-        update pk_park set status = #{status} where id =
-        #{parkId}
-    </update>
+    <select id="selectMemberByAcount" resultType="pkMember">
+        select
+        <include refid="Base_Column_List" />
+        from pk_member a
+        where 1=1
+        <if test="account != null">
+            AND account =#{account}
+        </if>
+    </select>
+
 </mapper>

@@ -41,9 +41,15 @@ Member.check = function () {
  * 点击添加队员
  */
 Member.openAddMember = function () {
+    var title="";
+    if(Member.type=='1'){
+        title='新增队长'
+    }else{
+        title='新增队员'
+    }
     var index = layer.open({
         type: 2,
-        title: '添加队员',
+        title: title,
         area: ['900px', '600px'], //宽高
         fix: false, //不固定
         maxmin: true,
@@ -56,10 +62,16 @@ Member.openAddMember = function () {
  * 打开查看队员详情（编辑）
  */
 Member.openMemberDetail = function () {
+    var title="";
+    if(Member.type=='1'){
+        title='编辑队长'
+    }else{
+        title='编辑队员'
+    }
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '队员详情',
+            title: title,
             area: ['900px', '600px'], //宽高
             fix: false, //不固定
             maxmin: true,

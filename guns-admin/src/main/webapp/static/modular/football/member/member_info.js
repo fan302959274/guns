@@ -4,20 +4,35 @@
 var MemberInfoDlg = {
     adInfoData : {},
     validateFields: {
-        name: {
+        account: {
             validators: {
                 notEmpty: {
-                    message: '广告标题不能为空'
+                    message: '账号不能为空'
+                },callback: {
+                    message: '账号已存在',
+                    callback: function (value) {
+                        var id=$('#id').val();
+                        var flag=true;
+                        //提交信息
+                        var ajax = new $ax(Feng.ctxPath + "/member/iseExistAcount", function(data){
+                            flag=data;
+                        },function(data){
+                            Feng.error("添加失败!" + data.responseJSON.message + "!");
+                        });
+                        ajax.set({"account":value,"id":id});
+                        ajax.start();
+                        return flag;
+                    }
                 }
             }
         },
-        subhead: {
+        name: {
             validators: {
                 notEmpty: {
-                    message: '广告副标题不能为空'
+                    message: '姓名不能为空'
                 }
             }
-        }
+        },
     }
 };
 

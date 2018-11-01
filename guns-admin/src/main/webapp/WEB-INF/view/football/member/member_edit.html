@@ -7,7 +7,7 @@
 
 
             <div class="row">
-                <div class="col-sm-12 b-r">
+                <div class="col-sm-6 b-r">
                     <#input id="account" name="账号" underline="true" value="${member.account}"/>
                     <#input id="name" name="姓名" underline="true" value="${member.name}"/>
 
@@ -23,6 +23,8 @@
                         <option value="3">中场</option>
                         <option value="4">门将</option>
                     </#select>
+                </div>
+                <div class="col-sm-6 b-r">
                     <input type="hidden" id="habitfeetValue" value="${member.habitfeet}">
                     <#select id="habitfeet" name="惯用脚" underline="true" value="${member.habitfeet}">
                         <option value="1">左</option>
@@ -35,23 +37,24 @@
                     </#select>
                     <#avatar id="avatar" name="头像" underline="true" avatarImg="${member.avatar}" />
                     <#avatar id="idcard" name="身份证照" underline="true" avatarImg="${member.idcard}"/>
-
-                    @if(isNotEmpty(member.type) && member.type == '1'){
-                    <input type="hidden" id="teamId" value="${teamInfo.id}">
-
-                    <#input id="teamname" name="球队名称" underline="true" value="${teamInfo.name}"/>
-                    <#avatar id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog}"/>
-                    <input type="hidden" id="areaValue" value="${teamInfo.areaid}">
-                    <#select id="area" name="球队区域" underline="true" >
-                        <option value="1">南京</option>
-                        <option value="2">合肥</option>
-                    </#select>
-                    @}
                 </div>
-
             </div>
-
-
+            @if(isNotEmpty(member.type) && member.type == '1'){
+                    <div class="row">
+                        <div class="col-sm-6 b-r">
+                            <input type="hidden" id="teamId" value="${teamInfo.id!}">
+                            <#input id="teamname" name="球队名称" underline="true" value="${teamInfo.name!}"/>
+                            <#avatar id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog!}"/>
+                        </div>
+                        <div class="col-sm-6 b-r">
+                            <input type="hidden" id="areaValue" value="${teamInfo.areaid!}">
+                            <#select id="area" name="球队区域" underline="true" >
+                                <option value="1">南京</option>
+                                <option value="2">合肥</option>
+                            </#select>
+                        </div>
+                    </div>
+            @}
             <div class="row btn-group-m-t">
                 <div class="col-sm-10">
                     <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="MemberInfoDlg.editSubmit()"/>
