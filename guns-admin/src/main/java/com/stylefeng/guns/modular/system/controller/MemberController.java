@@ -36,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 球员控制器
@@ -116,7 +117,7 @@ public class MemberController extends BaseController {
         model.addAttribute("member", menuMap);
         model.addAttribute("areaInfo", areaInfo);
         model.addAttribute("teamInfo", teamInfo);
-        model.addAttribute("birth", ss.format(pkMember.getBirth()));
+        model.addAttribute("birth", Objects.nonNull(pkMember.getBirth())?ss.format(pkMember.getBirth()):"");
         LogObjectHolder.me().set(pkMember);
         return PREFIX + "member_edit.html";
     }

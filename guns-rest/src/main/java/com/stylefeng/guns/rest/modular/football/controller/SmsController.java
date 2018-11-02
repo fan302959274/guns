@@ -67,7 +67,7 @@ public class SmsController {
             if (Integer.parseInt(result)<=0){
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(),"验证码发送失败(code:{"+result+"})!"));
             }
-            return ResponseEntity.ok(new CommonResp<String>(smsCode));
+            return ResponseEntity.ok(new CommonResp<String>("发送成功"));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
@@ -75,27 +75,27 @@ public class SmsController {
     }
 
     /**
-     * 短信发送接口
+     * 短信验证接口
      *
-     * @param smsEntity
+     * @param mobile
      * @return
      */
     @RequestMapping(value = "/valid", method = RequestMethod.POST)
     @ApiOperation(value = "验证短信验证码", notes = "返回码:1成功;")
-    @ApiImplicitParam(paramType = "body", name = "smsEntity", value = "请求实体", required = true, dataType = "SmsEntity")
-    public ResponseEntity valid(@RequestBody SmsEntity smsEntity) {
-        log.info("验证码验证请求参数为:{}", JSONObject.toJSONString(smsEntity));
+    @ApiImplicitParam(paramType = "body", name = "mobile", value = "手机号", required = true, dataType = "String")
+    public ResponseEntity valid(@RequestParam String mobile ,@RequestParam String smscode) {
+        log.info("验证码验证请求参数为:{}", JSONObject.toJSONString(mobile));
         try {
-            Assert.notNull(smsEntity.getMobile(), "手机号不能为空");
-            Assert.notNull(smsEntity.getSmscode(), "验证码不能为空");
-            String smscode = (String) redisTemplate.opsForValue().get(smsEntity.getMobile() + "_registercode");
-            if (StringUtils.isBlank(smscode)) {
+            Assert.notNull(mobile, "手机号不能为空");
+            Assert.notNull(smscode, "验证码不能为空");
+            String smscodeold = (String) redisTemplate.opsForValue().get(mobile + "_registercode");
+            if (StringUtils.isBlank(smscodeold)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_INVALID.getCode(), ResponseCode.SMSCODE_INVALID.getMsg()));
             }
-            if (!Objects.equals(smscode, smsEntity.getSmscode())) {
+            if (!Objects.equals(smscodeold, smscode)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SMSCODE_ERROR.getCode(), ResponseCode.SMSCODE_ERROR.getMsg()));
             }
-            return ResponseEntity.ok(new CommonResp<String>(smsEntity.getMobile()));
+            return ResponseEntity.ok(new CommonResp<String>(mobile));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
