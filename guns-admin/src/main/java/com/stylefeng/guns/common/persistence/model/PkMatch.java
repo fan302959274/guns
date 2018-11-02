@@ -42,7 +42,7 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 比赛发起人
      */
-	private String initiatorid;
+	private Long initiatorid;
     /**
      * 东道主team
      */
@@ -83,14 +83,6 @@ public class PkMatch extends Model<PkMatch> {
      * 创建时间
      */
 	private Date createdate;
-    /**
-     * 发起方支付状态
-     */
-	private Integer hostpaystatus;
-    /**
-     * 挑战者支付状态
-     */
-	private Integer challengepaystatus;
     /**
      * 更新时间
      */
@@ -141,11 +133,11 @@ public class PkMatch extends Model<PkMatch> {
 		this.place = place;
 	}
 
-	public String getInitiatorid() {
+	public Long getInitiatorid() {
 		return initiatorid;
 	}
 
-	public void setInitiatorid(String initiatorid) {
+	public void setInitiatorid(Long initiatorid) {
 		this.initiatorid = initiatorid;
 	}
 
@@ -229,22 +221,6 @@ public class PkMatch extends Model<PkMatch> {
 		this.createdate = createdate;
 	}
 
-	public Integer getHostpaystatus() {
-		return hostpaystatus;
-	}
-
-	public void setHostpaystatus(Integer hostpaystatus) {
-		this.hostpaystatus = hostpaystatus;
-	}
-
-	public Integer getChallengepaystatus() {
-		return challengepaystatus;
-	}
-
-	public void setChallengepaystatus(Integer challengepaystatus) {
-		this.challengepaystatus = challengepaystatus;
-	}
-
 	public Date getUpdatedate() {
 		return updatedate;
 	}
@@ -300,8 +276,6 @@ public class PkMatch extends Model<PkMatch> {
 			", parkid=" + parkid +
 			", status=" + status +
 			", createdate=" + createdate +
-			", hostpaystatus=" + hostpaystatus +
-			", challengepaystatus=" + challengepaystatus +
 			", updatedate=" + updatedate +
 			", creator=" + creator +
 			", updator=" + updator +
