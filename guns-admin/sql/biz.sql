@@ -81,9 +81,9 @@ CREATE TABLE `pk_team` (
   `debtnum` int(11) DEFAULT NULL COMMENT '球队失败场数',
   `drawnum` int(11) DEFAULT NULL COMMENT '球队平局场数',
   `point` int(11) DEFAULT NULL COMMENT '球队积分',
-  `prov` varchar(20) DEFAULT NULL COMMENT '球队省份',
-  `city` varchar(20) DEFAULT NULL COMMENT '球队市',
-  `area` varchar(20) DEFAULT NULL COMMENT '球队区',
+  `prov` BIGINT(20) DEFAULT NULL COMMENT '球队省份',
+  `city` BIGINT(20) DEFAULT NULL COMMENT '球队市',
+  `area` BIGINT(20) DEFAULT NULL COMMENT '球队区',
   `teamdesc` varchar(256) DEFAULT NULL COMMENT '球队描述',
   `ownerid` bigint(20) NOT NULL COMMENT '所属人',
   `culture` NUMERIC(4,1) DEFAULT 0 COMMENT '文明评分 1-5分',
@@ -139,11 +139,11 @@ CREATE TABLE `pk_match` (
   COMMENT '东道主team',
   `challengeteamid` BIGINT(20)            DEFAULT NULL
   COMMENT '挑战team',
-  `prov`          VARCHAR(20)           DEFAULT NULL
+  `prov`           BIGINT(20)           DEFAULT NULL
   COMMENT '比赛省份',
-  `city`              VARCHAR(20)           DEFAULT NULL
+  `city`              BIGINT(20)           DEFAULT NULL
   COMMENT '比赛市',
-  `area`              VARCHAR(20)           DEFAULT NULL
+  `area`               BIGINT(20)           DEFAULT NULL
   COMMENT '比赛区',
   `starttime`        DATETIME              DEFAULT NULL
   COMMENT '球赛开始时间',
@@ -179,9 +179,9 @@ DROP TABLE IF EXISTS `pk_park`;
 CREATE TABLE `pk_park` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `pkname` varchar(50) DEFAULT NULL COMMENT '球场名称',
-  `prov` varchar(20) DEFAULT NULL COMMENT '球场省份',
-  `city` varchar(20) DEFAULT NULL COMMENT '球场市',
-  `area` varchar(20) DEFAULT NULL COMMENT '球场区',
+  `prov` BIGINT(20) DEFAULT NULL COMMENT '球场省份',
+  `city` BIGINT(20) DEFAULT NULL COMMENT '球场市',
+  `area` BIGINT(20) DEFAULT NULL COMMENT '球场区',
   `status` char(1) DEFAULT NULL COMMENT '状态 0正常 1禁用',
   `pkaddr` varchar(255) DEFAULT NULL COMMENT '具体地址',
   `pkdesc` varchar(200) DEFAULT NULL COMMENT '球场简介',

@@ -2,14 +2,8 @@ package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.rest.common.persistence.dao.DictMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkMatchMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkMemberMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
-import com.stylefeng.guns.rest.common.persistence.model.Dict;
-import com.stylefeng.guns.rest.common.persistence.model.PkMatch;
-import com.stylefeng.guns.rest.common.persistence.model.PkMember;
-import com.stylefeng.guns.rest.common.persistence.model.PkTeam;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
+import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
@@ -51,6 +45,8 @@ public class MatchController {
     PkTeamMapper pkTeamMapper;
     @Autowired
     PkMatchMapper pkMatchMapper;
+    @Autowired
+    PkTeamMemberMapper pkTeamMemberMapper;
 
 
     /**
@@ -171,8 +167,17 @@ public class MatchController {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
             }
 
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId());
+            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+            if (CollectionUtils.isEmpty(pkTeamMembers)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该队员未加入任何战队"));
+            }
 
-            return ResponseEntity.ok(new CommonResp<String>("可约战"));
+//            PkMatch pkMatch = new PkMatch();
+//            pkMatch.setArea(areaid);
+
+            return ResponseEntity.ok(new CommonResp<String>("约战成功"));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonListResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }

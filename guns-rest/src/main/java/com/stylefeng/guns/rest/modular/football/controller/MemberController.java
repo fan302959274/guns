@@ -334,7 +334,7 @@ public class MemberController {
 
 
     /**
-     * 取消约战接口
+     * 取消约战接口 TODO
      *
      * @param openid
      * @return
