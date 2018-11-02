@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-31
+ * @since 2018-11-02
  */
 @TableName("pk_park")
 public class PkPark extends Model<PkPark> {
@@ -34,15 +34,15 @@ public class PkPark extends Model<PkPark> {
     /**
      * 球场省份
      */
-	private String prov;
+	private Long prov;
     /**
      * 球场市
      */
-	private String city;
+	private Long city;
     /**
      * 球场区 1 城南、2 城北
      */
-	private String area;
+	private Long area;
     /**
      * 状态 0正常 1禁用
      */
@@ -85,27 +85,27 @@ public class PkPark extends Model<PkPark> {
 		this.pkname = pkname;
 	}
 
-	public String getProv() {
+	public Long getProv() {
 		return prov;
 	}
 
-	public void setProv(String prov) {
+	public void setProv(Long prov) {
 		this.prov = prov;
 	}
 
-	public String getCity() {
+	public Long getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(Long city) {
 		this.city = city;
 	}
 
-	public String getArea() {
+	public Long getArea() {
 		return area;
 	}
 
-	public void setArea(String area) {
+	public void setArea(Long area) {
 		this.area = area;
 	}
 

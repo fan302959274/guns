@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-31
+ * @since 2018-11-02
  */
 public class Notice extends Model<Notice> {
 

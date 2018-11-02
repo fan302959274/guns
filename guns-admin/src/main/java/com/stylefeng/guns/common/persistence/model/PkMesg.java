@@ -1,20 +1,21 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.io.Serializable;
 
 /**
  * <p>
- * 消息
+ * 
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-31
+ * @since 2018-11-02
  */
 @TableName("pk_mesg")
 public class PkMesg extends Model<PkMesg> {
@@ -22,26 +23,31 @@ public class PkMesg extends Model<PkMesg> {
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
-	private Long id;
+	private Integer id;
+    /**
+     * 消息名称
+     */
 	private String mesgname;
+    /**
+     * 0 全部 1 队长 2队员
+     */
 	private String objtype;
-	private String content;
-	private String channel;
 	private Date createdate;
+    /**
+     * 推送内容
+     */
+	private String content;
+    /**
+     * 渠道 1 短信 2 其他
+     */
+	private String channel;
 
-	public String getChannel() {
-		return channel;
-	}
 
-	public void setChannel(String channel) {
-		this.channel = channel;
-	}
-
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -61,14 +67,6 @@ public class PkMesg extends Model<PkMesg> {
 		this.objtype = objtype;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
 	public Date getCreatedate() {
 		return createdate;
 	}
@@ -77,10 +75,36 @@ public class PkMesg extends Model<PkMesg> {
 		this.createdate = createdate;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getChannel() {
+		return channel;
+	}
+
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
 	}
 
-
+	@Override
+	public String toString() {
+		return "PkMesg{" +
+			"id=" + id +
+			", mesgname=" + mesgname +
+			", objtype=" + objtype +
+			", createdate=" + createdate +
+			", content=" + content +
+			", channel=" + channel +
+			"}";
+	}
 }

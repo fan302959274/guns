@@ -109,7 +109,7 @@ public class PkMemberDto extends Model<PkMemberDto> {
 
     private String teamname;
 
-    private String area;
+    private Long area;
     private Long teamId;
 
     public Long getTeamId() {
@@ -128,11 +128,11 @@ public class PkMemberDto extends Model<PkMemberDto> {
         this.teamname = teamname;
     }
 
-    public String getArea() {
+    public Long getArea() {
         return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(Long area) {
         this.area = area;
     }
 

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-31
+ * @since 2018-11-02
  */
 @TableName("pk_match")
 public class PkMatch extends Model<PkMatch> {
@@ -54,15 +54,15 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 比赛省份
      */
-	private String prov;
+	private Long prov;
     /**
      * 比赛市
      */
-	private String city;
+	private Long city;
     /**
      * 比赛区
      */
-	private String area;
+	private Long area;
     /**
      * 球赛开始时间
      */
@@ -165,27 +165,27 @@ public class PkMatch extends Model<PkMatch> {
 		this.challengeteamid = challengeteamid;
 	}
 
-	public String getProv() {
+	public Long getProv() {
 		return prov;
 	}
 
-	public void setProv(String prov) {
+	public void setProv(Long prov) {
 		this.prov = prov;
 	}
 
-	public String getCity() {
+	public Long getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(Long city) {
 		this.city = city;
 	}
 
-	public String getArea() {
+	public Long getArea() {
 		return area;
 	}
 
-	public void setArea(String area) {
+	public void setArea(Long area) {
 		this.area = area;
 	}
 
