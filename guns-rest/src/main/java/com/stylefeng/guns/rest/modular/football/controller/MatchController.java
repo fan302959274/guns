@@ -159,8 +159,8 @@ public class MatchController {
             pkMatch.setHostteamid(teamid);
             pkMatch.setInitiatorid(pkMembers.get(0).getId());
             pkMatch.setName("约战");
-            pkMatch.setStatus(1);
-//            pkMatch.setTime(timeid);
+            pkMatch.setStatus(1);//匹配中
+            pkMatch.setTime(timeid);
             pkMatchMapper.insert(pkMatch);
 
             return ResponseEntity.ok(new CommonResp<String>("约战成功"));
