@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.stylefeng.guns.rest.common.util.httpclient.HttpClientUtil;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
-import com.stylefeng.guns.rest.modular.football.transfer.SmsEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -63,9 +65,9 @@ public class SmsController {
             String smsCode = random1 + "" + random2 + "" + random3 + "" + random4;
             redisTemplate.opsForValue().set(mobile + "_registercode", smsCode, 120, TimeUnit.SECONDS);
             //发送第三方 TODO
-            String result = new HttpClientUtil().doPost(smsUrl+"smsMob="+mobile+"&smsText="+codemsg+":"+smsCode,new HashMap<>(),charset);
-            if (Integer.parseInt(result)<=0){
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(),"验证码发送失败(code:{"+result+"})!"));
+            String result = new HttpClientUtil().doPost(smsUrl + "smsMob=" + mobile + "&smsText=" + codemsg + ":" + smsCode, new HashMap<>(), charset);
+            if (Integer.parseInt(result) <= 0) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "验证码发送失败(code:{" + result + "})!"));
             }
             return ResponseEntity.ok(new CommonResp<String>("发送成功"));
         } catch (Exception e) {
@@ -83,7 +85,7 @@ public class SmsController {
     @RequestMapping(value = "/valid", method = RequestMethod.POST)
     @ApiOperation(value = "验证短信验证码", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "body", name = "mobile", value = "手机号", required = true, dataType = "String")
-    public ResponseEntity valid(@RequestParam String mobile ,@RequestParam String smscode) {
+    public ResponseEntity valid(@RequestParam String mobile, @RequestParam String smscode) {
         log.info("验证码验证请求参数为:{}", JSONObject.toJSONString(mobile));
         try {
             Assert.notNull(mobile, "手机号不能为空");
