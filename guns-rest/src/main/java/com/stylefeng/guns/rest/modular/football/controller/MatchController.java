@@ -152,33 +152,16 @@ public class MatchController {
             if (!"1".equals(pkMembers.get(0).getType())) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该队员不是队长"));
             }
-            //东道主
-            Wrapper<PkMatch> pkMatchWrapperHost = new EntityWrapper<PkMatch>();
-            pkMatchWrapperHost = pkMatchWrapperHost.eq("hostteamid", teamid);
-            List<PkMatch> pkMatchesHost = pkMatchMapper.selectList(pkMatchWrapperHost);
-            if (CollectionUtils.isNotEmpty(pkMatchesHost)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
-            }
-            //被挑战
-            Wrapper<PkMatch> pkMatchWrapperChallenge = new EntityWrapper<PkMatch>();
-            pkMatchWrapperChallenge = pkMatchWrapperChallenge.eq("challengeteamid", teamid);
-            List<PkMatch> pkMatchesChallenge = pkMatchMapper.selectList(pkMatchWrapperChallenge);
-            if (CollectionUtils.isNotEmpty(pkMatchesChallenge)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "约战中"));
-            }
 
-            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId());
-            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
-            if (CollectionUtils.isEmpty(pkTeamMembers)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该队员未加入任何战队"));
-            }
 
             PkMatch pkMatch = new PkMatch();
             pkMatch.setArea(areaid);
-            pkMatch.setChallengeteamid(pkTeamMembers.get(0).getTeamid());
             pkMatch.setHostteamid(teamid);
-//            pkMatch.setInitiatorid(pkMembers.get(0).getId());
+            pkMatch.setInitiatorid(pkMembers.get(0).getId());
+            pkMatch.setName("约战");
+            pkMatch.setStatus(1);
+//            pkMatch.setTime(timeid);
+            pkMatchMapper.insert(pkMatch);
 
             return ResponseEntity.ok(new CommonResp<String>("约战成功"));
         } catch (Exception e) {

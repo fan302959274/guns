@@ -34,7 +34,7 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 比赛时间
      */
-	private Integer time;
+	private Long time;
     /**
      * 比赛地点
      */
@@ -117,11 +117,11 @@ public class PkMatch extends Model<PkMatch> {
 		this.name = name;
 	}
 
-	public Integer getTime() {
+	public Long getTime() {
 		return time;
 	}
 
-	public void setTime(Integer time) {
+	public void setTime(Long time) {
 		this.time = time;
 	}
 

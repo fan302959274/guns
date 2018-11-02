@@ -129,7 +129,7 @@ CREATE TABLE `pk_match` (
   COMMENT '主键',
   `name`              VARCHAR(50)           DEFAULT NULL
   COMMENT '比赛名称',
-  `time`              INTEGER               DEFAULT NULL
+  `time`              BIGINT(20)            DEFAULT NULL
   COMMENT '比赛时间',
   `place`             VARCHAR(256)          DEFAULT NULL
   COMMENT '比赛地点',
@@ -152,7 +152,7 @@ CREATE TABLE `pk_match` (
   `parkid`           BIGINT(20)   NOT NULL
   COMMENT '球场id',
   `status`            int(11)           DEFAULT NULL
-  COMMENT '比赛状态(待定)',
+  COMMENT '比赛状态(1:匹配中;2:待比赛;3:约战中;4:约战完成;5:约战失败;)',
   `createdate`             TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
   COMMENT '创建时间',
   `hostpaystatus`      int(11)  DEFAULT NULL
