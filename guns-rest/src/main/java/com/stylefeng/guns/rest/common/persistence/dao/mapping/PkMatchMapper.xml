@@ -19,8 +19,6 @@
 		<result column="parkid" property="parkid" />
 		<result column="status" property="status" />
 		<result column="createdate" property="createdate" />
-		<result column="hostpaystatus" property="hostpaystatus" />
-		<result column="challengepaystatus" property="challengepaystatus" />
 		<result column="updatedate" property="updatedate" />
 		<result column="creator" property="creator" />
 		<result column="updator" property="updator" />

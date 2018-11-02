@@ -133,7 +133,7 @@ CREATE TABLE `pk_match` (
   COMMENT '比赛时间',
   `place`             VARCHAR(256)          DEFAULT NULL
   COMMENT '比赛地点',
-  `initiatorid`      VARCHAR(256) NOT NULL
+  `initiatorid`      BIGINT(20) NOT NULL
   COMMENT '比赛发起人',
   `hostteamid`      BIGINT(20)   NOT NULL
   COMMENT '东道主team',

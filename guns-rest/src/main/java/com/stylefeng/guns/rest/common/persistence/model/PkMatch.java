@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-27
+ * @since 2018-11-02
  */
 @TableName("pk_match")
 public class PkMatch extends Model<PkMatch> {
@@ -42,7 +42,7 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 比赛发起人
      */
-	private String initiatorid;
+	private Long initiatorid;
     /**
      * 东道主team
      */
@@ -54,15 +54,15 @@ public class PkMatch extends Model<PkMatch> {
     /**
      * 比赛省份
      */
-	private String prov;
+	private Long prov;
     /**
      * 比赛市
      */
-	private String city;
+	private Long city;
     /**
      * 比赛区
      */
-	private String area;
+	private Long area;
     /**
      * 球赛开始时间
      */
@@ -83,14 +83,6 @@ public class PkMatch extends Model<PkMatch> {
      * 创建时间
      */
 	private Date createdate;
-    /**
-     * 发起方支付状态
-     */
-	private Integer hostpaystatus;
-    /**
-     * 挑战者支付状态
-     */
-	private Integer challengepaystatus;
     /**
      * 更新时间
      */
@@ -141,11 +133,11 @@ public class PkMatch extends Model<PkMatch> {
 		this.place = place;
 	}
 
-	public String getInitiatorid() {
+	public Long getInitiatorid() {
 		return initiatorid;
 	}
 
-	public void setInitiatorid(String initiatorid) {
+	public void setInitiatorid(Long initiatorid) {
 		this.initiatorid = initiatorid;
 	}
 
@@ -165,27 +157,27 @@ public class PkMatch extends Model<PkMatch> {
 		this.challengeteamid = challengeteamid;
 	}
 
-	public String getProv() {
+	public Long getProv() {
 		return prov;
 	}
 
-	public void setProv(String prov) {
+	public void setProv(Long prov) {
 		this.prov = prov;
 	}
 
-	public String getCity() {
+	public Long getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(Long city) {
 		this.city = city;
 	}
 
-	public String getArea() {
+	public Long getArea() {
 		return area;
 	}
 
-	public void setArea(String area) {
+	public void setArea(Long area) {
 		this.area = area;
 	}
 
@@ -227,22 +219,6 @@ public class PkMatch extends Model<PkMatch> {
 
 	public void setCreatedate(Date createdate) {
 		this.createdate = createdate;
-	}
-
-	public Integer getHostpaystatus() {
-		return hostpaystatus;
-	}
-
-	public void setHostpaystatus(Integer hostpaystatus) {
-		this.hostpaystatus = hostpaystatus;
-	}
-
-	public Integer getChallengepaystatus() {
-		return challengepaystatus;
-	}
-
-	public void setChallengepaystatus(Integer challengepaystatus) {
-		this.challengepaystatus = challengepaystatus;
 	}
 
 	public Date getUpdatedate() {
@@ -300,8 +276,6 @@ public class PkMatch extends Model<PkMatch> {
 			", parkid=" + parkid +
 			", status=" + status +
 			", createdate=" + createdate +
-			", hostpaystatus=" + hostpaystatus +
-			", challengepaystatus=" + challengepaystatus +
 			", updatedate=" + updatedate +
 			", creator=" + creator +
 			", updator=" + updator +

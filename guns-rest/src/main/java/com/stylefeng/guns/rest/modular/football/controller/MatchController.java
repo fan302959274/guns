@@ -174,8 +174,11 @@ public class MatchController {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该队员未加入任何战队"));
             }
 
-//            PkMatch pkMatch = new PkMatch();
-//            pkMatch.setArea(areaid);
+            PkMatch pkMatch = new PkMatch();
+            pkMatch.setArea(areaid);
+            pkMatch.setChallengeteamid(pkTeamMembers.get(0).getTeamid());
+            pkMatch.setHostteamid(teamid);
+//            pkMatch.setInitiatorid(pkMembers.get(0).getId());
 
             return ResponseEntity.ok(new CommonResp<String>("约战成功"));
         } catch (Exception e) {
