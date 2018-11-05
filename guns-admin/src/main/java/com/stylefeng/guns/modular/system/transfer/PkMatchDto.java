@@ -301,8 +301,6 @@ public class PkMatchDto extends Model<PkMatchDto> {
                 ", parkid=" + parkid +
                 ", status=" + status +
                 ", createdate=" + createdate +
-                ", hostpaystatus=" + hostpaystatus +
-                ", challengepaystatus=" + challengepaystatus +
                 ", updatedate=" + updatedate +
                 ", creator=" + creator +
                 ", updator=" + updator +

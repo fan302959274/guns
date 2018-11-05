@@ -149,7 +149,7 @@ CREATE TABLE `pk_match` (
   COMMENT '球赛开始时间',
   `endtime`          DATETIME              DEFAULT NULL
   COMMENT '球赛结束时间',
-  `parkid`           BIGINT(20)   NOT NULL
+  `parkid`           BIGINT(20)   DEFAULT NULL
   COMMENT '球场id',
   `status`            int(11)           DEFAULT NULL
   COMMENT '比赛状态(1:匹配中;2:待比赛;3:约战中;4:约战完成;5:约战失败;)',

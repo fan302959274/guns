@@ -129,16 +129,16 @@ function onBodyDown(event) {
 
 $(function () {
     Feng.initValidator("matchInfoForm", MatchInfoDlg.validateFields);
-    //初始化是否支付菜单
-    if ($("#challengepaystatusVal").val() == undefined) {
-        $("#challengepaystatus").val(0);
-    } else {
-        $("#challengepaystatus").val($("#challengepaystatusVal").val());
-    }
-
-    if ($("#hostpaystatusVal").val() == undefined) {
-        $("#hostpaystatus").val(0);
-    } else {
-        $("#hostpaystatus").val($("#hostpaystatusVal").val());
-    }
+    // //初始化是否支付菜单
+    // if ($("#challengepaystatusVal").val() == undefined) {
+    //     $("#challengepaystatus").val(0);
+    // } else {
+    //     $("#challengepaystatus").val($("#challengepaystatusVal").val());
+    // }
+    //
+    // if ($("#hostpaystatusVal").val() == undefined) {
+    //     $("#hostpaystatus").val(0);
+    // } else {
+    //     $("#hostpaystatus").val($("#hostpaystatusVal").val());
+    // }
 });

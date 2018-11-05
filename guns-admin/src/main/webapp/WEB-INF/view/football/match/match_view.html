@@ -22,16 +22,16 @@
                     <#label id="hostteam" name="匹配方准时评分"  value="${match.hostontime}"/>
                     <#label id="hostteam" name="匹配方球队面貌评分" underline="true" value="${match.hostfriendly}"/>
 
-                    @if(isNotEmpty(match.challengepaystatus) && match.challengepaystatus == 1){
-                    <#label id="challengepaystatus" name="发起方支付状态"  value=" 已支付"/>
-                    @}else{
-                    <#label id="challengepaystatus" name="发起方支付状态"  value=" 未支付"/>
-                    @}
-                    @if(isNotEmpty(match.hostpaystatus) && match.hostpaystatus == 1){
-                    <#label id="hostpaystatus" name="发起方支付状态"  value=" 已支付"/>
-                    @}else{
-                    <#label id="hostpaystatus" name="发起方支付状态"  value=" 未支付"/>
-                    @}
+                    <!--@if(isNotEmpty(match.challengepaystatus) && match.challengepaystatus == 1){-->
+                    <!--<#label id="challengepaystatus" name="发起方支付状态"  value=" 已支付"/>-->
+                    <!--@}else{-->
+                    <!--<#label id="challengepaystatus" name="发起方支付状态"  value=" 未支付"/>-->
+                    <!--@}-->
+                    <!--@if(isNotEmpty(match.hostpaystatus) && match.hostpaystatus == 1){-->
+                    <!--<#label id="hostpaystatus" name="发起方支付状态"  value=" 已支付"/>-->
+                    <!--@}else{-->
+                    <!--<#label id="hostpaystatus" name="发起方支付状态"  value=" 未支付"/>-->
+                    <!--@}-->
                     <!--<#label id="challengepaystatus" name="发起方支付状态" underline="true" value="${match.challengepaystatus}"/>-->
                     <!--<#label id="hostpaystatus" name="匹配方支付状态" underline="true" value="${match.hostpaystatus}"/>-->
 

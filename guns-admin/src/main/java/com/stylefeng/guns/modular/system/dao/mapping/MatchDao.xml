@@ -15,9 +15,7 @@
         park.pkname as parkname,
         park.pkaddr as pkaddr,
         t.status,
-        t.time,
-        t.challengepaystatus,
-        t.hostpaystatus
+        t.time
     </sql>
 
     <select id="selects" resultType="map">
@@ -30,10 +28,6 @@
         where 1=1
         <if test="status != null and status != ''">
             AND t.status=#{status}
-        </if>
-        <if test="paystatus != null and paystatus != ''">
-            AND t.challengepaystatus =#{paystatus}
-            AND t.hostpaystatus =#{paystatus}
         </if>
         LIMIT #{start}, #{size}
     </select>

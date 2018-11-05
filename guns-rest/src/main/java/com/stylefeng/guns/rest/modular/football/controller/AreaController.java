@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.persistence.dao.AreasMapper;
 import com.stylefeng.guns.rest.common.persistence.model.Areas;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
-import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

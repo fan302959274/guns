@@ -2,8 +2,14 @@ package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.rest.common.persistence.dao.*;
-import com.stylefeng.guns.rest.common.persistence.model.*;
+import com.stylefeng.guns.rest.common.persistence.dao.DictMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.PkMatchMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.PkMemberMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
+import com.stylefeng.guns.rest.common.persistence.model.Dict;
+import com.stylefeng.guns.rest.common.persistence.model.PkMatch;
+import com.stylefeng.guns.rest.common.persistence.model.PkMember;
+import com.stylefeng.guns.rest.common.persistence.model.PkTeam;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
@@ -20,10 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 约战控制器
@@ -45,8 +48,6 @@ public class MatchController {
     PkTeamMapper pkTeamMapper;
     @Autowired
     PkMatchMapper pkMatchMapper;
-    @Autowired
-    PkTeamMemberMapper pkTeamMemberMapper;
 
 
     /**
@@ -74,7 +75,6 @@ public class MatchController {
         }
 
     }
-
 
 
     /**
@@ -128,12 +128,14 @@ public class MatchController {
 
     /**
      * 约战
+     * 规则:
+     * 时间地点完全匹配上即可
      *
      * @return
      */
     @RequestMapping(value = "/willPK", method = RequestMethod.POST)
     @ApiOperation(value = "约战", notes = "返回码:1成功;")
-    public ResponseEntity willPK(@RequestParam String openid,@RequestParam Long teamid,@RequestParam String date,@RequestParam Long timeid,@RequestParam Long areaid) {
+    public ResponseEntity willPK(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
         try {
             PkTeam pkTeam = pkTeamMapper.selectById(teamid);
             Assert.notNull(pkTeam, "未获取到球队");
@@ -153,15 +155,22 @@ public class MatchController {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该队员不是队长"));
             }
 
-
-            PkMatch pkMatch = new PkMatch();
-            pkMatch.setArea(areaid);
-            pkMatch.setHostteamid(teamid);
-            pkMatch.setInitiatorid(pkMembers.get(0).getId());
-            pkMatch.setName("约战");
-            pkMatch.setStatus(1);//匹配中
-            pkMatch.setTime(timeid);
-            pkMatchMapper.insert(pkMatch);
+            //匹配
+            PkMatch mPkMatch = matching(timeid, areaid, pkTeam.getLevel());
+            if (Objects.nonNull(mPkMatch)) {
+                mPkMatch.setChallengeteamid(teamid);//挑战方
+                mPkMatch.setStatus(2);//待比赛
+                pkMatchMapper.updateById(mPkMatch);
+            } else {
+                PkMatch pkMatch = new PkMatch();
+                pkMatch.setArea(areaid);
+                pkMatch.setHostteamid(teamid);
+                pkMatch.setInitiatorid(pkMembers.get(0).getId());
+                pkMatch.setName("约战");
+                pkMatch.setStatus(1);//匹配中
+                pkMatch.setTime(timeid);
+                pkMatchMapper.insert(pkMatch);
+            }
 
             return ResponseEntity.ok(new CommonResp<String>("约战成功"));
         } catch (Exception e) {
@@ -170,5 +179,20 @@ public class MatchController {
 
     }
 
+
+    /**
+     * @description 球队匹配
+     * @author sh00859
+     * @date 2018/11/5
+     */
+    public PkMatch matching(Long timeid, Long areaid, String leavel) {
+        Wrapper<PkMatch> wrapper = new EntityWrapper<PkMatch>();
+        wrapper = wrapper.eq("area", areaid).eq("time", timeid).groupBy("createdate desc");
+        List<PkMatch> list = pkMatchMapper.selectList(wrapper);
+        if (CollectionUtils.isNotEmpty(list)) {
+            return list.get(0);
+        }
+        return null;
+    }
 
 }

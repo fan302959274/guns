@@ -20,8 +20,6 @@ public class MatchWarpper extends BaseControllerWarpper {
 
     @Override
     public void warpTheMap(Map<String, Object> map) {
-        map.put("challengepaystatusName", ConstantFactory.me().getPayStatusName((Integer) map.get("challengepaystatus")));
-        map.put("hostpaystatusName", ConstantFactory.me().getPayStatusName((Integer) map.get("hostpaystatus")));
 
     }
 
