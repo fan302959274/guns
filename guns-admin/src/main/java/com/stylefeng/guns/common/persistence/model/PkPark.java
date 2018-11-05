@@ -1,13 +1,13 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -55,6 +55,10 @@ public class PkPark extends Model<PkPark> {
      * 球场简介
      */
 	private String pkdesc;
+	/**
+	 * 球场費用
+	 */
+	private BigDecimal cost;
     /**
      * 球场可用时间
      */
@@ -155,6 +159,14 @@ public class PkPark extends Model<PkPark> {
 
 	public void setUpdatedate(Date updatedate) {
 		this.updatedate = updatedate;
+	}
+
+	public BigDecimal getCost() {
+		return cost;
+	}
+
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
 	}
 
 	@Override

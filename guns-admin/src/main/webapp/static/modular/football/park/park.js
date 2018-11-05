@@ -19,6 +19,7 @@ Park.initColumn = function () {
         {title: '球场区域', field: 'area', align: 'center', valign: 'middle', sortable: true},
         {title: '球场地址', field: 'pkaddr', align: 'center', valign: 'middle', sortable: true},
         {title: '球场描述', field: 'pkdesc', align: 'center', valign: 'middle', sortable: true},
+        {title: '球场费用', field: 'cost', align: 'center', valign: 'middle', sortable: true},
         {title: '球场状态', field: 'status', align: 'center', valign: 'middle', sortable: true}
     ]
     return columns;

@@ -47,7 +47,7 @@ ParkInfoDlg.close = function () {
  */
 ParkInfoDlg.collectData = function () {
     this.set('id').set('pkname').set('area').set('pkdesc').set('imgs')
-        .set('pkaddr');
+        .set('pkaddr').set('cost');
     var mutiString = "";
     $("[name='dictItem']").each(function(){
         var value = $(this).find("[name='itemName']").val();

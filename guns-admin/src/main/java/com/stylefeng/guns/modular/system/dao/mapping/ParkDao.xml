@@ -3,7 +3,7 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.ParkDao">
 
     <sql id="Base_Column_List">
-        a.id, pkname  , prov, city, pkdesc, pkaddr,businesstime,createdate,updatedate
+        a.id, pkname  , prov, city, pkdesc, pkaddr,businesstime,createdate,updatedate,cost
     </sql>
 
     <select id="selectParks" resultType="map">
