@@ -18,6 +18,8 @@ public enum BizExceptionEnum {
      * 签名异常
      */
     SIGN_ERROR(700, "签名验证失败"),
+    TOKEN_CODE_ERROR(700, "access_token为空"),
+    OPEN_ID_ERROR(700, "openid为空"),
 
     /**
      * 文件上传相关
