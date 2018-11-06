@@ -68,13 +68,13 @@ public class MemberController {
     public ResponseEntity register(@RequestBody PkMemberDto pkMemberDto) {
         log.info("注册队员请求参数{}", JSONObject.toJSONString(pkMemberDto));
         try {
-            Assert.notNull(pkMemberDto.getMobile(), "手机号不能为空");
+//            Assert.notNull(pkMemberDto.getMobile(), "手机号不能为空");
             Assert.notNull(pkMemberDto.getOpenid(), "openid不能为空");
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
-            wrapper = wrapper.eq("account", pkMemberDto.getMobile());
+            wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
             Integer count = pkMemberMapper.selectCount(wrapper);
             if (count > 0) {
-                return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "手机号已注册过"));
+                return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "openid已经注册过"));
             }
             PkMember pkMember = new PkMember();
             pkMember.setAccount(pkMemberDto.getMobile());//以手机号作为account
