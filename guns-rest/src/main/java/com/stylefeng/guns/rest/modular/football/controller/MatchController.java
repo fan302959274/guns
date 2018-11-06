@@ -2,14 +2,9 @@ package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.rest.common.persistence.dao.DictMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkMatchMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkMemberMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.PkTeamMapper;
-import com.stylefeng.guns.rest.common.persistence.model.Dict;
-import com.stylefeng.guns.rest.common.persistence.model.PkMatch;
-import com.stylefeng.guns.rest.common.persistence.model.PkMember;
-import com.stylefeng.guns.rest.common.persistence.model.PkTeam;
+import com.stylefeng.guns.core.util.DateUtil;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
+import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
@@ -19,6 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -48,6 +45,10 @@ public class MatchController {
     PkTeamMapper pkTeamMapper;
     @Autowired
     PkMatchMapper pkMatchMapper;
+    @Autowired
+    PkOrderMapper pkOrderMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
 
     /**
@@ -161,6 +162,33 @@ public class MatchController {
                 mPkMatch.setChallengeteamid(teamid);//挑战方
                 mPkMatch.setStatus(2);//待比赛
                 pkMatchMapper.updateById(mPkMatch);
+                //生成匹配方订单(未支付)
+                PkOrder pkOrderHost = new PkOrder();
+                pkOrderHost.setAmount(new BigDecimal("5.00"));//金额
+                pkOrderHost.setMatchid(mPkMatch.getId());
+                pkOrderHost.setStatus("0");
+                pkOrderHost.setTeamid(mPkMatch.getHostteamid());
+                Long noHost = redisTemplate.opsForValue().increment("orderKey",1);
+                if(noHost>99998){
+                    redisTemplate.opsForValue().set("orderKey",1);
+                }
+                pkOrderHost.setNo("b"+ DateUtil.getDays()+noHost);
+                pkOrderMapper.insert(pkOrderHost);
+
+
+                //生成挑战方订单(未支付)
+                PkOrder pkOrderCh = new PkOrder();
+                pkOrderCh.setAmount(new BigDecimal("5.00"));//金额
+                pkOrderCh.setMatchid(mPkMatch.getId());
+                pkOrderCh.setStatus("0");
+                pkOrderCh.setTeamid(mPkMatch.getHostteamid());
+                Long noCh = redisTemplate.opsForValue().increment("orderKey",1);
+                if(noCh>99998){
+                    redisTemplate.opsForValue().set("orderKey",1);
+                }
+                pkOrderCh.setNo("b"+ DateUtil.getDays()+noCh);
+                pkOrderMapper.insert(pkOrderCh);
+
             } else {
                 PkMatch pkMatch = new PkMatch();
                 pkMatch.setArea(areaid);
@@ -169,6 +197,11 @@ public class MatchController {
                 pkMatch.setName("约战");
                 pkMatch.setStatus(1);//匹配中
                 pkMatch.setTime(timeid);
+                Long no = redisTemplate.opsForValue().increment("matchKey",1);
+                if(no>99998){
+                    redisTemplate.opsForValue().set("matchKey",1);
+                }
+                pkMatch.setNo("y"+ DateUtil.getDays()+no);
                 pkMatchMapper.insert(pkMatch);
             }
 

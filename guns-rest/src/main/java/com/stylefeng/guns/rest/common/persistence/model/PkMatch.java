@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-02
+ * @since 2018-11-06
  */
 @TableName("pk_match")
 public class PkMatch extends Model<PkMatch> {
@@ -99,6 +99,7 @@ public class PkMatch extends Model<PkMatch> {
      * 是否删除
      */
 	private String isdeleted;
+	private String no;
 
 
 	public Long getId() {
@@ -253,6 +254,14 @@ public class PkMatch extends Model<PkMatch> {
 		this.isdeleted = isdeleted;
 	}
 
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -280,6 +289,7 @@ public class PkMatch extends Model<PkMatch> {
 			", creator=" + creator +
 			", updator=" + updator +
 			", isdeleted=" + isdeleted +
+			", no=" + no +
 			"}";
 	}
 }
