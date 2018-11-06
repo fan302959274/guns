@@ -108,6 +108,15 @@ public class PkMemberDto extends Model<PkMemberDto> {
      */
     private String openid;
 
+    /**
+     *习惯脚
+     */
+    private String foot;
+    /**
+     *习惯位置
+     */
+    private String player;
+
     public String getOpenid() {
         return openid;
     }
@@ -266,6 +275,22 @@ public class PkMemberDto extends Model<PkMemberDto> {
 
     public void setIdcard(String idcard) {
         this.idcard = idcard;
+    }
+
+    public String getFoot() {
+        return foot;
+    }
+
+    public void setFoot(String foot) {
+        this.foot = foot;
+    }
+
+    public String getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(String player) {
+        this.player = player;
     }
 
     @Override

@@ -215,6 +215,8 @@ public class MemberController {
             PkMember pkMember = new PkMember();
 
             PropertyUtils.copyProperties(pkMember, pkMemberDto);
+            pkMember.setHabitfeet(pkMemberDto.getFoot());
+            pkMember.setPosition(pkMemberDto.getPlayer());
             pkMember.setId(pkMembers.get(0).getId());
             pkMemberMapper.updateById(pkMember);
             return ResponseEntity.ok(new CommonResp<String>("修改成功"));
@@ -260,7 +262,6 @@ public class MemberController {
                 data.put("team", pkTeam.getName());
                 data.put("teamid", pkTeam.getId());
                 data.put("teamScore", pkTeam.getPoint());
-                data.put("teamImage", pkTeam.getPoint());
                 data.put("levelid", pkTeam.getLevel());
                 pkAttachmentWrapper = new EntityWrapper<>();
                 pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
