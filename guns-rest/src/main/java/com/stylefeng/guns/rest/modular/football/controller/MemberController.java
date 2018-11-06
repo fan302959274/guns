@@ -202,7 +202,7 @@ public class MemberController {
      * @return
      */
     @RequestMapping(value = "/editData", method = RequestMethod.POST)
-    @ApiOperation(value = "查询队员", notes = "返回码:1成功;")
+    @ApiOperation(value = "编辑队员", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
     public ResponseEntity editData(@RequestBody PkMemberDto pkMemberDto) {
         log.info("队员信息修改请求参数{}", JSONObject.toJSONString(pkMemberDto));

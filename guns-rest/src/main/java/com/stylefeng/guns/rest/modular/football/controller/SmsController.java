@@ -84,7 +84,7 @@ public class SmsController {
      */
     @RequestMapping(value = "/valid", method = RequestMethod.POST)
     @ApiOperation(value = "验证短信验证码", notes = "返回码:1成功;")
-    @ApiImplicitParam(paramType = "body", name = "mobile", value = "手机号", required = true, dataType = "String")
+    @ApiImplicitParam(paramType = "query", name = "mobile", value = "手机号", required = true, dataType = "String")
     public ResponseEntity valid(@RequestParam String mobile, @RequestParam String smscode) {
         log.info("验证码验证请求参数为:{}", JSONObject.toJSONString(mobile));
         try {

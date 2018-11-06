@@ -1,5 +1,6 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
+import com.stylefeng.guns.core.util.FileUtil;
 import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.rest.common.exception.BussinessException;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
@@ -9,14 +10,13 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -50,5 +50,27 @@ public class AttachmentController {
         return ResponseEntity.ok(new CommonResp<String>(pictureName));
     }
 
+
+    /**
+     *@description 返回图片
+     *@author sh00859
+     *@date 2018/11/6
+     */
+    @ApiOperation(value = "获取图片", notes = "返回码:1成功;")
+    @GetMapping(value = "/detail/{pictureId}")
+    public void renderPicture(@PathVariable("pictureId") String pictureId, HttpServletResponse response) {
+        String path = gunsProperties.getFileUploadPath() + pictureId + ".jpg";
+        try {
+            byte[] bytes = FileUtil.toByteArray(path);
+            response.getOutputStream().write(bytes);
+        } catch (Exception e) {
+            //如果找不到图片就返回一个默认图片
+            try {
+                response.sendRedirect("/static/img/girl.gif");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
 
 }
