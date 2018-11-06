@@ -1,5 +1,7 @@
 package com.stylefeng.guns.rest.config.properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +26,7 @@ public class GunsProperties {
 
     private Boolean swaggerOpen = false;
 
+    @Value("${file.path}")
     private String fileUploadPath;
 
     private Boolean haveCreatePath = false;
