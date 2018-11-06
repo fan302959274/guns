@@ -40,7 +40,7 @@
 
     <select id="selectParksRelation" resultType="map">
         select
-       id, parkid,usetime
+       id, parkid,week,end,start
         from pk_park_relation
         where 1=1
         <if test="parkId != null">

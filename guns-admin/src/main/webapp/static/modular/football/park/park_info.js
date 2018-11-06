@@ -3,7 +3,30 @@
  */
 var ParkInfoDlg = {
     parkInfoData: {},
-    mutiString: ''
+    mutiString: '',
+    validateFields: {
+        pkname: {
+            validators: {
+                notEmpty: {
+                    message: '球场名称不能为空'
+                }
+            }
+        },
+        area: {
+            validators: {
+                notEmpty: {
+                    message: '球场区域不能为空'
+                }
+            }
+        },
+        cost: {
+            validators: {
+                notEmpty: {
+                    message: '球场费用不能为空'
+                }
+            }
+        }
+    }
 };
 
 
@@ -48,27 +71,28 @@ ParkInfoDlg.close = function () {
 ParkInfoDlg.collectData = function () {
     this.set('id').set('pkname').set('area').set('pkdesc').set('imgs')
         .set('pkaddr').set('cost');
-    var mutiString = "";
+    var mutiString ='';
     $("[name='dictItem']").each(function(){
-        var value = $(this).find("[name='itemName']").val();
+        var week = $(this).find("[name='week']").val();
+        var start = $(this).find("[name='start']").val();
+        var end = $(this).find("[name='end']").val();
+        var data = week+'&'+start+'&'+end;
         if(mutiString){
-            mutiString = mutiString + "," + value ;
+            mutiString = mutiString + "," + data ;
         }else{
-            mutiString=value;
+            mutiString=data;
         }
-
     });
     this.mutiString = mutiString;
 };
 
-/**
- * 验证数据是否为空
+// 验证数据是否为空
 
 ParkInfoDlg.validate = function () {
     $('#parkInfoForm').data("bootstrapValidator").resetForm();
     $('#parkInfoForm').bootstrapValidator('validate');
     return $("#parkInfoForm").data('bootstrapValidator').isValid();
-};*/
+};
 
 /**
  * 提交添加球场
@@ -76,9 +100,9 @@ ParkInfoDlg.validate = function () {
 ParkInfoDlg.addSubmit = function () {
     this.clearData();
     this.collectData();
-    /*if (!this.validate()) {
+    if (!this.validate()) {
         return;
-    }*/
+    }
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/park/add", function (data) {
         Feng.success("添加成功!");
@@ -98,9 +122,9 @@ ParkInfoDlg.addSubmit = function () {
 ParkInfoDlg.editSubmit = function () {
     this.clearData();
     this.collectData();
-   /* if (!this.validate()) {
+    if (!this.validate()) {
         return;
-    }*/
+    }
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/park/edit", function (data) {
         Feng.success("修改成功!");
@@ -139,7 +163,7 @@ function onBodyDown(event) {
 }
 
 $(function () {
-   // Feng.initValidator("parkInfoForm", ParkInfoDlg.validateFields);
+    Feng.initValidator("parkInfoForm", ParkInfoDlg.validateFields);
     //初始化区选项
     $("#area").val($("#areaValue").val());
     // 初始化头像上传
@@ -165,8 +189,47 @@ var DictInfoDlg = {
 /**
  * 添加条目
  */
+var num = 1;
 DictInfoDlg.addItem = function () {
-    $("#itemsArea").append(this.itemTemplate);
+var html='';
+    html+='<div class="form-group" name="dictItem" id="dictItem">'+
+        '<div class="col-sm-3" style="margin-left: 65px;">'+
+        '<div class="col-sm-9">'+
+        '<select class="form-control" id="week" name="week">'+
+        '<option value="1">周一</option>'+
+        '<option value="2">周二</option>'+
+        '<option value="3">周三</option>'+
+        '<option value="4">周四</option>'+
+        '<option value="5">周五</option>'+
+        '<option value="6">周六</option>'+
+        '<option value="7">周日</option>'+
+        '</select>'+
+        '</div>'+
+        '</div>'+
+        '<div class="col-sm-8">'+
+        '<div class="col-sm-4">'+
+        '<input class="form-control" id="start'+num+'" name="start" type="text" />'+
+        '</div>'+
+        ' <div class="col-sm-4">'+
+        '<input class="form-control" id="end'+num+'" name="end" type="text" />'+
+        '</div>'+
+        '</div>'+
+        '<div class="col-sm-1" style="margin-left: -194px;">'+
+        '<button type="button" class="btn btn-danger " onclick="DictInfoDlg.deleteItem(event)" id="cancel">'+
+        '<i class="fa fa-remove"></i>&nbsp;删除'+
+        '</button>'+
+        '</div>'+
+        '</div>';
+    $("#itemsArea").append(html);
+    laydate.render({
+        elem: '#start'+num //指定元素
+        ,type: 'time'
+    });
+    laydate.render({
+        elem: '#end'+num //指定元素
+        ,type: 'time'
+    });
+    num++;
 };
 
 /**

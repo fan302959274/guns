@@ -89,9 +89,12 @@ public class ParkController extends BaseController {
         // 保存可用时间
         if (StringUtils.isNoneBlank(usetime)) {
             Arrays.asList(usetime.split(",")).forEach(s -> {
+                String [] ss=s.split("&");
                 PkParkRelation pkParkRelation = new PkParkRelation();
                 pkParkRelation.setParkid(park.getId());
-                pkParkRelation.setUsetime(s);
+                pkParkRelation.setWeek(ss[0]);
+                pkParkRelation.setStart(ss[1]);
+                pkParkRelation.setEnd(ss[2]);
                 pkParkRelationMapper.insert(pkParkRelation);
             });
         }

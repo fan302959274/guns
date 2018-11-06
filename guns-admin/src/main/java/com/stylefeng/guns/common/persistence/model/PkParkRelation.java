@@ -1,11 +1,10 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
 
 /**
@@ -24,7 +23,9 @@ public class PkParkRelation extends Model<PkParkRelation> {
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
 	private Long parkid;
-	private String usetime;
+	private String week;
+	private String start;
+	private String end;
 
 
 	public Long getId() {
@@ -43,12 +44,28 @@ public class PkParkRelation extends Model<PkParkRelation> {
 		this.parkid = parkid;
 	}
 
-	public String getUsetime() {
-		return usetime;
+	public String getWeek() {
+		return week;
 	}
 
-	public void setUsetime(String usetime) {
-		this.usetime = usetime;
+	public void setWeek(String week) {
+		this.week = week;
+	}
+
+	public String getStart() {
+		return start;
+	}
+
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getEnd() {
+		return end;
+	}
+
+	public void setEnd(String end) {
+		this.end = end;
 	}
 
 	@Override
@@ -56,12 +73,5 @@ public class PkParkRelation extends Model<PkParkRelation> {
 		return this.id;
 	}
 
-	@Override
-	public String toString() {
-		return "PkParkRelation{" +
-			"id=" + id +
-			", parkid=" + parkid +
-			", usetime=" + usetime +
-			"}";
-	}
+
 }
