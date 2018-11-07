@@ -99,9 +99,8 @@ public class TeamController {
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
             pkTeam.setOwnerid(pkMember.getId());
-            pkTeam.setStartpoint(1600);//初始积分
-            pkTeam.setPoint(1600);//初始积分
-            pkTeam.setLevel("使者");//初始等级
+            pkTeam.setStartpoint(0);//初始积分
+            pkTeam.setPoint(0);//初始积分
             pkTeamMapper.insert(pkTeam);
             //        保存logo
             if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
