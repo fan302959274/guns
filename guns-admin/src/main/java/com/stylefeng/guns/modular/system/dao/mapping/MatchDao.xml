@@ -5,6 +5,46 @@
         t.id,
         t.no,
         tm.name as challengeteam,
+        tm2.name as hostteam,
+        area.area,
+        park.pkname as parkname,
+        park.pkaddr as pkaddr,
+        (CASE
+        WHEN t.status = 1 THEN
+        '匹配中'
+        WHEN t.status = 2 THEN
+        '待比赛'
+        WHEN t.status = 3 THEN
+        '约战中'
+        WHEN t.status = 4 THEN
+        '约战完成'
+        ELSE
+        '未知'
+        END)
+        as status,
+        t.date,
+        t.createdate,
+        me.name as meName,
+        me.mobile as meMobile,
+        me2.name as me2Name,
+        me2.mobile as me2Mobile,
+        d.name as time,
+        o1.no as o1No,
+        tm.culture as challengeculture,
+        tm.ontime as challengeontime,
+        tm.friendly as challengefriendly,
+        o1.status as challengepaystatus,
+        o2.no as o2No,
+        tm2.culture as hostculture,
+        tm2.ontime as hostontime,
+        tm2.friendly as hostfriendly,
+        o2.status as hostpaystatus
+    </sql>
+
+    <sql id="Base_Column_List2">
+        t.id,
+        t.no,
+        tm.name as challengeteam,
         tm.culture as challengeculture,
         tm.ontime as challengeontime,
         tm.friendly as challengefriendly,
@@ -37,7 +77,7 @@
 
     <select id="selects" resultType="map">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List2"/>
         FROM pk_match t
         LEFT JOIN pk_team tm ON t.challengeteamid = tm.id
         LEFT JOIN pk_team tm2 ON t.hostteamid = tm2.id
@@ -45,6 +85,8 @@
         LEFT JOIN areas area ON park.area = area.id
         LEFT JOIN pk_member me ON t.initiatorid = me.id
         LEFT JOIN dict d on t.time = d.id
+
+
         where 1=1
         <if test="areas != null and areas != ''">
             AND area.id=#{areas}
@@ -69,7 +111,11 @@
         LEFT JOIN pk_park park ON t.parkid = park.id
         LEFT JOIN areas area ON park.area = area.id
         LEFT JOIN pk_member me ON t.initiatorid = me.id
+        LEFT JOIN pk_member me2 ON tm.ownerid = me2.id
         LEFT JOIN dict d on t.time = d.id
+        LEFT JOIN pk_order o1 on (o1.matchid = t.id and o1.teamid = t.hostteamid)
+        LEFT JOIN pk_order o2 on (o2.matchid = t.id and o2.teamid = t.challengeteamid)
+
         where t.id=#{id}
     </select>
 

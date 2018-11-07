@@ -217,7 +217,7 @@ public class MatchController {
                 pkOrderCh.setAmount(new BigDecimal("5.00"));//金额
                 pkOrderCh.setMatchid(mPkMatch.getId());
                 pkOrderCh.setStatus("0");
-                pkOrderCh.setTeamid(mPkMatch.getHostteamid());
+                pkOrderCh.setTeamid(mPkMatch.getChallengeteamid());
                 Long noCh = redisTemplate.opsForValue().increment("orderKey",1);
                 if(noCh>99998){
                     redisTemplate.opsForValue().set("orderKey",1);
