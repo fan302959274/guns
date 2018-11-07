@@ -38,7 +38,8 @@
     <select id="selects" resultType="map">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM pk_match t LEFT JOIN pk_team tm ON t.challengeteamid = tm.id
+        FROM pk_match t
+        LEFT JOIN pk_team tm ON t.challengeteamid = tm.id
         LEFT JOIN pk_team tm2 ON t.hostteamid = tm2.id
         LEFT JOIN pk_park park ON t.parkid = park.id
         LEFT JOIN areas area ON park.area = area.id

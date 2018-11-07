@@ -8,32 +8,15 @@
             <div class="row">
                 <div class="col-sm-12 b-r">
 
-                    <#label id="challengeteam" name="发起方" underline="true" value="${order.challengeteam}"/>
-                    <#label id="hostteam" name="匹配方" underline="true" value="${order.hostteam}"/>
+                    <#label id="no" name="订单编号" underline="true" value="${order.no}"/>
+                    <#label id="hostteam" name="发起方" underline="true" value="${order.hostteam}"/>
+                    <#label id="meName" name="队长" underline="true" value="${order.meName}"/>
+                    <#label id="meMobile" name="手机号码" underline="true" value="${order.meMobile}"/>
                     <#label id="area" name="球场区域" underline="true" value="${order.area}"/>
-                    <#label id="parkname" name="球场" underline="true" value="${order.parkname}"/>
-                    <#label id="pkaddr" name="球场地址" underline="true" value="${order.pkaddr}"/>
                     <#label id="status" name="比赛状态" underline="true" value="${order.status}"/>
-                    <#label id="time" name="时间" underline="true" value="${order.time}"/>
-                    <#label id="hostteam" name="发起方文明评分"  value="${order.challengeculture}"/>
-                    <#label id="hostteam" name="发起方准时评分"  value="${order.challengeontime}"/>
-                    <#label id="hostteam" name="发起方球队面貌评分" underline="true" value="${order.challengefriendly}"/>
-                    <#label id="hostteam" name="匹配方文明评分"  value="${order.hostculture}"/>
-                    <#label id="hostteam" name="匹配方准时评分"  value="${order.hostontime}"/>
-                    <#label id="hostteam" name="匹配方球队面貌评分" underline="true" value="${order.hostfriendly}"/>
-
-                    @if(isNotEmpty(order.challengepaystatus) && order.challengepaystatus == 1){
-                    <#label id="challengepaystatus" name="发起方支付状态"  value=" 已支付"/>
-                    @}else{
-                    <#label id="challengepaystatus" name="发起方支付状态"  value=" 未支付"/>
-                    @}
-                    @if(isNotEmpty(order.hostpaystatus) && order.hostpaystatus == 1){
-                    <#label id="hostpaystatus" name="发起方支付状态"  value=" 已支付"/>
-                    @}else{
-                    <#label id="hostpaystatus" name="发起方支付状态"  value=" 未支付"/>
-                    @}
-                    <!--<#label id="challengepaystatus" name="发起方支付状态" underline="true" value="${order.challengepaystatus}"/>-->
-                    <!--<#label id="hostpaystatus" name="匹配方支付状态" underline="true" value="${order.hostpaystatus}"/>-->
+                    <#label id="createdate" name="发起日期"  value="${order.createdate}"/>
+                    <#label id="date" name="约战日期" underline="true" value="${order.date}"/>
+                    <#label id="time" name="约战时间" underline="true" value="${order.time}"/>
 
 
                 </div>

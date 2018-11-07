@@ -10,8 +10,19 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-3">
-                                <#SelectCon id="areas" name="区域" >
+                                <#SelectCon id="areas" name="球场区域" >
                                     <option value="">全部</option>
+                                    @for(area in areas){
+                                    <option value="${area.id}">${area.area}</option>
+                                    @}
+                                </#SelectCon>
+                            </div>
+                            <div class="col-sm-3">
+                                <#SelectCon id="parks" name="球场名称" >
+                                    <option value="">全部</option>
+                                    @for(park in parks){
+                                    <option value="${park.id}">${park.pkname}</option>
+                                    @}
                                 </#SelectCon>
                             </div>
                             <div class="col-sm-3">
@@ -24,9 +35,8 @@
                                 </#SelectCon>
                             </div>
                             <div class="col-sm-3">
-                                <#NameCon id="teamid" name="发起方" />
+                                <#NameCon id="hostname" name="发起方" />
                             </div>
-
                             <div class="col-sm-3">
                                 <#NameCon id="no" name="预约订单号" />
                             </div>

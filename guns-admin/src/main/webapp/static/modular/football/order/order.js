@@ -14,11 +14,16 @@ var Order = {
 Order.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: '订单号', field: 'no', align: 'center', valign: 'middle', width: '50px'},
-        {title: '发起方', field: 'name', align: 'center', valign: 'middle', width: '200px',sortable: true},
+        {title: 'id', field: 'id',visible: false},
+        {title: '比赛订单号', field: 'no', align: 'center', valign: 'middle', width: '50px'},
+        {title: '发起方', field: 'hostteam', align: 'center', valign: 'middle', width: '200px',sortable: true},
+        {title: '匹配方', field: 'challengeteam', align: 'center', valign: 'middle', width: '200px',sortable: true},
         {title: '球场区域', field: 'area', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '球场名', field: 'parkname', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛状态', field: 'status', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '发起时间', field: 'createdate', align: 'center', valign: 'middle',width: '200px', sortable: true}];
+        {title: '比赛日期', field: 'matchdate', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '比赛时间', field: 'time', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '支付状态', field: 'paystatus', align: 'center', valign: 'middle',width: '200px', sortable: true}];
 };
 
 /**
@@ -36,22 +41,6 @@ Order.check = function () {
 };
 
 
-/**
- * 打开查看广告详情（编辑）
- */
-Order.openOrderDetail = function () {
-    if (this.check()) {
-        var index = layer.open({
-            type: 2,
-            title: '比赛详情',
-            area: ['800px', '420px'], //宽高
-            fix: false, //不固定
-            maxmin: true,
-            content: Feng.ctxPath + '/order/order_update/' + Order.seItem.id
-        });
-        this.layerIndex = index;
-    }
-};
 
 
 /**
@@ -97,8 +86,11 @@ Order.delete = function () {
  */
 Order.search = function () {
     var queryData = {};
-    // queryData['status'] = $("#status").val();
-    queryData['paystatus'] = $("#paystatus").val();
+    queryData['areas'] = $("#areas").val();
+    queryData['parks'] = $("#parks").val();
+    queryData['pkstatus'] = $("#pkstatus").val();
+    queryData['hostname'] = $("#hostname").val();
+    queryData['no'] = $("#no").val();
     Order.table.refresh({query: queryData});
 };
 

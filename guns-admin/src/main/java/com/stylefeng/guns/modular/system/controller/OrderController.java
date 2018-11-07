@@ -1,6 +1,12 @@
 package com.stylefeng.guns.modular.system.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.common.persistence.dao.AreasMapper;
 import com.stylefeng.guns.common.persistence.dao.PkOrderMapper;
+import com.stylefeng.guns.common.persistence.dao.PkParkMapper;
+import com.stylefeng.guns.common.persistence.model.Areas;
+import com.stylefeng.guns.common.persistence.model.PkPark;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.modular.system.dao.OrderDao;
@@ -33,6 +39,10 @@ public class OrderController extends BaseController {
     @Resource
     PkOrderMapper pkOrderMapper;
     @Resource
+    AreasMapper areasMapper;
+    @Resource
+    PkParkMapper pkParkMapper;
+    @Resource
     OrderDao orderDao;
 
 
@@ -40,7 +50,13 @@ public class OrderController extends BaseController {
      * 跳转到比赛管理首页
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model) {
+        Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
+        List<Areas> areasList = areasMapper.selectList(wrapper);
+        Wrapper<PkPark> pkParkEntityWrapper = new EntityWrapper<PkPark>();
+        List<PkPark> parkList = pkParkMapper.selectList(pkParkEntityWrapper);
+        model.addAttribute("areas", areasList);
+        model.addAttribute("parks", parkList);
         return PREFIX + "order.html";
     }
 
@@ -62,7 +78,7 @@ public class OrderController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(required = false) Long teamid, @RequestParam(required = false) String no, @RequestParam(required = false) String areas, @RequestParam(required = false) String pkstatus, Integer page, Integer pageSize) {
+    public Object list(@RequestParam(required = false) Long areas,@RequestParam(required = false) Long parks,@RequestParam(required = false) Long pkstatus,@RequestParam(required = false) String hostname, @RequestParam(required = false) String no, Integer page, Integer pageSize) {
 
         Integer start = 0;
         Integer size = 10;
@@ -70,7 +86,7 @@ public class OrderController extends BaseController {
             start = (page - 1) * pageSize;
             size = pageSize;
         }
-        List<Map<String, Object>> list = this.orderDao.selects(areas, pkstatus, teamid, no, start, size);
+        List<Map<String, Object>> list = this.orderDao.selects(areas,parks,pkstatus,hostname,no, start, size);
         return new OrderWarpper(list).warp();
     }
 

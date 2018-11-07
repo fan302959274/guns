@@ -20,7 +20,7 @@ public interface OrderDao {
      * @return
      * @date 2017年2月12日 下午9:14:34
      */
-    List<Map<String, Object>> selects(@Param("areas") String areas, @Param("pkstatus") String pkstatus,@Param("teamid") Long teamid, @Param("no") String no,@Param("start") Integer start, @Param("size") Integer size);
+    List<Map<String, Object>> selects(@Param("areas") Long areas,@Param("parks") Long parks, @Param("pkstatus") Long pkstatus, @Param("hostname") String hostname, @Param("no") String no,@Param("start") Integer start, @Param("size") Integer size);
 
 
     /**

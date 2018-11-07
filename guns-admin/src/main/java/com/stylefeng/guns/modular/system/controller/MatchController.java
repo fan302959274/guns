@@ -56,16 +56,6 @@ public class MatchController extends BaseController {
     }
 
 
-    /**
-     * 跳转到修改比赛
-     */
-    @RequestMapping("/match_update/{matchId}")
-    public String matchUpdate(@PathVariable Long matchId, Model model) {
-        Map pkMatch = matchDao.selectById(matchId);
-        model.addAttribute("match", pkMatch);
-        LogObjectHolder.me().set(pkMatch);
-        return PREFIX + "match_edit.html";
-    }
 
     /**
      * 跳转到查询比赛
