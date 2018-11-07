@@ -24,6 +24,7 @@
 		<result column="updator" property="updator" />
 		<result column="isdeleted" property="isdeleted" />
 		<result column="no" property="no" />
+		<result column="date" property="date" />
 	</resultMap>
 
 </mapper>

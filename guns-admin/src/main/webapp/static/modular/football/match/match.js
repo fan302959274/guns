@@ -18,7 +18,6 @@ Match.initColumn = function () {
         {title: '订单号', field: 'no', align: 'center', valign: 'middle', width: '50px'},
         {title: '发起方', field: 'hostteam', align: 'center', valign: 'middle', width: '200px',sortable: true},
         {title: '球场区域', field: 'area', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '球场', field: 'parkname', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛状态', field: 'status', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛时间', field: 'createdate', align: 'center', valign: 'middle',width: '200px', sortable: true}];
 };
@@ -82,8 +81,10 @@ Match.delete = function () {
  */
 Match.search = function () {
     var queryData = {};
-    queryData['status'] = $("#status").val();
-    queryData['paystatus'] = $("#paystatus").val();
+    queryData['areas'] = $("#areas").val();
+    queryData['pkstatus'] = $("#pkstatus").val();
+    queryData['hostname'] = $("#hostname").val();
+    queryData['no'] = $("#no").val();
     Match.table.refresh({query: queryData});
 };
 

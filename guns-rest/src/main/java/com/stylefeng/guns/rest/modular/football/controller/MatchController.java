@@ -232,6 +232,7 @@ public class MatchController {
                 pkMatch.setInitiatorid(pkMembers.get(0).getId());
                 pkMatch.setName("约战");
                 pkMatch.setStatus(1);//匹配中
+                pkMatch.setDate(date);
                 pkMatch.setTime(timeid);
                 Long no = redisTemplate.opsForValue().increment("matchKey",1);
                 if(no>99998){

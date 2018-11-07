@@ -28,10 +28,11 @@
         '未知'
         END)
         as status,
-        t.time,
+        t.date,
         t.createdate,
         me.name as meName,
-        me.mobile as meMobile
+        me.mobile as meMobile,
+        d.name as time
     </sql>
 
     <select id="selects" resultType="map">
@@ -42,9 +43,19 @@
         LEFT JOIN pk_park park ON t.parkid = park.id
         LEFT JOIN areas area ON park.area = area.id
         LEFT JOIN pk_member me ON t.initiatorid = me.id
+        LEFT JOIN dict d on t.time = d.id
         where 1=1
-        <if test="status != null and status != ''">
-            AND t.status=#{status}
+        <if test="areas != null and areas != ''">
+            AND area.id=#{areas}
+        </if>
+        <if test="pkstatus != null and pkstatus != ''">
+            AND t.status=#{pkstatus}
+        </if>
+        <if test="hostname != null and hostname != ''">
+            AND tm2.NAME like CONCAT('%',#{hostname},'%')
+        </if>
+        <if test="no != null and no != ''">
+            AND t.no=#{no}
         </if>
         LIMIT #{start}, #{size}
     </select>
@@ -57,6 +68,7 @@
         LEFT JOIN pk_park park ON t.parkid = park.id
         LEFT JOIN areas area ON park.area = area.id
         LEFT JOIN pk_member me ON t.initiatorid = me.id
+        LEFT JOIN dict d on t.time = d.id
         where t.id=#{id}
     </select>
 

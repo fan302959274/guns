@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-06
+ * @since 2018-11-07
  */
 @TableName("pk_match")
 public class PkMatch extends Model<PkMatch> {
@@ -100,6 +100,7 @@ public class PkMatch extends Model<PkMatch> {
      */
 	private String isdeleted;
 	private String no;
+	private String date;
 
 
 	public Long getId() {
@@ -262,6 +263,14 @@ public class PkMatch extends Model<PkMatch> {
 		this.no = no;
 	}
 
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -290,6 +299,7 @@ public class PkMatch extends Model<PkMatch> {
 			", updator=" + updator +
 			", isdeleted=" + isdeleted +
 			", no=" + no +
+			", date=" + date +
 			"}";
 	}
 }

@@ -1,18 +1,14 @@
 package com.stylefeng.guns.modular.system.controller;
 
-import com.stylefeng.guns.common.exception.BizExceptionEnum;
-import com.stylefeng.guns.common.exception.BussinessException;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.common.persistence.dao.AreasMapper;
 import com.stylefeng.guns.common.persistence.dao.PkMatchMapper;
-import com.stylefeng.guns.common.persistence.model.PkMatch;
+import com.stylefeng.guns.common.persistence.model.Areas;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
-import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.modular.system.dao.MatchDao;
-import com.stylefeng.guns.modular.system.transfer.PkMatchDto;
-import com.stylefeng.guns.modular.system.warpper.AdWarpper;
 import com.stylefeng.guns.modular.system.warpper.MatchWarpper;
-import com.stylefeng.guns.modular.system.warpper.UserWarpper;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +38,8 @@ public class MatchController extends BaseController {
     @Resource
     PkMatchMapper pkMatchMapper;
     @Resource
+    AreasMapper areasMapper;
+    @Resource
     MatchDao matchDao;
 
 
@@ -50,7 +47,11 @@ public class MatchController extends BaseController {
      * 跳转到比赛管理首页
      */
     @RequestMapping("")
-    public String index() {
+    public String index(Model model) {
+        Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
+
+        List<Areas> list = areasMapper.selectList(wrapper);
+        model.addAttribute("areas", list);
         return PREFIX + "match.html";
     }
 
@@ -83,7 +84,7 @@ public class MatchController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(required = false) String status, @RequestParam(required = false) String paystatus, Integer page, Integer pageSize) {
+    public Object list(@RequestParam(required = false) Long areas,@RequestParam(required = false) Long pkstatus,@RequestParam(required = false) String hostname, @RequestParam(required = false) String no, Integer page, Integer pageSize) {
 
         Integer start = 0;
         Integer size = 10;
@@ -91,7 +92,7 @@ public class MatchController extends BaseController {
             start = (page - 1) * pageSize;
             size = pageSize;
         }
-        List<Map<String, Object>> list = this.matchDao.selects(status, paystatus, start, size);
+        List<Map<String, Object>> list = this.matchDao.selects(areas,pkstatus,hostname,no,start, size);
         return new MatchWarpper(list).warp();
     }
 
@@ -102,7 +103,7 @@ public class MatchController extends BaseController {
     @ResponseBody
     public Object detail(@PathVariable("matchId") Long matchId) {
         Map result = new HashMap();
-        result.put("match",this.matchDao.selectById(matchId));
+        result.put("match", this.matchDao.selectById(matchId));
         return result;
     }
 

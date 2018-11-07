@@ -208,6 +208,8 @@ CREATE TABLE `pk_match` (
   COMMENT '比赛名称',
   `time`               BIGINT(20)          DEFAULT NULL
   COMMENT '比赛时间',
+  `date`               VARCHAR(50)        DEFAULT NULL
+  COMMENT '比赛日期',
   `place`              VARCHAR(256)        DEFAULT NULL
   COMMENT '比赛地点',
   `initiatorid`        BIGINT(20) NOT NULL
