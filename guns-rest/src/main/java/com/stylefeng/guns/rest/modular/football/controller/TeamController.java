@@ -101,6 +101,9 @@ public class TeamController {
             pkTeam.setOwnerid(pkMember.getId());
             pkTeam.setStartpoint(0);//初始积分
             pkTeam.setPoint(0);//初始积分
+            pkTeam.setWinnum(0);//赢的场数
+            pkTeam.setDebtnum(0);//输的场数
+            pkTeam.setDrawnum(0);//平的场数
             pkTeamMapper.insert(pkTeam);
             //        保存logo
             if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
