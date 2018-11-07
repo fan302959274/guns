@@ -16,8 +16,8 @@
         <if test="areas != null and areas != ''">
             AND a.id = #{areas}
         </if>
-        <if test="status != null and status != ''">
-            AND m.`status` = #{status}
+        <if test="pkstatus != null and pkstatus != ''">
+            AND m.`status` = #{pkstatus}
         </if>
         <if test="teamid != null and teamid != ''">
             AND t.id = #{teamid}

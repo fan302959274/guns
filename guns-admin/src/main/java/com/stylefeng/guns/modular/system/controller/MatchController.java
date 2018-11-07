@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -99,25 +100,12 @@ public class MatchController extends BaseController {
      */
     @RequestMapping(value = "/detail/{matchId}")
     @ResponseBody
-    public Object detail(@PathVariable("matchId") Integer matchId) {
-        return pkMatchMapper.selectById(matchId);
+    public Object detail(@PathVariable("matchId") Long matchId) {
+        Map result = new HashMap();
+        result.put("match",this.matchDao.selectById(matchId));
+        return result;
     }
 
-    /**
-     * 修改比赛
-     */
-    @RequestMapping(value = "/update")
-    @ResponseBody
-    public Object update(PkMatchDto pkMatchDto) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        if (ToolUtil.isEmpty(pkMatchDto) || pkMatchDto.getId() == null) {
-            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
-        }
-        PkMatch record = new PkMatch();
-        PropertyUtils.copyProperties(record, pkMatchDto);
-        pkMatchMapper.updateById(record);
-
-        return super.SUCCESS_TIP;
-    }
 
     /**
      * 删除比赛

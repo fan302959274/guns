@@ -14,14 +14,13 @@ var Match = {
 Match.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: 'id', field: 'id', align: 'center', valign: 'middle', width: '50px'},
-        {title: '挑战方', field: 'challengeteam', align: 'center', valign: 'middle', width: '200px',sortable: true},
+        {title: 'id', field: 'id',visible: false},
+        {title: '订单号', field: 'no', align: 'center', valign: 'middle', width: '50px'},
+        {title: '发起方', field: 'hostteam', align: 'center', valign: 'middle', width: '200px',sortable: true},
         {title: '球场区域', field: 'area', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '球场', field: 'parkname', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛状态', field: 'status', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '比赛时间', field: 'time', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '发起方支付状态', field: 'challengepaystatusName', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '匹配方支付状态', field: 'hostpaystatusName', align: 'center', valign: 'middle',width: '200px', sortable: true}];
+        {title: '比赛时间', field: 'createdate', align: 'center', valign: 'middle',width: '200px', sortable: true}];
 };
 
 /**
@@ -38,23 +37,6 @@ Match.check = function () {
     }
 };
 
-
-/**
- * 打开查看广告详情（编辑）
- */
-Match.openMatchDetail = function () {
-    if (this.check()) {
-        var index = layer.open({
-            type: 2,
-            title: '比赛详情',
-            area: ['800px', '420px'], //宽高
-            fix: false, //不固定
-            maxmin: true,
-            content: Feng.ctxPath + '/match/match_update/' + Match.seItem.id
-        });
-        this.layerIndex = index;
-    }
-};
 
 
 /**

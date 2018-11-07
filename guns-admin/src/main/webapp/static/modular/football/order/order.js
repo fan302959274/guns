@@ -97,7 +97,7 @@ Order.delete = function () {
  */
 Order.search = function () {
     var queryData = {};
-    queryData['status'] = $("#status").val();
+    // queryData['status'] = $("#status").val();
     queryData['paystatus'] = $("#paystatus").val();
     Order.table.refresh({query: queryData});
 };

@@ -3,6 +3,7 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.MatchDao">
     <sql id="Base_Column_List">
         t.id,
+        t.no,
         tm.name as challengeteam,
         tm.culture as challengeculture,
         tm.ontime as challengeontime,
@@ -14,8 +15,23 @@
         area.area,
         park.pkname as parkname,
         park.pkaddr as pkaddr,
-        t.status,
-        t.time
+        (CASE
+        WHEN t.status = 1 THEN
+        '匹配中'
+        WHEN t.status = 2 THEN
+        '待比赛'
+        WHEN t.status = 3 THEN
+        '约战中'
+        WHEN t.status = 4 THEN
+        '约战完成'
+        ELSE
+        '未知'
+        END)
+        as status,
+        t.time,
+        t.createdate,
+        me.name as meName,
+        me.mobile as meMobile
     </sql>
 
     <select id="selects" resultType="map">
@@ -25,6 +41,7 @@
         LEFT JOIN pk_team tm2 ON t.hostteamid = tm2.id
         LEFT JOIN pk_park park ON t.parkid = park.id
         LEFT JOIN areas area ON park.area = area.id
+        LEFT JOIN pk_member me ON t.initiatorid = me.id
         where 1=1
         <if test="status != null and status != ''">
             AND t.status=#{status}
@@ -39,6 +56,7 @@
         LEFT JOIN pk_team tm2 ON t.hostteamid = tm2.id
         LEFT JOIN pk_park park ON t.parkid = park.id
         LEFT JOIN areas area ON park.area = area.id
+        LEFT JOIN pk_member me ON t.initiatorid = me.id
         where t.id=#{id}
     </select>
 
