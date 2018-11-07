@@ -64,7 +64,7 @@ public class PkTeamDto extends Model<PkTeamDto> {
     /**
      * 球队区
      */
-	private String area;
+	private Long area;
     /**
      * 球队描述
      */
@@ -183,11 +183,11 @@ public class PkTeamDto extends Model<PkTeamDto> {
 		this.city = city;
 	}
 
-	public String getArea() {
+	public Long getArea() {
 		return area;
 	}
 
-	public void setArea(String area) {
+	public void setArea(Long area) {
 		this.area = area;
 	}
 
