@@ -208,7 +208,7 @@ public class MatchController {
                 if(noHost>99998){
                     redisTemplate.opsForValue().set("orderKey",1);
                 }
-                pkOrderHost.setNo("b"+ DateUtil.getDays()+String.format("%05d",noHost));
+                pkOrderHost.setNo("y"+ DateUtil.getDays()+String.format("%05d",noHost));
                 pkOrderMapper.insert(pkOrderHost);
 
 
@@ -222,7 +222,7 @@ public class MatchController {
                 if(noCh>99998){
                     redisTemplate.opsForValue().set("orderKey",1);
                 }
-                pkOrderCh.setNo("b"+ DateUtil.getDays()+String.format("%05d",noCh));
+                pkOrderCh.setNo("y"+ DateUtil.getDays()+String.format("%05d",noCh));
                 pkOrderMapper.insert(pkOrderCh);
 
             } else {
@@ -238,7 +238,7 @@ public class MatchController {
                 if(no>99998){
                     redisTemplate.opsForValue().set("matchKey",1);
                 }
-                pkMatch.setNo("y"+ DateUtil.getDays()+String.format("%05d",no));
+                pkMatch.setNo("b"+ DateUtil.getDays()+String.format("%05d",no));
                 pkMatchMapper.insert(pkMatch);
             }
 

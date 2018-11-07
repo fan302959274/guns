@@ -8,6 +8,7 @@
         tm2.name as hostteam,
         area.area,
         park.pkname as parkname,
+        park.pkaddr as pkaddr,
          (CASE
         WHEN m.`status` = 1 THEN
         '匹配中'
