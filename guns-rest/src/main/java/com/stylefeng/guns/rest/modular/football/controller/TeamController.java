@@ -51,8 +51,6 @@ public class TeamController {
     AreasMapper areasMapper;
     @Autowired
     PkTeamMemberMapper pkTeamMemberMapper;
-    @Autowired
-    PkMatchMapper pkMatchMapper;
 
 
     /**
@@ -95,9 +93,12 @@ public class TeamController {
             wrapper = wrapper.eq("openid", pkTeamDto.getOpenid());
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
+            PkMember pkMember = pkMembers.get(0);
+            pkMember.setType("1");
+            pkMemberMapper.updateById(pkMember);//更新创建球队的人为队长
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
-            pkTeam.setOwnerid(pkMembers.get(0).getId());
+            pkTeam.setOwnerid(pkMember.getId());
             pkTeamMapper.insert(pkTeam);
             //        保存logo
             if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
@@ -110,6 +111,13 @@ public class TeamController {
                 pkAttachment.setUrl(pkTeamDto.getLogo());
                 pkAttachmentMapper.insert(pkAttachment);
             }
+            //保存球队球员对应关系
+            PkTeamMember pkTeamMember = new PkTeamMember();
+            pkTeamMember.setStatus("1");
+            pkTeamMember.setTeamid(pkTeam.getId());
+            pkTeamMember.setMemberid(pkMember.getId());
+            pkTeamMemberMapper.insert(pkTeamMember);
+
             return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeam));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
