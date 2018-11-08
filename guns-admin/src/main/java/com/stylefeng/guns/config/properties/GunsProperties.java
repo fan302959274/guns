@@ -24,6 +24,7 @@ public class GunsProperties {
     private Boolean kaptchaOpen = false;
 
     private Boolean swaggerOpen = false;
+
     @Value("${file.path}")
     private String fileUploadPath;
 
