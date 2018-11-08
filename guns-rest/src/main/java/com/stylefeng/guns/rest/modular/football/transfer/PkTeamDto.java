@@ -68,7 +68,7 @@ public class PkTeamDto extends Model<PkTeamDto> {
     /**
      * 球队描述
      */
-	private String desc;
+	private String teamdesc;
     /**
      * 所属人
      */
@@ -191,12 +191,12 @@ public class PkTeamDto extends Model<PkTeamDto> {
 		this.area = area;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getTeamdesc() {
+		return teamdesc;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setTeamdesc(String teamdesc) {
+		this.teamdesc = teamdesc;
 	}
 
 	public Long getOwnerid() {
@@ -290,7 +290,7 @@ public class PkTeamDto extends Model<PkTeamDto> {
 			", prov=" + prov +
 			", city=" + city +
 			", area=" + area +
-			", desc=" + desc +
+			", teamdesc=" + teamdesc +
 			", ownerid=" + ownerid +
 			", status=" + status +
 			", createdate=" + createdate +
