@@ -159,7 +159,7 @@ public class MemberController extends BaseController {
         model.addAttribute("member", menuMap);
         model.addAttribute("type", type);
         model.addAttribute("teamInfo", teamInfo);
-        model.addAttribute("birth", ss.format(pkMember.getBirth()));
+        model.addAttribute("birth", Objects.nonNull(pkMember.getBirth())?ss.format(pkMember.getBirth()):"");
         LogObjectHolder.me().set(pkMember);
         return PREFIX + "member_view.html";
     }
