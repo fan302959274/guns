@@ -198,9 +198,9 @@ public class TeamController {
             if (!org.apache.commons.collections.CollectionUtils.isEmpty(attachmentList)) {
                 data.put("image", attachmentList.get(0).getUrl());
             }
-            data.put("grade", Arrays.asList(new BigDecimal[]{pkTeam.getCulture(),pkTeam.getOntime(),pkTeam.getFriendly()}));
-            data.put("intro",pkTeam.getTeamdesc());
-            data.put("intro",pkTeam.getTeamdesc());
+            data.put("grade", Arrays.asList(new BigDecimal[]{pkTeam.getCulture(), pkTeam.getOntime(), pkTeam.getFriendly()}));
+            data.put("intro", pkTeam.getTeamdesc());
+            data.put("intro", pkTeam.getTeamdesc());
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", pkTeam.getId());
@@ -210,10 +210,10 @@ public class TeamController {
             pkTeamMembers.forEach(teamMember -> {
                 Map member = new HashMap();
                 PkMember pkMember = pkMemberMapper.selectById(teamMember.getMemberid());
-                member.put("name",pkMember.getName());
-                member.put("openid",pkMember.getOpenid());
-                member.put("position",pkMember.getPosition());
-                member.put("isCaptain","1".equals(pkMember.getType()) ? 1 : 0);//是否是队长
+                member.put("name", pkMember.getName());
+                member.put("openid", pkMember.getOpenid());
+                member.put("position", pkMember.getPosition());
+                member.put("isCaptain", "1".equals(pkMember.getType()) ? 1 : 0);//是否是队长
                 Wrapper<PkAttachment> attachmentWrapper = new EntityWrapper<>();
                 attachmentWrapper = attachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
                 List<PkAttachment> pkAttachmentList = pkAttachmentMapper.selectList(attachmentWrapper);
@@ -224,8 +224,7 @@ public class TeamController {
 
             });
 
-            data.put("mate",members);//队员数组
-
+            data.put("mate", members);//队员数组
 
 
             return ResponseEntity.ok(new CommonResp<Map>(data));
@@ -236,25 +235,21 @@ public class TeamController {
     }
 
     /**
-     * 加入球队
+     * 加入球队列表
      *
      * @param teamid
      * @return
      */
     @RequestMapping(value = "/appleList", method = RequestMethod.POST)
-    @ApiOperation(value = "加入球队", notes = "返回码:1成功;")
+    @ApiOperation(value = "加入球队列表", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
     public ResponseEntity appleList(@RequestParam Long teamid, @RequestParam String openid) {
-        log.info("加入球队请求参数为:{}", teamid);
+        log.info("加入球队列表请求参数为:{}", teamid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
-            PkTeamMember pkTeamMember = new PkTeamMember();
-            pkTeamMember.setMemberid(pkMembers.get(0).getId());
-            pkTeamMember.setTeamid(teamid);
-            pkTeamMemberMapper.insert(pkTeamMember);
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid);
@@ -282,6 +277,34 @@ public class TeamController {
         }
 
     }
+
+    /**
+     * 加入球队
+     *
+     * @param teamid
+     * @return
+     */
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    @ApiOperation(value = "加入球队列表", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
+    public ResponseEntity join(@RequestParam Long teamid, @RequestParam String openid) {
+        log.info("加入球队请求参数为:{}", teamid);
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+            PkTeamMember pkTeamMember = new PkTeamMember();
+            pkTeamMember.setMemberid(pkMembers.get(0).getId());
+            pkTeamMember.setTeamid(teamid);
+            pkTeamMemberMapper.insert(pkTeamMember);
+            return ResponseEntity.ok(new CommonResp<String>("加入成功"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
 
     /**
      * 拒绝加入球队
