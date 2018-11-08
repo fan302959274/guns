@@ -210,6 +210,7 @@ public class TeamController {
             pkTeamMembers.forEach(teamMember -> {
                 Map member = new HashMap();
                 PkMember pkMember = pkMemberMapper.selectById(teamMember.getMemberid());
+                member.put("name",pkMember.getName());
                 member.put("openid",pkMember.getOpenid());
                 member.put("position",pkMember.getPosition());
                 member.put("isCaptain","1".equals(pkMember.getType()) ? 1 : 0);//是否是队长
