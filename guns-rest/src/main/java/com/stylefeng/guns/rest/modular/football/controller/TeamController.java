@@ -24,10 +24,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * 球队控制器
@@ -68,9 +66,25 @@ public class TeamController {
             Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
             wrapper = wrapper.like("name", name);
             List<PkTeam> pkTeams = pkTeamMapper.selectList(wrapper);
-            return ResponseEntity.ok(new CommonListResp<PkTeam>(pkTeams));
+
+            List<Map> datas = new ArrayList<>();
+            pkTeams.forEach(pkTeam -> {
+                Map data = new HashMap();
+
+                data.put("id", pkTeam.getId());
+                data.put("name", pkTeam.getName());
+
+                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+                List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+                if (!org.apache.commons.collections.CollectionUtils.isEmpty(attachmentList)) {
+                    data.put("image", attachmentList.get(0).getUrl());
+                }
+                datas.add(data);
+            });
+            return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonListResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
@@ -144,9 +158,78 @@ public class TeamController {
         try {
             PkTeam pkTeam = pkTeamMapper.selectById(id);
             Assert.notNull(pkTeam, "不存在该球队");
-            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeamMapper.selectById(id)));
+
+            Map data = new HashMap();
+
+            data.put("id", pkTeam.getId());
+            data.put("name", pkTeam.getName());
+            Integer levelid = 1;
+            switch (pkTeam.getLevel()) {
+                case "使者":
+                    levelid = 2;
+                    break;
+                case "守卫":
+                    levelid = 3;
+                    break;
+                case "战士":
+                    levelid = 4;
+                    break;
+                case "统治":
+                    levelid = 5;
+                    break;
+                case "经典":
+                    levelid = 6;
+                    break;
+                case "传奇":
+                    levelid = 7;
+                    break;
+                case "神灵":
+                    levelid = 8;
+                    break;
+                default:
+                    levelid = 1;
+                    break;
+            }
+            data.put("levelid", levelid);
+
+            Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+            List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+            if (!org.apache.commons.collections.CollectionUtils.isEmpty(attachmentList)) {
+                data.put("image", attachmentList.get(0).getUrl());
+            }
+            data.put("grade", Arrays.asList(new BigDecimal[]{pkTeam.getCulture(),pkTeam.getOntime(),pkTeam.getFriendly()}));
+            data.put("intro",pkTeam.getTeamdesc());
+            data.put("intro",pkTeam.getTeamdesc());
+
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", pkTeam.getId());
+            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+            List<Map> members = new ArrayList<>();
+
+            pkTeamMembers.forEach(teamMember -> {
+                Map member = new HashMap();
+                PkMember pkMember = pkMemberMapper.selectById(teamMember.getMemberid());
+                member.put("openid",pkMember.getOpenid());
+                member.put("position",pkMember.getPosition());
+                member.put("isCaptain","1".equals(pkMember.getType()) ? 1 : 0);//是否是队长
+                Wrapper<PkAttachment> attachmentWrapper = new EntityWrapper<>();
+                attachmentWrapper = attachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
+                List<PkAttachment> pkAttachmentList = pkAttachmentMapper.selectList(attachmentWrapper);
+                if (!CollectionUtils.isEmpty(pkAttachmentList)) {
+                    member.put("image", pkAttachmentList.get(0).getUrl());//队员头像
+                }
+                members.add(member);
+
+            });
+
+            data.put("mate",members);//队员数组
+
+
+
+            return ResponseEntity.ok(new CommonResp<Map>(data));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }
