@@ -290,7 +290,7 @@ public class TeamController {
      * @return
      */
     @RequestMapping(value = "/deleteApple", method = RequestMethod.POST)
-    @ApiOperation(value = "加入球队", notes = "返回码:1成功;")
+    @ApiOperation(value = "拒绝加入球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
     public ResponseEntity deleteApple(@RequestParam Long teamid, @RequestParam String openid, @RequestParam String manid) {
         log.info("拒绝加入球队请求参数为:{}", teamid);

@@ -33,12 +33,28 @@
         tm.culture as challengeculture,
         tm.ontime as challengeontime,
         tm.friendly as challengefriendly,
-        o1.status as challengepaystatus,
+         (CASE
+        WHEN o1.status  = '0' THEN
+        '未支付'
+        WHEN o1.status  = '1' THEN
+        '已支付'
+        ELSE
+        '未支付'
+        END)
+        as challengepaystatus,
         o2.no as o2No,
         tm2.culture as hostculture,
         tm2.ontime as hostontime,
         tm2.friendly as hostfriendly,
-        o2.status as hostpaystatus
+        (CASE
+        WHEN o2.status  = '0' THEN
+        '未支付'
+        WHEN o2.status  = '1' THEN
+        '已支付'
+        ELSE
+        '未支付'
+        END)
+        as hostpaystatus
     </sql>
 
     <sql id="Base_Column_List2">

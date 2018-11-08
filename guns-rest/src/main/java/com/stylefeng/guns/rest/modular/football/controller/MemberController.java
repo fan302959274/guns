@@ -181,7 +181,7 @@ public class MemberController {
             Map data = new HashMap();
             data.put("name", pkMember.getName());
             if (CollectionUtils.isNotEmpty(pkTeamMembers)) {
-                PkTeam pkTeam = pkTeamMapper.selectById(pkTeamMembers.get(0));
+                PkTeam pkTeam = pkTeamMapper.selectById(pkTeamMembers.get(0).getTeamid());
                 data.put("team", pkTeam.getName());
             }
             data.put("height", pkMember.getHeight());
@@ -203,7 +203,7 @@ public class MemberController {
      */
     @RequestMapping(value = "/editData", method = RequestMethod.POST)
     @ApiOperation(value = "编辑队员", notes = "返回码:1成功;")
-    @ApiImplicitParam(paramType = "query", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
+    @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
     public ResponseEntity editData(@RequestBody PkMemberDto pkMemberDto) {
         log.info("队员信息修改请求参数{}", JSONObject.toJSONString(pkMemberDto));
         try {
