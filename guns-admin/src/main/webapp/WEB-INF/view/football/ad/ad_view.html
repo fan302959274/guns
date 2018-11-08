@@ -6,10 +6,8 @@
                 <div class="col-sm-6 b-r">
                     <#label id="mainhead" name="标题" underline="true" value="${ad.mainhead}"   disabled="disabled"/>
                     <#label id="subhead" name="副标题" underline="true" value="${ad.subhead}"   disabled="disabled"/>
-                    <!--<div class="form-group">-->
-                        <#label  name="广告链接" value="${ad.url}"/>
+                    <#label  name="广告链接" value="${ad.url}"/>
 
-                    <!--</div>-->
                 </div>
                 <div class="col-sm-6 b-r">
                     <#label id="starttime" name="开始时间" underline="true" placeholder="yyyy-MM-dd HH:mm:ss" disabled="disabled"
@@ -20,8 +18,9 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
-                    <label class="col-sm-13 control-label" style="padding-left: 10px;">广告图片</label>
+
+                <div class="col-sm-12 b-r">
+                    <label class="col-sm-2 control-label" >广告图片</label>
                     <div>
                         <#adview id="ads" name="" underline="true"   adsImg="${ad.adsImg}" ads = "${ad.ads}"/>
                     </div>
