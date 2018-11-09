@@ -40,8 +40,8 @@ public enum PositionEnum {
         if (message == null) {
             return "";
         } else {
-            for (FootEnum s : FootEnum.values()) {
-                if (s.getMessage() == message) {
+            for (PositionEnum s : PositionEnum.values()) {
+                if (s.getMessage() .equals(message) ) {
                     return s.getCode();
                 }
             }
@@ -53,8 +53,8 @@ public enum PositionEnum {
         if (code == null) {
             return "";
         } else {
-            for (FootEnum s : FootEnum.values()) {
-                if (s.getCode() == code) {
+            for (PositionEnum s : PositionEnum.values()) {
+                if (s.getCode() .equals(code) ) {
                     return s.getMessage();
                 }
             }

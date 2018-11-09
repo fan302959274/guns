@@ -231,7 +231,7 @@ public class MemberController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
             PkMember pkMember = new PkMember();
             pkMember.setPosition(PositionEnum.codeOf(pkMemberDto.getPlayer()));
-            pkMember.setHabitfeet(FootEnum.codeOf(pkMemberDto.getPlayer()));
+            pkMember.setHabitfeet(FootEnum.codeOf(pkMemberDto.getFoot()));
             pkMember.setBirth(DateUtil.parse(pkMemberDto.getBirth(),"yyyy"));
             pkMember.setHeight(pkMemberDto.getHeight());
             pkMember.setWeight(pkMemberDto.getWeight());

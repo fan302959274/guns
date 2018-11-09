@@ -39,7 +39,7 @@ public enum FootEnum {
             return "";
         } else {
             for (FootEnum s : FootEnum.values()) {
-                if (s.getMessage() == message) {
+                if (s.getMessage() .equals(message) ) {
                     return s.getCode();
                 }
             }
@@ -52,7 +52,7 @@ public enum FootEnum {
             return "";
         } else {
             for (FootEnum s : FootEnum.values()) {
-                if (s.getCode() == code) {
+                if (s.getCode() .equals(code) ) {
                     return s.getMessage();
                 }
             }
