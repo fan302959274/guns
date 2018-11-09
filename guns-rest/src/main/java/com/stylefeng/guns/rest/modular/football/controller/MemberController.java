@@ -3,6 +3,7 @@ package com.stylefeng.guns.rest.modular.football.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
@@ -68,7 +69,6 @@ public class MemberController {
     public ResponseEntity register(@RequestBody PkMemberDto pkMemberDto) {
         log.info("注册队员请求参数{}", JSONObject.toJSONString(pkMemberDto));
         try {
-//            Assert.notNull(pkMemberDto.getMobile(), "手机号不能为空");
             Assert.notNull(pkMemberDto.getOpenid(), "openid不能为空");
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
@@ -186,7 +186,7 @@ public class MemberController {
             }
             data.put("height", pkMember.getHeight());
             data.put("weight", pkMember.getWeight());
-            data.put("birth", pkMember.getBirth());
+            data.put("birth", DateUtil.format(pkMember.getBirth(),"yyyy"));
             data.put("player", pkMember.getPosition());
             data.put("foot", pkMember.getHabitfeet());
             Wrapper pkAttachmentWrapper = new EntityWrapper<>();
@@ -230,7 +230,6 @@ public class MemberController {
 
             PkMember pkMember = new PkMember();
 
-            PropertyUtils.copyProperties(pkMember, pkMemberDto);
 
 
             String position = "1";
@@ -265,6 +264,9 @@ public class MemberController {
             }
             pkMember.setPosition(position);
             pkMember.setHabitfeet(foot);
+            pkMember.setBirth(DateUtil.parse(pkMemberDto.getBirth(),"yyyy"));
+            pkMember.setHeight(pkMemberDto.getHeight());
+            pkMember.setWeight(pkMemberDto.getWeight());
             pkMember.setId(pkMembers.get(0).getId());
             pkMemberMapper.updateById(pkMember);
             return ResponseEntity.ok(new CommonResp<String>("修改成功"));

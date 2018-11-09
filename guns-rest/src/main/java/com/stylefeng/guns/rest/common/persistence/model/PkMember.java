@@ -47,7 +47,7 @@ public class PkMember extends Model<PkMember> {
     /**
      * 出生年月
      */
-	private String birth;
+	private Date birth;
     /**
      * 主攻位置
      */
@@ -126,11 +126,11 @@ public class PkMember extends Model<PkMember> {
 		this.mobile = mobile;
 	}
 
-	public String getBirth() {
+	public Date getBirth() {
 		return birth;
 	}
 
-	public void setBirth(String birth) {
+	public void setBirth(Date birth) {
 		this.birth = birth;
 	}
 
