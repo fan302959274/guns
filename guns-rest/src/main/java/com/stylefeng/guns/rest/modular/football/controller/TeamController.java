@@ -494,9 +494,9 @@ public class TeamController {
                 datas.add(map);
             });
 
-            return ResponseEntity.ok(new CommonListResp<PkTeam>(list));
+            return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
-            return ResponseEntity.ok(new CommonListResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+            return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

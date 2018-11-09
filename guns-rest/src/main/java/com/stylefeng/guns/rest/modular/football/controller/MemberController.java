@@ -189,6 +189,14 @@ public class MemberController {
             data.put("birth", pkMember.getBirth());
             data.put("player", pkMember.getPosition());
             data.put("foot", pkMember.getHabitfeet());
+            Wrapper pkAttachmentWrapper = new EntityWrapper<>();
+            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
+            List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+            if (!CollectionUtils.isEmpty(attachmentList)) {
+                data.put("image", attachmentList.get(0).getUrl());
+
+            }
+
             return ResponseEntity.ok(new CommonResp<Map>(data));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
@@ -215,8 +223,40 @@ public class MemberController {
             PkMember pkMember = new PkMember();
 
             PropertyUtils.copyProperties(pkMember, pkMemberDto);
-            pkMember.setHabitfeet(pkMemberDto.getFoot());
-            pkMember.setPosition(pkMemberDto.getPlayer());
+
+
+            String position = "1";
+            switch (pkMemberDto.getPlayer()) {
+                case "前锋":
+                    position = "1";
+                    break;
+                case "中场":
+                    position = "2";
+                    break;
+                case "后卫":
+                    position = "3";
+                    break;
+                case "门将":
+                    position = "4";
+                    break;
+                default:
+                    position = "1";
+                    break;
+            }
+            String foot = "1";
+            switch (pkMemberDto.getPlayer()) {
+                case "左":
+                    foot = "1";
+                    break;
+                case "右":
+                    foot = "2";
+                    break;
+                default:
+                    foot = "1";
+                    break;
+            }
+            pkMember.setPosition(position);
+            pkMember.setHabitfeet(foot);
             pkMember.setId(pkMembers.get(0).getId());
             pkMemberMapper.updateById(pkMember);
             return ResponseEntity.ok(new CommonResp<String>("修改成功"));
