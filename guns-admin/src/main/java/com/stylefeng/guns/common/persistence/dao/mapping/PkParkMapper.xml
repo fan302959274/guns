@@ -12,10 +12,10 @@
 		<result column="status" property="status" />
 		<result column="pkaddr" property="pkaddr" />
 		<result column="pkdesc" property="pkdesc" />
-		<result column="cost" property="cost" />
 		<result column="businesstime" property="businesstime" />
 		<result column="createdate" property="createdate" />
 		<result column="updatedate" property="updatedate" />
+		<result column="cost" property="cost" />
 	</resultMap>
 
 </mapper>

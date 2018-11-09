@@ -7,8 +7,8 @@
 		<id column="id" property="id" />
 		<result column="parkid" property="parkid" />
 		<result column="week" property="week" />
-		<result column="end" property="end" />
 		<result column="start" property="start" />
+		<result column="end" property="end" />
 	</resultMap>
 
 </mapper>

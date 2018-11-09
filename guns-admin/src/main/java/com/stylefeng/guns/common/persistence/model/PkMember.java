@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-02
+ * @since 2018-11-09
  */
 @TableName("pk_member")
 public class PkMember extends Model<PkMember> {
@@ -47,7 +47,7 @@ public class PkMember extends Model<PkMember> {
     /**
      * 出生年月
      */
-	private Date birth;
+	private String birth;
     /**
      * 主攻位置
      */
@@ -126,11 +126,11 @@ public class PkMember extends Model<PkMember> {
 		this.mobile = mobile;
 	}
 
-	public Date getBirth() {
+	public String getBirth() {
 		return birth;
 	}
 
-	public void setBirth(Date birth) {
+	public void setBirth(String birth) {
 		this.birth = birth;
 	}
 

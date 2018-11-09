@@ -1,10 +1,11 @@
 package com.stylefeng.guns.common.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
+import java.io.Serializable;
 
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
 /**
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-02
+ * @since 2018-11-09
  */
 @TableName("pk_park_relation")
 public class PkParkRelation extends Model<PkParkRelation> {
@@ -73,5 +74,14 @@ public class PkParkRelation extends Model<PkParkRelation> {
 		return this.id;
 	}
 
-
+	@Override
+	public String toString() {
+		return "PkParkRelation{" +
+			"id=" + id +
+			", parkid=" + parkid +
+			", week=" + week +
+			", start=" + start +
+			", end=" + end +
+			"}";
+	}
 }
