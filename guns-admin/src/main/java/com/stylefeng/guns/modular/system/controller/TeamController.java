@@ -173,4 +173,23 @@ public class TeamController extends BaseController {
 
         return PREFIX +"team_view.html";
     }
+
+    /**
+     * 根据账号查询是否重复
+     */
+    @RequestMapping(value = "/isExistTeamName")
+    @ResponseBody
+    public boolean isExistTeamName(@RequestParam String name ,Long id) {
+        if (id != null) {
+            PkTeam team = pkTeamMapper.selectById(id);
+            if(name.equals(team.getName())){
+                return true;
+            }else{
+                PkTeam teams = this.teamDao.selectTeamByName(name);
+                return teams!=null?false:true;
+            }
+        }
+        PkTeam teams = this.teamDao.selectTeamByName(name);
+        return teams!=null?false:true;
+    }
 }

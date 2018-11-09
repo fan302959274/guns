@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.system.dao;
 
 
+import com.stylefeng.guns.common.persistence.model.PkTeam;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -53,4 +54,12 @@ public interface TeamDao {
      * @date 2017年2月17日 下午11:07:46
      */
     int deleteTeamMembers(Long teamId);
+
+    /**
+     * 根据球队名称
+     *
+     * @param
+     * @date 2018年10月9日 下午9:42:31
+     */
+    PkTeam selectTeamByName(@Param("name") String name);
 }

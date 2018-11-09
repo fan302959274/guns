@@ -3,9 +3,42 @@
  */
 var TeamInfoDlg = {
     teamInfoData: {},
-    mutiString: ''
+    mutiString: '',
+    validateFields: {
+        name: {
+            validators: {
+                notEmpty: {
+                    message: '球队名称不能为空'
+                },callback: {
+                    message: '球队名称已存在',
+                    callback: function (value) {
+                        var id=$('#id').val();
+                        var flag=true;
+                        //提交信息
+                        var ajax = new $ax(Feng.ctxPath + "/team/isExistTeamName", function(data){
+                            flag=data;
+                        },function(data){
+                            Feng.error("添加失败!" + data.responseJSON.message + "!");
+                        });
+                        ajax.set({"name":value,"id":id});
+                        ajax.start();
+                        return flag;
+                    }
+                }
+            }
+        }
+    }
 };
 
+
+/**
+ * 验证数据是否为空
+ */
+TeamInfoDlg.validate = function () {
+    $('#memberInfoForm').data("bootstrapValidator").resetForm();
+    $('#memberInfoForm').bootstrapValidator('validate');
+    return $("#memberInfoForm").data('bootstrapValidator').isValid();
+}
 
 /**
  * 清除数据
@@ -57,9 +90,9 @@ TeamInfoDlg.editSubmit = function () {
 
     this.clearData();
     this.collectData();
-    /* if (!this.validate()) {
+    if (!this.validate()) {
      return;
-     }*/
+     }
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/team/update", function (data) {
         Feng.success("修改成功!");
@@ -77,7 +110,7 @@ TeamInfoDlg.editSubmit = function () {
 
 
 $(function () {
-    // Feng.initValidator("parkInfoForm", ParkInfoDlg.validateFields);
+     Feng.initValidator("teamInfoForm", TeamInfoDlg.validateFields);
     //初始化区选项
     $("#area").val($("#areaValue").val());
     // 初始化头像上传

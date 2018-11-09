@@ -108,5 +108,13 @@
         DELETE FROM pk_team_member WHERE teamid = #{teamId}
     </delete>
 
-
+    <select id="selectTeamByName" resultType="pkTeam">
+        select
+        <include refid="Base_Column_List" />
+        from pk_team a
+        where 1=1
+        <if test="name != null">
+            AND name =#{name}
+        </if>
+    </select>
 </mapper>
