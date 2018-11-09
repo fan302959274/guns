@@ -76,7 +76,7 @@ CREATE TABLE `pk_member` (
   COMMENT '队员性别0:男;1:女',
   `mobile`     VARCHAR(256)         DEFAULT NULL
   COMMENT '手机号',
-  `birth`      VARCHAR(10)          DEFAULT NULL
+  `birth`      DATETIME             DEFAULT NULL
   COMMENT '出生年月',
   `position`   VARCHAR(100)         DEFAULT NULL
   COMMENT '主攻位置',
