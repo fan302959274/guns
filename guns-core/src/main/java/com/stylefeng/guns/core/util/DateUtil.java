@@ -254,6 +254,22 @@ public class DateUtil {
 	}
 
 	/**
+	 * <li>功能描述：时间相减得到小时
+	 *
+	 * @param beginDate
+	 * @param endDate
+	 * @return long
+	 * @author Administrator
+	 */
+	public static long getHourSub(Date beginDate, Date endDate) {
+		long hour = 0;
+
+		hour = (endDate.getTime() - beginDate.getTime()) / (60 * 60 * 1000);
+
+		return hour;
+	}
+
+	/**
 	 * 得到n天之后的日期
 	 *
 	 * @param days
