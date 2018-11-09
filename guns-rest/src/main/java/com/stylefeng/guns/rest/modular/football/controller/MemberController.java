@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
+import com.stylefeng.guns.rest.common.enums.FootEnum;
+import com.stylefeng.guns.rest.common.enums.PositionEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
@@ -187,8 +189,8 @@ public class MemberController {
             data.put("height", pkMember.getHeight());
             data.put("weight", pkMember.getWeight());
             data.put("birth", DateUtil.format(pkMember.getBirth(),"yyyy"));
-            data.put("player", pkMember.getPosition());
-            data.put("foot", pkMember.getHabitfeet());
+            data.put("player", PositionEnum.messageOf(pkMember.getPosition()));
+            data.put("foot", FootEnum.messageOf(pkMember.getHabitfeet()));
             Wrapper pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
             List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
@@ -227,43 +229,9 @@ public class MemberController {
             wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
-
             PkMember pkMember = new PkMember();
-
-
-
-            String position = "1";
-            switch (pkMemberDto.getPlayer()) {
-                case "前锋":
-                    position = "1";
-                    break;
-                case "中场":
-                    position = "2";
-                    break;
-                case "后卫":
-                    position = "3";
-                    break;
-                case "门将":
-                    position = "4";
-                    break;
-                default:
-                    position = "1";
-                    break;
-            }
-            String foot = "1";
-            switch (pkMemberDto.getPlayer()) {
-                case "左":
-                    foot = "1";
-                    break;
-                case "右":
-                    foot = "2";
-                    break;
-                default:
-                    foot = "1";
-                    break;
-            }
-            pkMember.setPosition(position);
-            pkMember.setHabitfeet(foot);
+            pkMember.setPosition(PositionEnum.codeOf(pkMemberDto.getPlayer()));
+            pkMember.setHabitfeet(FootEnum.codeOf(pkMemberDto.getPlayer()));
             pkMember.setBirth(DateUtil.parse(pkMemberDto.getBirth(),"yyyy"));
             pkMember.setHeight(pkMemberDto.getHeight());
             pkMember.setWeight(pkMemberDto.getWeight());
