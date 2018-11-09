@@ -46,8 +46,8 @@ public class PkMemberDto extends Model<PkMemberDto> {
     /**
      * 出生年月
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birth;
+
+    private String birth;
     /**
      * 主攻位置
      */
@@ -165,11 +165,11 @@ public class PkMemberDto extends Model<PkMemberDto> {
         this.mobile = mobile;
     }
 
-    public Date getBirth() {
+    public String getBirth() {
         return birth;
     }
 
-    public void setBirth(Date birth) {
+    public void setBirth(String birth) {
         this.birth = birth;
     }
 

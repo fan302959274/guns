@@ -193,9 +193,17 @@ public class MemberController {
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
             List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
             if (!CollectionUtils.isEmpty(attachmentList)) {
-                data.put("image", attachmentList.get(0).getUrl());
+                data.put("headImage", attachmentList.get(0).getUrl());
 
             }
+
+            pkAttachmentWrapper = new EntityWrapper<>();
+            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.IDCARD.getCode());
+            attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+            if (!CollectionUtils.isEmpty(attachmentList)) {
+                data.put("idcardImage", attachmentList.get(0).getUrl());
+            }
+
 
             return ResponseEntity.ok(new CommonResp<Map>(data));
         } catch (Exception e) {
