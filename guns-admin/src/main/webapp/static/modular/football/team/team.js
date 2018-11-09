@@ -17,7 +17,7 @@ Team.initColumn = function () {
         {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
         {title: '球队名称', field: 'name', align: 'center', valign: 'middle', sortable: true},
         {title: '球队级别', field: 'level', align: 'center', valign: 'middle', sortable: true},
-        {title: '球场区域', field: 'area', align: 'center', valign: 'middle', sortable: true},
+        {title: '球队区域', field: 'area', align: 'center', valign: 'middle', sortable: true},
         {title: '排名', field: 'ad_start_time', align: 'center', valign: 'middle', sortable: true},
         {title: '胜', field: 'winnum', align: 'center', valign: 'middle', sortable: true},
         {title: '负', field: 'debtnum', align: 'center', valign: 'middle', sortable: true},

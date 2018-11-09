@@ -18,7 +18,15 @@ Member.initColumn = function () {
         {title: 'id', field: 'id', align: 'center', valign: 'middle'},
         {title: '账号', field: 'account', align: 'center', valign: 'middle', sortable: true},
         {title: '姓名', field: 'name', align: 'center', valign: 'middle', sortable: true},
-        {title: '球队名称', field: 'teamName', align: 'center', valign: 'middle', sortable: true},
+        {title: '球队名称', field: 'teamName', align: 'center', valign: 'middle', sortable: true,
+            formatter: function (value, row) {
+            if(!value){
+                return  "自由人";
+            }else{
+                return  value;
+            }
+
+            }},
         {title: '创建时间', field: 'createdate', align: 'center', valign: 'middle', sortable: true}
         ];
 };

@@ -134,7 +134,7 @@ public class MemberController extends BaseController {
 
         Map<String, Object> menuMap = BeanKit.beanToMap(pkMember);
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+        wrapper = wrapper.eq("linkid", memberId).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
         List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
         if (!CollectionUtils.isEmpty(list)) {
             menuMap.put("avatar", list.get(0).getUrl());
@@ -155,7 +155,6 @@ public class MemberController extends BaseController {
                 teamInfo.put("teamLog", teamList.get(0).getUrl());
             }
         }
-
         model.addAttribute("member", menuMap);
         model.addAttribute("type", type);
         model.addAttribute("teamInfo", teamInfo);
@@ -182,7 +181,7 @@ public class MemberController extends BaseController {
 
             PkAttachment pkAttachment = new PkAttachment();
             pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
-            pkAttachment.setType(AttachTypeEnum.LOGO.getCode());
+            pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
             pkAttachment.setLinkid(record.getId());
             pkAttachment.setName(pkMemberDto.getAvatar());
             pkAttachment.setSuffix(pkMemberDto.getAvatar().substring(pkMemberDto.getAvatar().lastIndexOf(".") + 1));
@@ -261,24 +260,25 @@ public class MemberController extends BaseController {
             pkTeam.setName(pkMemberDto.getTeamname());
             pkTeam.setArea(pkMemberDto.getArea());
             pkTeamMapper.updateById(pkTeam);
+            //1、删除
+            Wrapper<PkAttachment> wrappers = new EntityWrapper<>();
+            wrappers = wrappers.eq("linkid", pkMemberDto.getTeamId());
+            wrappers = wrappers.eq("category", AttachCategoryEnum.TEAM.getCode());
+            pkAttachmentMapper.delete(wrappers);
+            //新增球隊信息
+            if (StringUtils.isNoneBlank(pkMemberDto.getTeamlogo())) {
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
+                pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
+                pkAttachment.setLinkid(pkMemberDto.getTeamId());
+                pkAttachment.setName("球队logo");
+                pkAttachment.setSuffix(pkMemberDto.getTeamlogo().substring(pkMemberDto.getTeamlogo().lastIndexOf(".") + 1));
+                pkAttachment.setUrl(pkMemberDto.getTeamlogo());
+                pkAttachmentMapper.insert(pkAttachment);
+            }
         }
 
-        //1、删除
-        Wrapper<PkAttachment> wrappers = new EntityWrapper<>();
-        wrappers = wrappers.eq("linkid", pkMemberDto.getTeamId());
-        wrappers = wrappers.eq("category", AttachCategoryEnum.TEAM.getCode());
-        pkAttachmentMapper.delete(wrappers);
-        //新增球隊信息
-        if (StringUtils.isNoneBlank(pkMemberDto.getTeamlogo())) {
-            PkAttachment pkAttachment = new PkAttachment();
-            pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
-            pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
-            pkAttachment.setLinkid(pkMemberDto.getTeamId());
-            pkAttachment.setName("球队logo");
-            pkAttachment.setSuffix(pkMemberDto.getTeamlogo().substring(pkMemberDto.getTeamlogo().lastIndexOf(".") + 1));
-            pkAttachment.setUrl(pkMemberDto.getTeamlogo());
-            pkAttachmentMapper.insert(pkAttachment);
-        }
+
 
         //1、删除
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
