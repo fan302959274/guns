@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
+import com.stylefeng.guns.rest.common.enums.TeamLevelEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
@@ -517,7 +518,7 @@ public class TeamController {
             data.put("teamName", pkTeam.getName());
             data.put("score", pkTeam.getPoint());
             data.put("levelid", pkTeam.getLevel());
-            data.put("differValue", 1000);
+            data.put("differValue", TeamLevelEnum.valueOfMsg(pkTeam.getLevel()).getMax()-pkTeam.getPoint());
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
             List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
