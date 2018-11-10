@@ -6,13 +6,13 @@ package com.stylefeng.guns.rest.common.enums;
 public enum TeamLevelEnum {
 
     //球队级别
-    SHIZHE("0",0,999, "使者"),
-    SHOUWEI("1",1000,1499, "守卫"),
-    ZHANSHI("1",1500,1999, "战士"),
-    TONGZHI("1",2000,2499, "统治"),
-    JINGDIAN("1",2500,2999, "经典"),
-    CHUANQI("1",3000,3499, "传奇"),
-    SHENLING("1",3500,9999, "神灵")
+    SHIZHE("1",0,999, "使者"),
+    SHOUWEI("2",1000,1499, "守卫"),
+    ZHANSHI("3",1500,1999, "战士"),
+    TONGZHI("4",2000,2499, "统治"),
+    JINGDIAN("5",2500,2999, "经典"),
+    CHUANQI("6",3000,3499, "传奇"),
+    SHENLING("7",3500,9999, "神灵")
     ;
 
 

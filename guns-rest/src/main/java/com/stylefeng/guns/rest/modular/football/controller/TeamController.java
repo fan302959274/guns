@@ -446,33 +446,8 @@ public class TeamController {
     public ResponseEntity rankList(@RequestParam Integer levelid) {
         try {
             Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
-            switch (levelid) {
-                case 1:
-                    wrapper.eq("level", "使者");
-                    break;
-                case 2:
-                    wrapper.eq("level", "守卫");
-                    break;
-                case 3:
-                    wrapper.eq("level", "战士");
-                    break;
-                case 4:
-                    wrapper.eq("level", "统治");
-                    break;
-                case 5:
-                    wrapper.eq("level", "经典");
-                    break;
-                case 6:
-                    wrapper.eq("level", "传奇");
-                    break;
-                case 7:
-                    wrapper.eq("level", "神灵");
-                    break;
-                default:
-                    wrapper.eq("level", "使者");
-                    break;
-            }
 
+            wrapper.eq("level", TeamLevelEnum.messageOf(levelid+""));
             List<PkTeam> list = pkTeamMapper.selectList(wrapper);
 
             List<Map> datas = new ArrayList<>();
