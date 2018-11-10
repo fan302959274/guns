@@ -24,6 +24,12 @@ public class CommonResp<T> {
         this.msg = msg;
     }
 
+    public CommonResp(String status,String msg,T body) {
+        this.status = status;
+        this.msg = msg;
+        this.data = body;
+    }
+
 
     public T getData() {
         return data;

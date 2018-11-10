@@ -252,7 +252,7 @@ public class TeamController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid);
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).ne("status", "1");
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
 
             List<Map> datas = new ArrayList<>();
@@ -299,7 +299,7 @@ public class TeamController {
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId());
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
 
-            if (!CollectionUtils.isEmpty(pkTeamMembers)){
+            if (!CollectionUtils.isEmpty(pkTeamMembers)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "已经加入其它球队"));
             }
 
@@ -497,6 +497,37 @@ public class TeamController {
             return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+
+    /**
+     * 积分升级接口
+     *
+     * @return
+     */
+    @RequestMapping(value = "/point", method = RequestMethod.POST)
+    @ApiOperation(value = "球队积分", notes = "返回码:1成功;")
+    public ResponseEntity point(@RequestParam String openid, @RequestParam Long teamid) {
+        try {
+            PkTeam pkTeam = pkTeamMapper.selectById(teamid);
+
+            Map data = new HashMap();
+            data.put("teamName", pkTeam.getName());
+            data.put("score", pkTeam.getPoint());
+            data.put("levelid", pkTeam.getLevel());
+            data.put("differValue", 1000);
+            Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+            List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+            if (!org.apache.commons.collections.CollectionUtils.isEmpty(attachmentList)) {
+                data.put("teamImage", attachmentList.get(0).getUrl());
+            }
+
+            return ResponseEntity.ok(new CommonResp<Map>(data));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

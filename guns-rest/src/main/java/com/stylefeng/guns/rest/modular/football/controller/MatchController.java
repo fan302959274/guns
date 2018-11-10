@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.rest.common.enums.MatchStatusEnum;
+import com.stylefeng.guns.rest.common.enums.PayStatusEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
@@ -102,7 +103,7 @@ public class MatchController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
             if (!"1".equals(pkMembers.get(0).getType())) {
-                return ResponseEntity.ok(new CommonResp<String>("4", "该队员不是队长"));
+                return ResponseEntity.ok(new CommonResp<String>("8", "该队员不是队长"));
             }
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
@@ -117,15 +118,24 @@ public class MatchController {
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", pkTeamMembers.get(0).getTeamid());
             pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (pkTeamMembers.size() < 12) {
-                return ResponseEntity.ok(new CommonResp<String>("6", "挑战队伍未满12人"));
+                return ResponseEntity.ok(new CommonResp<String>("3", "挑战队伍未满12人"));
             }
 
             Long openTeamId = pkTeamMembers.get(0).getTeamid();
             PkTeam pkTeamOpen = pkTeamMapper.selectById(openTeamId);
             Integer matchSumOpen = (null == pkTeamOpen.getWinnum() ? 0 : pkTeamOpen.getWinnum()) + (null == pkTeamOpen.getDebtnum() ? 0 : pkTeamOpen.getDebtnum()) + (null == pkTeamOpen.getDrawnum() ? 0 : pkTeamOpen.getDrawnum());
             if (matchSumOpen < 5) {
-                return ResponseEntity.ok(new CommonResp<String>("5", "挑战队伍比赛未满5次"));
+                return ResponseEntity.ok(new CommonResp<String>("2", "挑战队伍比赛未满5次"));
             }
+
+            Wrapper<PkOrder> pkOrderWrapper = new EntityWrapper<PkOrder>();
+            pkOrderWrapper = pkOrderWrapper.eq("teamid", openTeamId).eq("status", PayStatusEnum.NOPAY.getCode());
+            Integer count = pkOrderMapper.selectCount(pkOrderWrapper);
+            if (count > 0) {
+                return ResponseEntity.ok(new CommonResp<String>("4", "挑战队伍有未支付的订单"));
+            }
+
+
             //东道主
             Wrapper<PkMatch> pkMatchWrapperHostOpen = new EntityWrapper<PkMatch>();
             pkMatchWrapperHostOpen = pkMatchWrapperHostOpen.eq("hostteamid", openTeamId);
@@ -134,13 +144,18 @@ public class MatchController {
                 PkMatch pkMatchHostOpen = pkMatchesHostOpen.get(0);
                 //约战中
                 if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchHostOpen.getStatus())) {
-                    return ResponseEntity.ok(new CommonResp<String>("2", "挑战队伍约战中"));
+                    return ResponseEntity.ok(new CommonResp<String>("5", "挑战队伍约战中"));
+                }
+                //待比赛
+                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchHostOpen.getStatus())) {
+                    PkTeam pkTeamHostOpen = pkTeamMapper.selectById(pkMatchHostOpen.getChallengeteamid());
+                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "挑战队伍待比赛", pkTeamHostOpen));
                 }
                 //匹配中超过12小时
                 if (MatchStatusEnum.FINDING.getCode().equals(pkMatchHostOpen.getStatus())) {
                     long hour = DateUtil.getHourSub(pkMatchHostOpen.getCreatedate(), new Date());
                     if (hour > 12) {
-                        return ResponseEntity.ok(new CommonResp<String>("3", "挑战队伍约战12小时无反应"));
+                        return ResponseEntity.ok(new CommonResp<String>("7", "挑战队伍约战12小时无反应"));
                     }
                 }
             }
@@ -152,13 +167,18 @@ public class MatchController {
                 PkMatch pkMatchChallengeOpen = pkMatchesChallengeOpen.get(0);
                 //约战中
                 if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchChallengeOpen.getStatus())) {
-                    return ResponseEntity.ok(new CommonResp<String>("2", "挑战队伍约战中"));
+                    return ResponseEntity.ok(new CommonResp<String>("5", "挑战队伍约战中"));
+                }
+                //待比赛
+                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchChallengeOpen.getStatus())) {
+                    PkTeam pkTeamChallengeOpen = pkTeamMapper.selectById(pkMatchChallengeOpen.getHostteamid());
+                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "挑战队伍待比赛", pkTeamChallengeOpen));
                 }
                 //匹配中超过12小时
                 if (MatchStatusEnum.FINDING.getCode().equals(pkMatchChallengeOpen.getStatus())) {
                     long hour = DateUtil.getHourSub(pkMatchChallengeOpen.getCreatedate(), new Date());
                     if (hour > 12) {
-                        return ResponseEntity.ok(new CommonResp<String>("3", "挑战队伍约战12小时无反应"));
+                        return ResponseEntity.ok(new CommonResp<String>("7", "挑战队伍约战12小时无反应"));
                     }
                 }
             }
@@ -170,8 +190,16 @@ public class MatchController {
             Assert.notNull(pkTeam, "未获取到球队");
             Integer matchSum = (null == pkTeam.getWinnum() ? 0 : pkTeam.getWinnum()) + (null == pkTeam.getDebtnum() ? 0 : pkTeam.getDebtnum()) + (null == pkTeam.getDrawnum() ? 0 : pkTeam.getDrawnum());
             if (matchSum < 5) {
-                return ResponseEntity.ok(new CommonResp<String>("5", "匹配队伍比赛未满5次"));
+                return ResponseEntity.ok(new CommonResp<String>("2", "匹配队伍比赛未满5次"));
             }
+
+            Wrapper<PkOrder> orderWrapper = new EntityWrapper<PkOrder>();
+            orderWrapper = orderWrapper.eq("teamid", openTeamId).eq("status", PayStatusEnum.NOPAY.getCode());
+            Integer selectCount = pkOrderMapper.selectCount(orderWrapper);
+            if (selectCount > 0) {
+                return ResponseEntity.ok(new CommonResp<String>("4", "匹配队伍有未支付的订单"));
+            }
+
 
             //东道主
             Wrapper<PkMatch> pkMatchWrapperHost = new EntityWrapper<PkMatch>();
@@ -181,13 +209,18 @@ public class MatchController {
                 PkMatch pkMatchesHostPkMatch = pkMatchesHost.get(0);
                 //约战中
                 if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
-                    return ResponseEntity.ok(new CommonResp<String>("2", "匹配队伍约战中"));
+                    return ResponseEntity.ok(new CommonResp<String>("5", "匹配队伍约战中"));
+                }
+                //待比赛
+                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
+                    PkTeam pkTeamHost = pkTeamMapper.selectById(pkMatchesHostPkMatch.getChallengeteamid());
+                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "匹配队伍待比赛", pkTeamHost));
                 }
                 //匹配中超过12小时
                 if (MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
                     long hour = DateUtil.getHourSub(pkMatchesHostPkMatch.getCreatedate(), new Date());
                     if (hour > 12) {
-                        return ResponseEntity.ok(new CommonResp<String>("3", "匹配队伍约战12小时无反应"));
+                        return ResponseEntity.ok(new CommonResp<String>("7", "匹配队伍约战12小时无反应"));
                     }
                 }
             }
@@ -199,13 +232,18 @@ public class MatchController {
                 PkMatch pkMatchesChallengePkMatch = pkMatchesChallenge.get(0);
                 //约战中
                 if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
-                    return ResponseEntity.ok(new CommonResp<String>("2", "匹配队伍约战中"));
+                    return ResponseEntity.ok(new CommonResp<String>("5", "匹配队伍约战中"));
+                }
+                //待比赛
+                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
+                    PkTeam pkTeamChallenge = pkTeamMapper.selectById(pkMatchesChallengePkMatch.getHostteamid());
+                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "匹配队伍待比赛", pkTeamChallenge));
                 }
                 //匹配中超过12小时
                 if (MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
                     long hour = DateUtil.getHourSub(pkMatchesChallengePkMatch.getCreatedate(), new Date());
                     if (hour > 12) {
-                        return ResponseEntity.ok(new CommonResp<String>("3", "匹配队伍约战12小时无反应"));
+                        return ResponseEntity.ok(new CommonResp<String>("7", "匹配队伍约战12小时无反应"));
                     }
                 }
             }
@@ -214,7 +252,7 @@ public class MatchController {
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid);
             pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (pkTeamMembers.size() < 12) {
-                return ResponseEntity.ok(new CommonResp<String>("6", "匹配队伍未满12人"));
+                return ResponseEntity.ok(new CommonResp<String>("3", "匹配队伍未满12人"));
             }
 
 
@@ -236,13 +274,6 @@ public class MatchController {
     @ApiOperation(value = "约战", notes = "返回码:1成功;")
     public ResponseEntity willPK(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
         try {
-
-//            Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
-//            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", teamid);
-//            Integer count = pkMatchMapper.selectCount(pkMatchWrapper);
-//            if (count > 0) {
-//                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "队伍已约战"));
-//            }
 
 
             PkTeam pkTeam = pkTeamMapper.selectById(teamid);
@@ -307,6 +338,25 @@ public class MatchController {
 
     }
 
+
+    /**
+     * 约战费用
+     *
+     * @return
+     */
+    @RequestMapping(value = "/fee", method = RequestMethod.POST)
+    @ApiOperation(value = "约战费用", notes = "返回码:1成功;")
+    public ResponseEntity fee(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
+        try {
+            Map map = new HashMap();
+            map.put("minCost", 300);
+            map.put("maxCost", 600);
+            return ResponseEntity.ok(new CommonResp<Map>(map));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
 
     /**
      * @description 球队匹配

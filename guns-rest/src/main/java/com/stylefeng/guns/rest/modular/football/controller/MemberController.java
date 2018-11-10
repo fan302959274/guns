@@ -369,6 +369,10 @@ public class MemberController {
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
+            Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
+            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", pkMembers.get(0).getId());
+            pkMatchMapper.delete(pkMatchWrapper);
+
             return ResponseEntity.ok(new CommonResp<String>("取消约战成功"));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
