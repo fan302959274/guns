@@ -164,34 +164,7 @@ public class TeamController {
 
             data.put("id", pkTeam.getId());
             data.put("name", pkTeam.getName());
-            Integer levelid = 1;
-            switch (pkTeam.getLevel()) {
-                case "使者":
-                    levelid = 2;
-                    break;
-                case "守卫":
-                    levelid = 3;
-                    break;
-                case "战士":
-                    levelid = 4;
-                    break;
-                case "统治":
-                    levelid = 5;
-                    break;
-                case "经典":
-                    levelid = 6;
-                    break;
-                case "传奇":
-                    levelid = 7;
-                    break;
-                case "神灵":
-                    levelid = 8;
-                    break;
-                default:
-                    levelid = 1;
-                    break;
-            }
-            data.put("levelid", levelid);
+            data.put("levelid", TeamLevelEnum.codeOf(pkTeam.getLevel()));
 
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());

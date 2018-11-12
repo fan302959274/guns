@@ -185,7 +185,7 @@ public class MemberController {
             }
             data.put("height", pkMember.getHeight());
             data.put("weight", pkMember.getWeight());
-            data.put("birth", DateUtil.format(pkMember.getBirth(),"yyyy"));
+            data.put("birth", Objects.nonNull(pkMember.getBirth())?DateUtil.format(pkMember.getBirth(),"yyyy"):"");
             data.put("player", PositionEnum.messageOf(pkMember.getPosition()));
             data.put("foot", FootEnum.messageOf(pkMember.getHabitfeet()));
             Wrapper pkAttachmentWrapper = new EntityWrapper<>();
