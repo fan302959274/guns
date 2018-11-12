@@ -144,8 +144,8 @@ CREATE TABLE `pk_team_member` (
   COMMENT '球队id',
   `memberid` BIGINT(20) NOT NULL
   COMMENT '队员id',
-  `status`   CHAR(1)             DEFAULT '0'
-  COMMENT '1 通过 0 驳回',
+  `status`   CHAR(1)    DEFAULT '2'
+  COMMENT '2 待审核 1 通过 0 驳回',
   PRIMARY KEY (`id`),
   UNIQUE KEY `pk_team_member_quique` (`teamid`, `memberid`)
 )

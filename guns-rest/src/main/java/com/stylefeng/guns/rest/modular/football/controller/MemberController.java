@@ -321,14 +321,14 @@ public class MemberController {
             if (CollectionUtils.isEmpty(pkMatches)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "未获取到比赛信息"));
             }
-
+            PkTeam pkTeam = pkTeamMapper.selectById(teamid);
             List<Map> datas = new ArrayList<>();
             pkMatches.forEach(pkMatch -> {
                 Map data = new HashMap();
+                data.put("team", pkTeam.getName());
                 PkTeam challengeTeam = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
                 //对手信息
                 if (Objects.nonNull(challengeTeam)){
-                    data.put("team", challengeTeam.getName());
                     data.put("opponent", challengeTeam.getName());
                     data.put("oppoid", challengeTeam.getId());
                     Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
