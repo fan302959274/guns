@@ -114,6 +114,7 @@ public class TeamController {
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
             pkTeam.setOwnerid(pkMember.getId());
+            pkTeam.setStartpoint(0);//初始积分
             pkTeam.setPoint(0);//初始积分
             pkTeam.setWinnum(0);//赢的场数
             pkTeam.setDebtnum(0);//输的场数

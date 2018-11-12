@@ -53,6 +53,10 @@ public class PkTeam extends Model<PkTeam> {
      */
 	private Integer drawnum;
     /**
+     * 起始积分
+     */
+	private Integer startpoint;
+    /**
      * 球队积分
      */
 	private Integer point;
@@ -65,7 +69,7 @@ public class PkTeam extends Model<PkTeam> {
      */
 	private Long city;
     /**
-     * 球队区
+     * 球队区 1南京、2合肥
      */
 	private Long area;
     /**
@@ -160,6 +164,14 @@ public class PkTeam extends Model<PkTeam> {
 
 	public void setDrawnum(Integer drawnum) {
 		this.drawnum = drawnum;
+	}
+
+	public Integer getStartpoint() {
+		return startpoint;
+	}
+
+	public void setStartpoint(Integer startpoint) {
+		this.startpoint = startpoint;
 	}
 
 	public Integer getPoint() {
@@ -281,6 +293,7 @@ public class PkTeam extends Model<PkTeam> {
 			", winnum=" + winnum +
 			", debtnum=" + debtnum +
 			", drawnum=" + drawnum +
+			", startpoint=" + startpoint +
 			", point=" + point +
 			", prov=" + prov +
 			", city=" + city +

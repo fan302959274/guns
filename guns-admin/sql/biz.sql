@@ -102,6 +102,8 @@ CREATE TABLE `pk_team` (
   COMMENT '球队失败场数',
   `drawnum`     INT(11)             DEFAULT NULL
   COMMENT '球队平局场数',
+  `startpoint`  INT(11)             DEFAULT NULL
+  COMMENT '起始积分',
   `point`       INT(11)             DEFAULT NULL
   COMMENT '球队积分',
   `prov`        BIGINT(20)          DEFAULT NULL
@@ -109,18 +111,18 @@ CREATE TABLE `pk_team` (
   `city`        BIGINT(20)          DEFAULT NULL
   COMMENT '球队市',
   `area`        BIGINT(20)          DEFAULT NULL
-  COMMENT '球队区',
+  COMMENT '球队区 1南京、2合肥',
   `teamdesc`    VARCHAR(256)        DEFAULT NULL
   COMMENT '球队描述',
   `ownerid`     BIGINT(20) NOT NULL
   COMMENT '所属人',
-  `culture`     NUMERIC(4, 1)       DEFAULT 0
+  `culture`     DECIMAL(4, 1)       DEFAULT '0.0'
   COMMENT '文明评分 1-5分',
-  `ontime`      NUMERIC(4, 1)       DEFAULT 0
+  `ontime`      DECIMAL(4, 1)       DEFAULT '0.0'
   COMMENT '准时评分 1-5分',
-  `friendly`    NUMERIC(4, 1)       DEFAULT 0
+  `friendly`    DECIMAL(4, 1)       DEFAULT '0.0'
   COMMENT '球队面貌评分 1-5',
-  `reviewcount` INT                 DEFAULT 0
+  `reviewcount` INT(11)             DEFAULT '0'
   COMMENT '参评队伍总数',
   `status`      VARCHAR(10)         DEFAULT '0'
   COMMENT '球队状态:0:禁用1:启用',
@@ -131,7 +133,7 @@ CREATE TABLE `pk_team` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 1
+  AUTO_INCREMENT = 11
   DEFAULT CHARSET = utf8
   COMMENT = '球队表';
 
@@ -144,7 +146,7 @@ CREATE TABLE `pk_team_member` (
   COMMENT '球队id',
   `memberid` BIGINT(20) NOT NULL
   COMMENT '队员id',
-  `status`   CHAR(1)    DEFAULT '2'
+  `status`   CHAR(1)             DEFAULT '2'
   COMMENT '2 待审核 1 通过 0 驳回',
   PRIMARY KEY (`id`),
   UNIQUE KEY `pk_team_member_quique` (`teamid`, `memberid`)
