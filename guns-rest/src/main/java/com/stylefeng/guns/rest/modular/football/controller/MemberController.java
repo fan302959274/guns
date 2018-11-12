@@ -29,10 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 会员控制器
@@ -316,27 +313,31 @@ public class MemberController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
             Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
-            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", teamid).eq("status", type);
+            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", teamid);
+            if (0!=type){
+                pkMatchWrapper = pkMatchWrapper.eq("status", type);
+            }
             List<PkMatch> pkMatches = pkMatchMapper.selectList(pkMatchWrapper);
             if (CollectionUtils.isEmpty(pkMatches)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "未获取到比赛信息"));
             }
 
-            PkTeam pkTeam = pkTeamMapper.selectById(teamid);
             List<Map> datas = new ArrayList<>();
             pkMatches.forEach(pkMatch -> {
                 Map data = new HashMap();
-                data.put("team", pkTeam.getName());
-                PkTeam hostTeam = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
-                data.put("opponent", hostTeam.getName());
-                data.put("oppoid", hostTeam.getId());
-
-                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
-                pkAttachmentWrapper = new EntityWrapper<>();
-                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
-                List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
-                if (!CollectionUtils.isEmpty(attachmentList)) {
-                    data.put("oppoImage", attachmentList.get(0).getUrl());
+                PkTeam challengeTeam = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
+                //对手信息
+                if (Objects.nonNull(challengeTeam)){
+                    data.put("team", challengeTeam.getName());
+                    data.put("opponent", challengeTeam.getName());
+                    data.put("oppoid", challengeTeam.getId());
+                    Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+                    pkAttachmentWrapper = new EntityWrapper<>();
+                    pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", challengeTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+                    List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+                    if (!CollectionUtils.isEmpty(attachmentList)) {
+                        data.put("oppoImage", attachmentList.get(0).getUrl());
+                    }
                 }
                 data.put("address", pkMatch.getPlace());
                 data.put("time", pkMatch.getTime());
