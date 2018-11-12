@@ -269,14 +269,21 @@ public class TeamController {
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
+
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId());
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
-
             if (!CollectionUtils.isEmpty(pkTeamMembers)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "已经加入其它球队"));
             }
 
+
+            pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid);
+            pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+            if (!CollectionUtils.isEmpty(pkTeamMembers)&&pkTeamMembers.size()>=12) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "球队人员已满12人"));
+            }
 
             PkTeamMember pkTeamMember = new PkTeamMember();
             pkTeamMember.setMemberid(pkMembers.get(0).getId());
