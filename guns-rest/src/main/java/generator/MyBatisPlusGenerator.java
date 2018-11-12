@@ -48,15 +48,15 @@ public class MyBatisPlusGenerator {
         });
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("admin123");
-        dsc.setUrl("jdbc:mysql://47.97.179.26:3306/guns?characterEncoding=utf8");
+        dsc.setPassword("root");
+        dsc.setUrl("jdbc:mysql://localhost:3306/guns?characterEncoding=utf8");
         mpg.setDataSource(dsc);
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         //strategy.setTablePrefix(new String[]{"_"});// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[]{"pk_member"});//包括的表
+        strategy.setInclude(new String[]{"pk_team"});//包括的表
         mpg.setStrategy(strategy);
 
         // 包配置

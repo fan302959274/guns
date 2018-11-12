@@ -114,7 +114,6 @@ public class TeamController {
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
             pkTeam.setOwnerid(pkMember.getId());
-            pkTeam.setStartpoint(0);//初始积分
             pkTeam.setPoint(0);//初始积分
             pkTeam.setWinnum(0);//赢的场数
             pkTeam.setDebtnum(0);//输的场数
@@ -268,6 +267,8 @@ public class TeamController {
             wrapper = wrapper.eq("openid", openid);
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            Assert.notNull(pkTeamMapper.selectById(teamid), "未查询到该球队");
 
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();

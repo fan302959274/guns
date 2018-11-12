@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-02
+ * @since 2018-11-12
  */
 @TableName("pk_team")
 public class PkTeam extends Model<PkTeam> {
@@ -53,10 +53,6 @@ public class PkTeam extends Model<PkTeam> {
      */
 	private Integer drawnum;
     /**
-     * 起始积分
-     */
-	private Integer startpoint;
-    /**
      * 球队积分
      */
 	private Integer point;
@@ -69,7 +65,7 @@ public class PkTeam extends Model<PkTeam> {
      */
 	private Long city;
     /**
-     * 球队区 1南京、2合肥
+     * 球队区
      */
 	private Long area;
     /**
@@ -164,14 +160,6 @@ public class PkTeam extends Model<PkTeam> {
 
 	public void setDrawnum(Integer drawnum) {
 		this.drawnum = drawnum;
-	}
-
-	public Integer getStartpoint() {
-		return startpoint;
-	}
-
-	public void setStartpoint(Integer startpoint) {
-		this.startpoint = startpoint;
 	}
 
 	public Integer getPoint() {
@@ -293,7 +281,6 @@ public class PkTeam extends Model<PkTeam> {
 			", winnum=" + winnum +
 			", debtnum=" + debtnum +
 			", drawnum=" + drawnum +
-			", startpoint=" + startpoint +
 			", point=" + point +
 			", prov=" + prov +
 			", city=" + city +
