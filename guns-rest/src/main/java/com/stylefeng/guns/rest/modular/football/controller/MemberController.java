@@ -57,105 +57,6 @@ public class MemberController {
     PkMatchMapper pkMatchMapper;
 
     /**
-     * 队员注册接口
-     *
-     * @param pkMemberDto
-     * @return
-     */
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ApiOperation(value = "注册队员", notes = "返回码:1成功;")
-    @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
-    public ResponseEntity register(@RequestBody PkMemberDto pkMemberDto) {
-        log.info("注册队员请求参数{}", JSONObject.toJSONString(pkMemberDto));
-        try {
-            Assert.notNull(pkMemberDto.getOpenid(), "openid不能为空");
-            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
-            wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
-            Integer count = pkMemberMapper.selectCount(wrapper);
-            if (count > 0) {
-                return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "openid已经注册过"));
-            }
-            PkMember pkMember = new PkMember();
-            pkMember.setAccount(pkMemberDto.getMobile());//以手机号作为account
-            pkMember.setName(pkMemberDto.getName());
-            pkMember.setMobile(pkMemberDto.getMobile());
-            pkMember.setOpenid(pkMemberDto.getOpenid());
-            pkMember.setType("2");//普通队员
-            pkMemberMapper.insert(pkMember);
-            //        保存头像
-            if (StringUtils.isNoneBlank(pkMemberDto.getAvatar())) {
-                PkAttachment pkAttachment = new PkAttachment();
-                pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
-                pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
-                pkAttachment.setLinkid(pkMember.getId());
-                pkAttachment.setName(pkMemberDto.getAvatar());
-                pkAttachment.setSuffix(pkMemberDto.getAvatar().substring(pkMemberDto.getAvatar().lastIndexOf(".") + 1));
-                pkAttachment.setUrl(pkMemberDto.getAvatar());
-                pkAttachmentMapper.insert(pkAttachment);
-            }
-            //        保存身份证
-            if (StringUtils.isNoneBlank(pkMemberDto.getIdcard())) {
-                PkAttachment pkAttachment = new PkAttachment();
-                pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
-                pkAttachment.setType(AttachTypeEnum.IDCARD.getCode());
-                pkAttachment.setLinkid(pkMember.getId());
-                pkAttachment.setName(pkMemberDto.getIdcard());
-                pkAttachment.setSuffix(pkMemberDto.getIdcard().substring(pkMemberDto.getIdcard().lastIndexOf(".") + 1));
-                pkAttachment.setUrl(pkMemberDto.getIdcard());
-                pkAttachmentMapper.insert(pkAttachment);
-            }
-            return ResponseEntity.ok(new CommonResp<PkMember>(pkMember));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-
-    }
-
-
-    /**
-     * @description 评价接口
-     * @author sh00859
-     * @date 2018/10/30
-     */
-    @RequestMapping(value = "/review", method = RequestMethod.POST)
-    @ApiOperation(value = "评价", notes = "返回码:1成功;")
-    @ApiImplicitParam(paramType = "query", name = "openid", value = "队员评价", required = true, dataType = "String")
-    public ResponseEntity review(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Long oppoid, @RequestParam BigDecimal culture, @RequestParam BigDecimal ontime, @RequestParam BigDecimal friendly) {
-        log.info("队员评价请求参数{}", JSONObject.toJSONString(openid));
-        try {
-            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
-            wrapper = wrapper.eq("openid", openid);
-            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
-            if (CollectionUtils.isEmpty(pkMembers)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "openid未获取到用户"));
-            }
-            Assert.notEmpty(pkMembers, "openid未获取到用户");
-            Wrapper<PkTeamReview> pkTeamReviewWrapper = new EntityWrapper<PkTeamReview>();
-            pkTeamReviewWrapper = pkTeamReviewWrapper.eq("openid", openid).eq("teamid", teamid).eq("oppoid", oppoid);
-            List<PkTeamReview> pkTeamReviews = pkTeamReviewMapper.selectList(pkTeamReviewWrapper);
-            if (CollectionUtils.isNotEmpty(pkTeamReviews)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该用户对球队已经评价过"));
-            }
-
-            //存储评价记录
-            PkTeamReview pkTeamReview = new PkTeamReview();
-            pkTeamReview.setOpenid(openid);
-            pkTeamReview.setOppoid(oppoid);
-            pkTeamReview.setCulture(culture);
-            pkTeamReview.setFriendly(friendly);
-            pkTeamReview.setOntime(ontime);
-            pkTeamReview.setTeamid(teamid);
-            pkTeamReviewMapper.insert(pkTeamReview);
-
-            return ResponseEntity.ok(new CommonResp<String>("成功"));
-
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-    }
-
-
-    /**
      * 个人信息接口
      *
      * @param openid
@@ -207,36 +108,6 @@ public class MemberController {
             return ResponseEntity.ok(new CommonResp<Map>(data));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-    }
-
-    /**
-     * 修改资料接口
-     *
-     * @param pkMemberDto
-     * @return
-     */
-    @RequestMapping(value = "/editData", method = RequestMethod.POST)
-    @ApiOperation(value = "编辑队员", notes = "返回码:1成功;")
-    @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
-    public ResponseEntity editData(@RequestBody PkMemberDto pkMemberDto) {
-        log.info("队员信息修改请求参数{}", JSONObject.toJSONString(pkMemberDto));
-        try {
-            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
-            wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
-            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
-            Assert.notEmpty(pkMembers, "openid未获取到用户");
-            PkMember pkMember = new PkMember();
-            pkMember.setPosition(PositionEnum.codeOf(pkMemberDto.getPlayer()));
-            pkMember.setHabitfeet(FootEnum.codeOf(pkMemberDto.getFoot()));
-            pkMember.setBirth(DateUtil.parse(pkMemberDto.getBirth(),"yyyy"));
-            pkMember.setHeight(pkMemberDto.getHeight());
-            pkMember.setWeight(pkMemberDto.getWeight());
-            pkMember.setId(pkMembers.get(0).getId());
-            pkMemberMapper.updateById(pkMember);
-            return ResponseEntity.ok(new CommonResp<String>("修改成功"));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
     }
 
@@ -349,6 +220,135 @@ public class MemberController {
             return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
+    /**
+     * 队员注册接口
+     *
+     * @param pkMemberDto
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @ApiOperation(value = "注册队员", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
+    public ResponseEntity register(@RequestBody PkMemberDto pkMemberDto) {
+        log.info("注册队员请求参数{}", JSONObject.toJSONString(pkMemberDto));
+        try {
+            Assert.notNull(pkMemberDto.getOpenid(), "openid不能为空");
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
+            Integer count = pkMemberMapper.selectCount(wrapper);
+            if (count > 0) {
+                return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), "openid已经注册过"));
+            }
+            PkMember pkMember = new PkMember();
+            pkMember.setAccount(pkMemberDto.getMobile());//以手机号作为account
+            pkMember.setName(pkMemberDto.getName());
+            pkMember.setMobile(pkMemberDto.getMobile());
+            pkMember.setOpenid(pkMemberDto.getOpenid());
+            pkMember.setType("2");//普通队员
+            pkMemberMapper.insert(pkMember);
+            //        保存头像
+            if (StringUtils.isNoneBlank(pkMemberDto.getAvatar())) {
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
+                pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
+                pkAttachment.setLinkid(pkMember.getId());
+                pkAttachment.setName(pkMemberDto.getAvatar());
+                pkAttachment.setSuffix(pkMemberDto.getAvatar().substring(pkMemberDto.getAvatar().lastIndexOf(".") + 1));
+                pkAttachment.setUrl(pkMemberDto.getAvatar());
+                pkAttachmentMapper.insert(pkAttachment);
+            }
+            //        保存身份证
+            if (StringUtils.isNoneBlank(pkMemberDto.getIdcard())) {
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setCategory(AttachCategoryEnum.MEMBER.getCode());
+                pkAttachment.setType(AttachTypeEnum.IDCARD.getCode());
+                pkAttachment.setLinkid(pkMember.getId());
+                pkAttachment.setName(pkMemberDto.getIdcard());
+                pkAttachment.setSuffix(pkMemberDto.getIdcard().substring(pkMemberDto.getIdcard().lastIndexOf(".") + 1));
+                pkAttachment.setUrl(pkMemberDto.getIdcard());
+                pkAttachmentMapper.insert(pkAttachment);
+            }
+            return ResponseEntity.ok(new CommonResp<PkMember>(pkMember));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<PkMember>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+
+    /**
+     * @description 评价接口
+     * @author sh00859
+     * @date 2018/10/30
+     */
+    @RequestMapping(value = "/review", method = RequestMethod.POST)
+    @ApiOperation(value = "评价", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "openid", value = "队员评价", required = true, dataType = "String")
+    public ResponseEntity review(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Long oppoid, @RequestParam BigDecimal culture, @RequestParam BigDecimal ontime, @RequestParam BigDecimal friendly) {
+        log.info("队员评价请求参数{}", JSONObject.toJSONString(openid));
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            if (CollectionUtils.isEmpty(pkMembers)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "openid未获取到用户"));
+            }
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+            Wrapper<PkTeamReview> pkTeamReviewWrapper = new EntityWrapper<PkTeamReview>();
+            pkTeamReviewWrapper = pkTeamReviewWrapper.eq("openid", openid).eq("teamid", teamid).eq("oppoid", oppoid);
+            List<PkTeamReview> pkTeamReviews = pkTeamReviewMapper.selectList(pkTeamReviewWrapper);
+            if (CollectionUtils.isNotEmpty(pkTeamReviews)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该用户对球队已经评价过"));
+            }
+
+            //存储评价记录
+            PkTeamReview pkTeamReview = new PkTeamReview();
+            pkTeamReview.setOpenid(openid);
+            pkTeamReview.setOppoid(oppoid);
+            pkTeamReview.setCulture(culture);
+            pkTeamReview.setFriendly(friendly);
+            pkTeamReview.setOntime(ontime);
+            pkTeamReview.setTeamid(teamid);
+            pkTeamReviewMapper.insert(pkTeamReview);
+
+            return ResponseEntity.ok(new CommonResp<String>("成功"));
+
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+    }
+
+
+    /**
+     * 修改资料接口
+     *
+     * @param pkMemberDto
+     * @return
+     */
+    @RequestMapping(value = "/editData", method = RequestMethod.POST)
+    @ApiOperation(value = "编辑队员", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
+    public ResponseEntity editData(@RequestBody PkMemberDto pkMemberDto) {
+        log.info("队员信息修改请求参数{}", JSONObject.toJSONString(pkMemberDto));
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+            PkMember pkMember = new PkMember();
+            pkMember.setPosition(PositionEnum.codeOf(pkMemberDto.getPlayer()));
+            pkMember.setHabitfeet(FootEnum.codeOf(pkMemberDto.getFoot()));
+            pkMember.setBirth(DateUtil.parse(pkMemberDto.getBirth(),"yyyy"));
+            pkMember.setHeight(pkMemberDto.getHeight());
+            pkMember.setWeight(pkMemberDto.getWeight());
+            pkMember.setId(pkMembers.get(0).getId());
+            pkMemberMapper.updateById(pkMember);
+            return ResponseEntity.ok(new CommonResp<String>("修改成功"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
     }
 

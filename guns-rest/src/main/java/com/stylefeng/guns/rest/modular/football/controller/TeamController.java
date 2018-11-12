@@ -91,61 +91,6 @@ public class TeamController {
     }
 
     /**
-     * 添加球队
-     *
-     * @param pkTeamDto
-     * @return
-     */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ApiOperation(value = "添加球队", notes = "返回码:1成功;")
-    @ApiImplicitParam(paramType = "body", name = "pkTeamDto", value = "球队实体", required = true, dataType = "PkTeamDto")
-    public ResponseEntity valid(@RequestBody PkTeamDto pkTeamDto) {
-        log.info("添加球队请求参数为:{}", JSONObject.toJSONString(pkTeamDto));
-        try {
-            Assert.notNull(pkTeamDto.getName(), "名称不能为空");
-            Assert.notNull(pkTeamDto.getOpenid(), "openid不能为空");
-            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
-            wrapper = wrapper.eq("openid", pkTeamDto.getOpenid());
-            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
-            Assert.notEmpty(pkMembers, "openid未获取到用户");
-            PkMember pkMember = pkMembers.get(0);
-            pkMember.setType("1");
-            pkMemberMapper.updateById(pkMember);//更新创建球队的人为队长
-            PkTeam pkTeam = new PkTeam();
-            PropertyUtils.copyProperties(pkTeam, pkTeamDto);
-            pkTeam.setOwnerid(pkMember.getId());
-            pkTeam.setStartpoint(0);//初始积分
-            pkTeam.setPoint(0);//初始积分
-            pkTeam.setWinnum(0);//赢的场数
-            pkTeam.setDebtnum(0);//输的场数
-            pkTeam.setDrawnum(0);//平的场数
-            pkTeamMapper.insert(pkTeam);
-            //        保存logo
-            if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
-                PkAttachment pkAttachment = new PkAttachment();
-                pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
-                pkAttachment.setType(AttachTypeEnum.LOGO.getCode());
-                pkAttachment.setLinkid(pkTeam.getId());
-                pkAttachment.setName(pkTeamDto.getLogo());
-                pkAttachment.setSuffix(pkTeamDto.getLogo().substring(pkTeamDto.getLogo().lastIndexOf(".") + 1));
-                pkAttachment.setUrl(pkTeamDto.getLogo());
-                pkAttachmentMapper.insert(pkAttachment);
-            }
-            //保存球队球员对应关系
-            PkTeamMember pkTeamMember = new PkTeamMember();
-            pkTeamMember.setStatus("2");
-            pkTeamMember.setTeamid(pkTeam.getId());
-            pkTeamMember.setMemberid(pkMember.getId());
-            pkTeamMemberMapper.insert(pkTeamMember);
-
-            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeam));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-
-    }
-
-    /**
      * 球队详情
      *
      * @param id
@@ -209,6 +154,97 @@ public class TeamController {
     }
 
     /**
+     * 球队区域
+     *
+     * @return
+     */
+    @RequestMapping(value = "/area", method = RequestMethod.POST)
+    @ApiOperation(value = "球队区域", notes = "返回码:1成功;")
+    public ResponseEntity area() {
+        try {
+            Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
+            List<Areas> list = areasMapper.selectList(wrapper);
+
+            return ResponseEntity.ok(new CommonListResp<Areas>(list));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonListResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+    /**
+     * 球王榜
+     *
+     * @return
+     */
+    @RequestMapping(value = "/rankList", method = RequestMethod.POST)
+    @ApiOperation(value = "球王榜", notes = "返回码:1成功;")
+    public ResponseEntity rankList(@RequestParam Integer levelid) {
+        try {
+            Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
+
+            wrapper.eq("level", TeamLevelEnum.messageOf(levelid+""));
+            List<PkTeam> list = pkTeamMapper.selectList(wrapper);
+
+            List<Map> datas = new ArrayList<>();
+            list.forEach(pkTeam -> {
+                Map map = new HashMap();
+                map.put("timeid", pkTeam.getId());
+                map.put("teamName", pkTeam.getName());
+                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+                List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+                if (!CollectionUtils.isEmpty(attachmentList)) {
+                    map.put("teamImage", attachmentList.get(0).getUrl());
+                }
+                List<Integer> grades = new ArrayList<>();
+                grades.add(pkTeam.getWinnum());
+                grades.add(pkTeam.getDrawnum());
+                grades.add(pkTeam.getDebtnum());
+                map.put("grade", grades);
+                map.put("teamScore", pkTeam.getPoint());
+                datas.add(map);
+            });
+
+            return ResponseEntity.ok(new CommonListResp<Map>(datas));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+    /**
+     * 积分升级接口
+     *
+     * @return
+     */
+    @RequestMapping(value = "/point", method = RequestMethod.POST)
+    @ApiOperation(value = "球队积分", notes = "返回码:1成功;")
+    public ResponseEntity point(@RequestParam String openid, @RequestParam Long teamid) {
+        try {
+            PkTeam pkTeam = pkTeamMapper.selectById(teamid);
+
+            Map data = new HashMap();
+            data.put("teamName", pkTeam.getName());
+            data.put("score", pkTeam.getPoint());
+            data.put("levelid", pkTeam.getLevel());
+            data.put("differValue", TeamLevelEnum.valueOfMsg(pkTeam.getLevel()).getMax()-pkTeam.getPoint());
+            Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+            List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+            if (!org.apache.commons.collections.CollectionUtils.isEmpty(attachmentList)) {
+                data.put("teamImage", attachmentList.get(0).getUrl());
+            }
+
+            return ResponseEntity.ok(new CommonResp<Map>(data));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+
+    /**
      * 加入球队列表
      *
      * @param teamid
@@ -251,6 +287,71 @@ public class TeamController {
         }
 
     }
+
+
+    /**
+     * 添加球队
+     *
+     * @param pkTeamDto
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation(value = "添加球队", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "body", name = "pkTeamDto", value = "球队实体", required = true, dataType = "PkTeamDto")
+    public ResponseEntity valid(@RequestBody PkTeamDto pkTeamDto) {
+        log.info("添加球队请求参数为:{}", JSONObject.toJSONString(pkTeamDto));
+        try {
+            Assert.notNull(pkTeamDto.getName(), "名称不能为空");
+            Assert.notNull(pkTeamDto.getOpenid(), "openid不能为空");
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", pkTeamDto.getOpenid());
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+            PkMember pkMember = pkMembers.get(0);
+
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId());
+            Integer count = pkTeamMemberMapper.selectCount(pkTeamMemberWrapper);
+            if (count>0){
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该球员已经创建其它球队"));
+            }
+
+            pkMember.setType("1");
+            pkMemberMapper.updateById(pkMember);//更新创建球队的人为队长
+            PkTeam pkTeam = new PkTeam();
+            PropertyUtils.copyProperties(pkTeam, pkTeamDto);
+            pkTeam.setOwnerid(pkMember.getId());
+            pkTeam.setStartpoint(0);//初始积分
+            pkTeam.setPoint(0);//初始积分
+            pkTeam.setWinnum(0);//赢的场数
+            pkTeam.setDebtnum(0);//输的场数
+            pkTeam.setDrawnum(0);//平的场数
+            pkTeamMapper.insert(pkTeam);
+            //        保存logo
+            if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
+                pkAttachment.setType(AttachTypeEnum.LOGO.getCode());
+                pkAttachment.setLinkid(pkTeam.getId());
+                pkAttachment.setName(pkTeamDto.getLogo());
+                pkAttachment.setSuffix(pkTeamDto.getLogo().substring(pkTeamDto.getLogo().lastIndexOf(".") + 1));
+                pkAttachment.setUrl(pkTeamDto.getLogo());
+                pkAttachmentMapper.insert(pkAttachment);
+            }
+            //保存球队球员对应关系
+            PkTeamMember pkTeamMember = new PkTeamMember();
+            pkTeamMember.setStatus("2");
+            pkTeamMember.setTeamid(pkTeam.getId());
+            pkTeamMember.setMemberid(pkMember.getId());
+            pkTeamMemberMapper.insert(pkTeamMember);
+
+            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeam));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
 
     /**
      * 加入球队
@@ -297,7 +398,6 @@ public class TeamController {
         }
 
     }
-
 
     /**
      * 拒绝加入球队
@@ -394,98 +494,6 @@ public class TeamController {
             return ResponseEntity.ok(new CommonResp<String>("操作成功"));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-
-    }
-
-    /**
-     * 球队区域
-     *
-     * @return
-     */
-    @RequestMapping(value = "/area", method = RequestMethod.POST)
-    @ApiOperation(value = "球队区域", notes = "返回码:1成功;")
-    public ResponseEntity area() {
-        try {
-            Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
-            List<Areas> list = areasMapper.selectList(wrapper);
-
-            return ResponseEntity.ok(new CommonListResp<Areas>(list));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonListResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-
-    }
-
-
-    /**
-     * 球王榜
-     *
-     * @return
-     */
-    @RequestMapping(value = "/rankList", method = RequestMethod.POST)
-    @ApiOperation(value = "球王榜", notes = "返回码:1成功;")
-    public ResponseEntity rankList(@RequestParam Integer levelid) {
-        try {
-            Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
-
-            wrapper.eq("level", TeamLevelEnum.messageOf(levelid+""));
-            List<PkTeam> list = pkTeamMapper.selectList(wrapper);
-
-            List<Map> datas = new ArrayList<>();
-            list.forEach(pkTeam -> {
-                Map map = new HashMap();
-                map.put("timeid", pkTeam.getId());
-                map.put("teamName", pkTeam.getName());
-                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
-                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
-                List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
-                if (!CollectionUtils.isEmpty(attachmentList)) {
-                    map.put("teamImage", attachmentList.get(0).getUrl());
-                }
-                List<Integer> grades = new ArrayList<>();
-                grades.add(pkTeam.getWinnum());
-                grades.add(pkTeam.getDrawnum());
-                grades.add(pkTeam.getDebtnum());
-                map.put("grade", grades);
-                map.put("teamScore", pkTeam.getPoint());
-                datas.add(map);
-            });
-
-            return ResponseEntity.ok(new CommonListResp<Map>(datas));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-
-    }
-
-
-    /**
-     * 积分升级接口
-     *
-     * @return
-     */
-    @RequestMapping(value = "/point", method = RequestMethod.POST)
-    @ApiOperation(value = "球队积分", notes = "返回码:1成功;")
-    public ResponseEntity point(@RequestParam String openid, @RequestParam Long teamid) {
-        try {
-            PkTeam pkTeam = pkTeamMapper.selectById(teamid);
-
-            Map data = new HashMap();
-            data.put("teamName", pkTeam.getName());
-            data.put("score", pkTeam.getPoint());
-            data.put("levelid", pkTeam.getLevel());
-            data.put("differValue", TeamLevelEnum.valueOfMsg(pkTeam.getLevel()).getMax()-pkTeam.getPoint());
-            Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
-            pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
-            List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
-            if (!org.apache.commons.collections.CollectionUtils.isEmpty(attachmentList)) {
-                data.put("teamImage", attachmentList.get(0).getUrl());
-            }
-
-            return ResponseEntity.ok(new CommonResp<Map>(data));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
 
     }

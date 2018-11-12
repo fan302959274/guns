@@ -264,6 +264,26 @@ public class MatchController {
     }
 
     /**
+     * 约战费用
+     *
+     * @return
+     */
+    @RequestMapping(value = "/fee", method = RequestMethod.POST)
+    @ApiOperation(value = "约战费用", notes = "返回码:1成功;")
+    public ResponseEntity fee(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
+        try {
+            Map map = new HashMap();
+            map.put("minCost", 300);
+            map.put("maxCost", 600);
+            return ResponseEntity.ok(new CommonResp<Map>(map));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+
+    /**
      * 约战
      * 规则:
      * 时间地点完全匹配上即可
@@ -282,7 +302,7 @@ public class MatchController {
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
 
             //匹配
-            PkMatch mPkMatch = matching(timeid, areaid, pkTeam.getLevel());
+            PkMatch mPkMatch = matching(timeid, areaid,date, pkTeam.getLevel());
             if (Objects.nonNull(mPkMatch)) {
                 mPkMatch.setChallengeteamid(teamid);//挑战方
                 mPkMatch.setStatus(2);//待比赛
@@ -338,34 +358,14 @@ public class MatchController {
 
     }
 
-
-    /**
-     * 约战费用
-     *
-     * @return
-     */
-    @RequestMapping(value = "/fee", method = RequestMethod.POST)
-    @ApiOperation(value = "约战费用", notes = "返回码:1成功;")
-    public ResponseEntity fee(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
-        try {
-            Map map = new HashMap();
-            map.put("minCost", 300);
-            map.put("maxCost", 600);
-            return ResponseEntity.ok(new CommonResp<Map>(map));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-
-    }
-
     /**
      * @description 球队匹配
      * @author sh00859
      * @date 2018/11/5
      */
-    public PkMatch matching(Long timeid, Long areaid, String leavel) {
+    public PkMatch matching(Long timeid, Long areaid, String date,String level) {
         Wrapper<PkMatch> wrapper = new EntityWrapper<PkMatch>();
-        wrapper = wrapper.eq("area", areaid).eq("time", timeid).groupBy("createdate desc");
+        wrapper = wrapper.eq("area", areaid).eq("time", timeid).eq("date",date).groupBy("createdate desc");
         List<PkMatch> list = pkMatchMapper.selectList(wrapper);
         if (CollectionUtils.isNotEmpty(list)) {
             return list.get(0);
