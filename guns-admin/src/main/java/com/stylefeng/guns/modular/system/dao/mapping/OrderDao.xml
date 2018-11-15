@@ -34,7 +34,7 @@
         LEFT JOIN pk_team tm ON m.challengeteamid = tm.id
         LEFT JOIN pk_team tm2 ON m.hostteamid = tm2.id
         LEFT JOIN pk_park park ON m.parkid = park.id
-        LEFT JOIN areas area ON park.area = area.id
+        LEFT JOIN areas area ON park.area = area.areaid
         LEFT JOIN dict d on m.time = d.id
         where 1=1
         <if test="areas != null and areas != ''">
@@ -63,7 +63,7 @@
         LEFT JOIN pk_team tm ON m.challengeteamid = tm.id
         LEFT JOIN pk_team tm2 ON m.hostteamid = tm2.id
         LEFT JOIN pk_park park ON m.parkid = park.id
-        LEFT JOIN areas area ON park.area = area.id
+        LEFT JOIN areas area ON park.area = area.areaid
         LEFT JOIN dict d on m.time = d.id
         where o.id=#{id}
     </select>

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class AreaController {
             List<Map> datas = new ArrayList<>();
             list.forEach(cities -> {
                 Map map = new HashMap();
-                map.put("cityid", cities.getId());
+                map.put("cityid", cities.getCityid());
                 map.put("cityName", cities.getCity());
                 map.put("cityIntro", cities.getCity());
                 datas.add(map);
@@ -77,14 +78,15 @@ public class AreaController {
      */
     @RequestMapping(value = "/areas", method = RequestMethod.POST)
     @ApiOperation(value = "约战区域", notes = "返回码:1成功;")
-    public ResponseEntity area() {
+    public ResponseEntity area(@RequestParam String cityid) {
         try {
             Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
+            wrapper.eq("cityid",cityid);
             List<Areas> list = areasMapper.selectList(wrapper);
             List<Map> datas = new ArrayList<>();
             list.forEach(areas -> {
                 Map map = new HashMap();
-                map.put("areaid", areas.getId());
+                map.put("areaid", areas.getAreaid());
                 map.put("areaName", areas.getArea());
                 map.put("areaIntro", areas.getArea());
                 datas.add(map);

@@ -98,7 +98,7 @@
         LEFT JOIN pk_team tm ON t.challengeteamid = tm.id
         LEFT JOIN pk_team tm2 ON t.hostteamid = tm2.id
         LEFT JOIN pk_park park ON t.parkid = park.id
-        LEFT JOIN areas area ON park.area = area.id
+        LEFT JOIN areas area ON park.area = area.areaid
         LEFT JOIN pk_member me ON t.initiatorid = me.id
         LEFT JOIN dict d on t.time = d.id
 
@@ -125,7 +125,7 @@
         FROM pk_match t LEFT JOIN pk_team tm ON t.challengeteamid = tm.id
         LEFT JOIN pk_team tm2 ON t.hostteamid = tm2.id
         LEFT JOIN pk_park park ON t.parkid = park.id
-        LEFT JOIN areas area ON park.area = area.id
+        LEFT JOIN areas area ON park.area = area.areaid
         LEFT JOIN pk_member me ON t.initiatorid = me.id
         LEFT JOIN pk_member me2 ON tm.ownerid = me2.id
         LEFT JOIN dict d on t.time = d.id
