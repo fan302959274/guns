@@ -151,24 +151,7 @@ public class TeamController {
 
     }
 
-    /**
-     * 球队区域
-     *
-     * @return
-     */
-    @RequestMapping(value = "/area", method = RequestMethod.POST)
-    @ApiOperation(value = "球队区域", notes = "返回码:1成功;")
-    public ResponseEntity area() {
-        try {
-            Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
-            List<Areas> list = areasMapper.selectList(wrapper);
 
-            return ResponseEntity.ok(new CommonListResp<Areas>(list));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new CommonListResp<Areas>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
-        }
-
-    }
 
     /**
      * 球王榜

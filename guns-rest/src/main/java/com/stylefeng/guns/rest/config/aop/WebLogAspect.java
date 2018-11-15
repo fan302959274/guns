@@ -46,7 +46,12 @@ public class WebLogAspect {
             long begin = System.nanoTime();
             Object obj = proceedingJoinPoint.proceed();//调用执行目标方法
             long end = System.nanoTime();
-            logger.info("url:[{}]param:{}time:[{}s]", url, JSONObject.toJSONString(proceedingJoinPoint.getArgs()), (Math.round(end - begin) / 1000000000.0));
+            if (url.contains("attach")) {
+                logger.info("url:[{}]time:[{}s]", url, (Math.round(end - begin) / 1000000000.0));
+            } else {
+                logger.info("url:[{}]param:{}time:[{}s]", url, JSONObject.toJSONString(proceedingJoinPoint.getArgs()), (Math.round(end - begin) / 1000000000.0));
+            }
+
             return obj;
         } catch (Throwable throwable) {
             throwable.printStackTrace();
