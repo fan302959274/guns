@@ -76,7 +76,7 @@ public class AreaController {
      * @return
      */
     @RequestMapping(value = "/areas", method = RequestMethod.POST)
-    @ApiOperation(value = "球队区域", notes = "返回码:1成功;")
+    @ApiOperation(value = "约战区域", notes = "返回码:1成功;")
     public ResponseEntity area() {
         try {
             Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
