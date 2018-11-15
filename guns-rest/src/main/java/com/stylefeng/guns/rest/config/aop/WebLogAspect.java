@@ -46,7 +46,7 @@ public class WebLogAspect {
             long begin = System.nanoTime();
             Object obj = proceedingJoinPoint.proceed();//调用执行目标方法
             long end = System.nanoTime();
-            if (url.contains("attach")) {
+            if (url.contains("attach")||url.contains("weixin")) {
                 logger.info("url:[{}]time:[{}s]", url, (Math.round(end - begin) / 1000000000.0));
             } else {
                 logger.info("url:[{}]param:{}time:[{}s]", url, JSONObject.toJSONString(proceedingJoinPoint.getArgs()), (Math.round(end - begin) / 1000000000.0));
