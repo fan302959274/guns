@@ -22,7 +22,8 @@ Team.initColumn = function () {
         {title: '胜', field: 'winnum', align: 'center', valign: 'middle', sortable: true},
         {title: '负', field: 'debtnum', align: 'center', valign: 'middle', sortable: true},
         {title: '平', field: 'drawnum', align: 'center', valign: 'middle', sortable: true},
-        {title: '积分', field: 'point', align: 'center', valign: 'middle', sortable: true}
+        {title: '积分', field: 'point', align: 'center', valign: 'middle', sortable: true},
+        {title: '球队状态', field: 'status', align: 'center', valign: 'middle', sortable: true}
     ]
     return columns;
 };
@@ -117,3 +118,39 @@ Team.delTeam = function () {
         Feng.confirm("是否删除球场 " + Team.seItem.pkname + "?",operation);
     }
 };
+
+/**
+ * 禁用球队
+ * @param teamId
+ */
+Team.freezeTeam= function () {
+    if (this.check()) {
+        var teamId = this.seItem.id;
+        var ajax = new $ax(Feng.ctxPath + "/team/freeze", function (data) {
+            Feng.success("禁用成功!");
+            Team.table.refresh();
+        }, function (data) {
+            Feng.error("禁用失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set("teamId", teamId);
+        ajax.start();
+    }
+};
+
+/**
+ * 解除球队
+ * @param teamId
+ */
+Team.unfreezeTeam = function () {
+    if (this.check()) {
+        var teamId = this.seItem.id;
+        var ajax = new $ax(Feng.ctxPath + "/team/unfreeze", function (data) {
+            Feng.success("解除禁用成功!");
+            Team.table.refresh();
+        }, function (data) {
+            Feng.error("解除禁用失败!");
+        });
+        ajax.set("teamId", teamId);
+        ajax.start();
+    }
+}

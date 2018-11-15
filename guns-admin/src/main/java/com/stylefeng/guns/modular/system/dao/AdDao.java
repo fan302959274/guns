@@ -21,5 +21,11 @@ public interface AdDao {
      * @date 2017年2月12日 下午9:14:34
      */
     List<Map<String, Object>> selectAds(@Param("type") Integer type,@Param("adMainHead") String adMainHead);
-
+    /**
+     * 根据规则列表
+     *
+     * @return
+     * @date 2017年2月12日 下午9:14:34
+     */
+    List<Map<String, Object>> selectRules();
 }

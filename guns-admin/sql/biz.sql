@@ -125,7 +125,7 @@ CREATE TABLE `pk_team` (
   `reviewcount` INT(11)             DEFAULT '0'
   COMMENT '参评队伍总数',
   `status`      VARCHAR(10)         DEFAULT '0'
-  COMMENT '球队状态:0:禁用1:启用',
+  COMMENT '球队状态:1:禁用0:启用',
   `createdate`  TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
   COMMENT '创建时间',
   `updatedate`  TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -319,6 +319,7 @@ CREATE TABLE `pk_attachment` (
   COMMENT = '队员附件表';
 
 
+
 DROP TABLE IF EXISTS `provinces`;
 CREATE TABLE `provinces` (
   `id`         INT(11)      NOT NULL AUTO_INCREMENT,
@@ -418,5 +419,21 @@ CREATE TABLE `pk_order` (
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8
   COMMENT = '订单表';
+
+--11、规则表
+DROP TABLE IF EXISTS `pk_rule`;
+CREATE TABLE `pk_rule` (
+  `id` tinyint(10) NOT NULL AUTO_INCREMENT,
+  `type` char(1) DEFAULT NULL COMMENT '1约战规则 2 区域规则',
+  `content` text,
+  `createtime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='规则表';
+
+-- ----------------------------
+-- Records of pk_rule
+-- ----------------------------
+INSERT INTO `pk_rule` VALUES ('1', '1', '约战规则', '2018-11-16 00:37:44');
+INSERT INTO `pk_rule` VALUES ('2', '2', '区域规则', '2018-11-16 00:37:56');
 
 

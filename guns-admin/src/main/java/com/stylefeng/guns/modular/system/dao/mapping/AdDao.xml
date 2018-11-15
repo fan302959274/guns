@@ -52,5 +52,17 @@
         </if>
     </select>
 
-
+    <select id="selectRules" resultType="map">
+        select
+        id,content,createtime,
+        (
+        CASE
+        WHEN type = 1  THEN
+        '约战规则'
+        ELSE
+        '区域规则'
+        END
+        ) "type"
+        from pk_rule
+    </select>
 </mapper>

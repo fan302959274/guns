@@ -7,8 +7,10 @@ import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.PkAdMapper;
 import com.stylefeng.guns.common.persistence.dao.PkAttachmentMapper;
+import com.stylefeng.guns.common.persistence.dao.PkRuleMapper;
 import com.stylefeng.guns.common.persistence.model.PkAd;
 import com.stylefeng.guns.common.persistence.model.PkAttachment;
+import com.stylefeng.guns.common.persistence.model.PkRule;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.support.BeanKit;
@@ -50,6 +52,8 @@ public class AdController extends BaseController {
 
     @Resource
     PkAdMapper pkAdMapper;
+    @Resource
+    PkRuleMapper pkRuleMapper;
 
     @Resource
     PkAttachmentMapper pkAttachmentMapper;
@@ -232,5 +236,56 @@ public class AdController extends BaseController {
         return SUCCESS_TIP;
     }
 
+    /**
+     * 跳转到规则管理
+     */
+    @RequestMapping("/rule")
+    public String rule(String type,Model model) {
+        model.addAttribute("type",type);
+        return PREFIX + "rule.html";
+    }
+    /**
+     * 获取所有规则列表
+     */
+    @RequestMapping(value = "/ruleList")
+    @ResponseBody
+    public Object ruleList() {
+        List<Map<String, Object>> ads = this.adDao.selectRules();
+        return super.warpObject(new AdWarpper(ads));
+    }
 
+    /**
+     * 跳转到修改广告
+     */
+    @RequestMapping("/rule_view/{id}")
+    public String ruleView(@PathVariable Integer id, Model model) {
+        PkRule pkrule = pkRuleMapper.selectById(id);
+        Map<String, Object> menuMap = BeanKit.beanToMap(pkrule);
+        model.addAttribute("rule", menuMap);
+        return PREFIX + "rule_view.html";
+    }
+
+    /**
+     * 跳转到修改广告
+     */
+    @RequestMapping("/rule_detail/{id}")
+    public String ruleDetail(@PathVariable Integer id, Model model) {
+        PkRule pkrule = pkRuleMapper.selectById(id);
+        Map<String, Object> menuMap = BeanKit.beanToMap(pkrule);
+        model.addAttribute("rule", menuMap);
+        return PREFIX + "rule_edit.html";
+    }
+
+    /**
+     * 修改规则
+     */
+    @RequestMapping(value = "/updateRule")
+    @ResponseBody
+    public Object updateRule(PkRule pkRule) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if (ToolUtil.isEmpty(pkRule) || pkRule.getId() == null) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        pkRuleMapper.updateById(pkRule);
+        return super.SUCCESS_TIP;
+    }
 }

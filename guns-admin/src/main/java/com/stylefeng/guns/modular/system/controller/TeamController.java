@@ -2,6 +2,10 @@ package com.stylefeng.guns.modular.system.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.common.annotion.BussinessLog;
+import com.stylefeng.guns.common.annotion.Permission;
+import com.stylefeng.guns.common.constant.Const;
+import com.stylefeng.guns.common.constant.dictmap.UserDict;
 import com.stylefeng.guns.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.common.enums.AttachTypeEnum;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
@@ -10,14 +14,13 @@ import com.stylefeng.guns.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.common.persistence.dao.PkTeamMapper;
 import com.stylefeng.guns.common.persistence.dao.PkTeamMemberMapper;
 import com.stylefeng.guns.common.persistence.model.PkAttachment;
-import com.stylefeng.guns.common.persistence.model.PkMember;
 import com.stylefeng.guns.common.persistence.model.PkTeam;
 import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.base.tips.Tip;
 import com.stylefeng.guns.core.support.BeanKit;
 import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.modular.system.dao.TeamDao;
 import com.stylefeng.guns.modular.system.warpper.TeamWarpper;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -191,5 +194,36 @@ public class TeamController extends BaseController {
         }
         PkTeam teams = this.teamDao.selectTeamByName(name);
         return teams!=null?false:true;
+    }
+
+
+    /**
+     * 禁用球场
+     */
+    @RequestMapping("/freeze")
+    @BussinessLog(value = "禁用球队", key = "teamId", dict = UserDict.class)
+    @Permission(Const.ADMIN_NAME)
+    @ResponseBody
+    public Tip freeze(@RequestParam Integer teamId) {
+        if (ToolUtil.isEmpty(teamId)) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        this.teamDao.setStatus(teamId,1 );
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 解除冻结用户
+     */
+    @RequestMapping("/unfreeze")
+    @BussinessLog(value = "解除禁用球场", key = "parkId", dict = UserDict.class)
+    @Permission(Const.ADMIN_NAME)
+    @ResponseBody
+    public Tip unfreeze(@RequestParam Integer teamId) {
+        if (ToolUtil.isEmpty(teamId)) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        this.teamDao.setStatus(teamId,0 );
+        return SUCCESS_TIP;
     }
 }

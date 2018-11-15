@@ -3,7 +3,7 @@
 <mapper namespace="com.stylefeng.guns.modular.system.dao.TeamDao">
 
     <sql id="Base_Column_List">
-        a.id, name, membernum, winnum, debtnum, drawnum,point,prov,city,teamdesc,ownerid,status,createdate,updatedate
+        a.id, name, membernum, winnum, debtnum, drawnum,point,prov,city,teamdesc,ownerid,createdate,updatedate
     </sql>
 
     <select id="selectTeams" resultType="map">
@@ -11,10 +11,16 @@
         <include refid="Base_Column_List" />,
         (
         CASE
-        WHEN  a.area  = 1  THEN '南京'
+        WHEN  a.area  = 1   THEN '南京'
         WHEN  a.area  = 2  THEN '合肥'
         END
-        ) "area"
+        ) "area",
+        (
+        CASE
+        WHEN  a.status  = 0 or a.status is null THEN '启用'
+        WHEN  a.status  = 1  THEN '禁用'
+        END
+        ) "status"
         ,(
         CASE
         WHEN a.point >= 0  and a.point <![CDATA[ <= ]]> 999 THEN
@@ -117,4 +123,9 @@
             AND name =#{name}
         </if>
     </select>
+
+    <update id="setStatus">
+        update pk_team set status = #{status} where id =
+        #{teamId}
+    </update>
 </mapper>

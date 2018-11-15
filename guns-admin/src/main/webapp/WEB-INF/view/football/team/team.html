@@ -29,6 +29,13 @@
                             @if(shiro.hasPermission("/role/add")){
                             <#button name="队员管理" icon="fa-plus" clickFun="Team.teamMember()"  space="true"/>
                             @}
+                            @if(shiro.hasPermission("/mgr/freeze")){
+                            <#button name="禁用" icon="fa-warning" clickFun="Team.freezeTeam()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/mgr/unfreeze")){
+                            <#button name="启用" icon="fa-check-circle" clickFun="Team.unfreezeTeam()" space="true"/>
+                            @}
+
                         </div>
                         <#table id="teamTable"/>
                     </div>

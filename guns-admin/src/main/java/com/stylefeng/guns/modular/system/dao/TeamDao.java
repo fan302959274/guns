@@ -62,4 +62,12 @@ public interface TeamDao {
      * @date 2018年10月9日 下午9:42:31
      */
     PkTeam selectTeamByName(@Param("name") String name);
+
+    /**
+     * 修改球场状态
+     *
+     * @param
+     * @date 2018年10月9日 下午9:42:31
+     */
+    int setStatus(@Param("teamId") Integer teamId, @Param("status") int status);
 }

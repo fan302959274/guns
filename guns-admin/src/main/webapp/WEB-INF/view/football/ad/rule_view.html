@@ -1,0 +1,34 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="ruleInfoForm">
+            <input type="hidden" id="id" value="${rule.id}">
+            <input type="hidden" id="contentVal" value="${rule.content}">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">规则</label>
+                        <div class="col-sm-11">
+                            @if(isNotEmpty(rule.type) && rule.type == '1'){
+                            <input class="form-control"  name="" type="text" value="约战规则" disabled="disabled">
+                            @}
+                            @if(isNotEmpty(rule.type) && rule.type == '2'){
+                            <input class="form-control"  name="" type="text" value="区域规则" disabled="disabled">
+                            @}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">内容</label>
+                        <div class="col-sm-11">
+                            <div id="editor" class="editorHeight">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="${ctxPath}/static/js/plugins/wangEditor/wangEditor.js"></script>
+<script src="${ctxPath}/static/modular/football/ad/rule_info.js"></script>
+@}
