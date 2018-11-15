@@ -167,6 +167,13 @@
                 <version>4.5.2</version>
             </dependency>
 
+            <!-- aop -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+                <version>1.5.8.RELEASE</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

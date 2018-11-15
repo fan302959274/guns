@@ -1,6 +1,5 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.core.util.DateUtil;
@@ -17,7 +16,6 @@ import com.stylefeng.guns.rest.modular.football.transfer.PkMemberDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -66,7 +64,6 @@ public class MemberController {
     @ApiOperation(value = "查询队员", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "openid", value = "队员实体", required = true, dataType = "String")
     public ResponseEntity getData(@RequestParam String openid) {
-        log.info("队员信息请求参数{}", JSONObject.toJSONString(openid));
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -86,7 +83,7 @@ public class MemberController {
             }
             data.put("height", pkMember.getHeight());
             data.put("weight", pkMember.getWeight());
-            data.put("birth", Objects.nonNull(pkMember.getBirth())?DateUtil.format(pkMember.getBirth(),"yyyy"):"");
+            data.put("birth", Objects.nonNull(pkMember.getBirth()) ? DateUtil.format(pkMember.getBirth(), "yyyy") : "");
             data.put("player", PositionEnum.messageOf(pkMember.getPosition()));
             data.put("foot", FootEnum.messageOf(pkMember.getHabitfeet()));
             Wrapper pkAttachmentWrapper = new EntityWrapper<>();
@@ -121,8 +118,7 @@ public class MemberController {
     @RequestMapping(value = "/myInfo", method = RequestMethod.POST)
     @ApiOperation(value = "查询队员", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "openid", value = "openid", required = true, dataType = "String")
-    public ResponseEntity editData(@RequestParam String openid) {
-        log.info("队员信息修改请求参数{}", openid);
+    public ResponseEntity myInfo(@RequestParam String openid) {
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -176,7 +172,6 @@ public class MemberController {
     @ApiOperation(value = "查询约战信息", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "openid", value = "队员实体", required = true, dataType = "String")
     public ResponseEntity myPK(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Integer type) {
-        log.info("我的约战信息请求参数{}", openid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -185,7 +180,7 @@ public class MemberController {
 
             Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
             pkMatchWrapper = pkMatchWrapper.eq("hostteamid", teamid);
-            if (0!=type){
+            if (0 != type) {
                 pkMatchWrapper = pkMatchWrapper.eq("status", type);
             }
             List<PkMatch> pkMatches = pkMatchMapper.selectList(pkMatchWrapper);
@@ -199,7 +194,7 @@ public class MemberController {
                 data.put("team", pkTeam.getName());
                 PkTeam challengeTeam = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
                 //对手信息
-                if (Objects.nonNull(challengeTeam)){
+                if (Objects.nonNull(challengeTeam)) {
                     data.put("opponent", challengeTeam.getName());
                     data.put("oppoid", challengeTeam.getId());
                     Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
@@ -233,7 +228,6 @@ public class MemberController {
     @ApiOperation(value = "注册队员", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
     public ResponseEntity register(@RequestBody PkMemberDto pkMemberDto) {
-        log.info("注册队员请求参数{}", JSONObject.toJSONString(pkMemberDto));
         try {
             Assert.notNull(pkMemberDto.getOpenid(), "openid不能为空");
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
@@ -288,7 +282,6 @@ public class MemberController {
     @ApiOperation(value = "评价", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "openid", value = "队员评价", required = true, dataType = "String")
     public ResponseEntity review(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Long oppoid, @RequestParam BigDecimal culture, @RequestParam BigDecimal ontime, @RequestParam BigDecimal friendly) {
-        log.info("队员评价请求参数{}", JSONObject.toJSONString(openid));
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -332,7 +325,6 @@ public class MemberController {
     @ApiOperation(value = "编辑队员", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "body", name = "pkMemberDto", value = "队员实体", required = true, dataType = "PkMemberDto")
     public ResponseEntity editData(@RequestBody PkMemberDto pkMemberDto) {
-        log.info("队员信息修改请求参数{}", JSONObject.toJSONString(pkMemberDto));
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", pkMemberDto.getOpenid());
@@ -341,7 +333,7 @@ public class MemberController {
             PkMember pkMember = new PkMember();
             pkMember.setPosition(PositionEnum.codeOf(pkMemberDto.getPlayer()));
             pkMember.setHabitfeet(FootEnum.codeOf(pkMemberDto.getFoot()));
-            pkMember.setBirth(DateUtil.parse(pkMemberDto.getBirth(),"yyyy"));
+            pkMember.setBirth(DateUtil.parse(pkMemberDto.getBirth(), "yyyy"));
             pkMember.setHeight(pkMemberDto.getHeight());
             pkMember.setWeight(pkMemberDto.getWeight());
             pkMember.setId(pkMembers.get(0).getId());
@@ -363,7 +355,6 @@ public class MemberController {
     @ApiOperation(value = "取消约战", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "openid", value = "队员实体", required = true, dataType = "String")
     public ResponseEntity cancelPK(@RequestParam String openid, @RequestParam Long teamid) {
-        log.info("取消约战请求参数{}", openid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);

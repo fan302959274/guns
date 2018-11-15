@@ -62,7 +62,6 @@ public class TeamController {
     @ApiOperation(value = "查询球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "name", value = "球队名称", required = true, dataType = "String")
     public ResponseEntity register(@RequestParam String name) {
-        log.info("查询球队参数为:{}", name);
         try {
             Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
             wrapper = wrapper.like("name", name);
@@ -100,7 +99,6 @@ public class TeamController {
     @ApiOperation(value = "球队详情", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "id", value = "球队id", required = true, dataType = "String")
     public ResponseEntity detail(@PathVariable String id) {
-        log.info("球队详情参数为:{}", id);
         try {
             PkTeam pkTeam = pkTeamMapper.selectById(id);
             Assert.notNull(pkTeam, "不存在该球队");
@@ -254,7 +252,6 @@ public class TeamController {
     @ApiOperation(value = "加入球队列表", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
     public ResponseEntity appleList(@RequestParam Long teamid, @RequestParam String openid) {
-        log.info("加入球队列表请求参数为:{}", teamid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -299,7 +296,6 @@ public class TeamController {
     @ApiOperation(value = "添加球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "body", name = "pkTeamDto", value = "球队实体", required = true, dataType = "PkTeamDto")
     public ResponseEntity valid(@RequestBody PkTeamDto pkTeamDto) {
-        log.info("添加球队请求参数为:{}", JSONObject.toJSONString(pkTeamDto));
         try {
             Assert.notNull(pkTeamDto.getName(), "名称不能为空");
             Assert.notNull(pkTeamDto.getOpenid(), "openid不能为空");
@@ -363,7 +359,6 @@ public class TeamController {
     @ApiOperation(value = "加入球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
     public ResponseEntity join(@RequestParam Long teamid, @RequestParam String openid) {
-        log.info("加入球队请求参数为:{}", teamid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -409,7 +404,6 @@ public class TeamController {
     @ApiOperation(value = "拒绝加入球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
     public ResponseEntity deleteApple(@RequestParam Long teamid, @RequestParam String openid, @RequestParam String manid) {
-        log.info("拒绝加入球队请求参数为:{}", teamid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -438,7 +432,6 @@ public class TeamController {
     @ApiOperation(value = "同意加入球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
     public ResponseEntity agreeApple(@RequestParam Long teamid, @RequestParam String openid, @RequestParam String manid) {
-        log.info("同意加入球队请求参数为:{}", teamid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -471,7 +464,6 @@ public class TeamController {
     @ApiOperation(value = "解散球队，退出球队接口", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
     public ResponseEntity exitTeam(@RequestParam Long teamid, @RequestParam String openid, @RequestParam String type) {
-        log.info("解散球队，退出球队请求参数为:{}", teamid);
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);

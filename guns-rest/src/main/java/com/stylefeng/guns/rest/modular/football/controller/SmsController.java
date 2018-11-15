@@ -56,7 +56,6 @@ public class SmsController {
     @ApiOperation(value = "发送短信验证码", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "mobile", value = "手机号", required = true, dataType = "String")
     public ResponseEntity register(@RequestParam String mobile) {
-        log.info("请求的手机号为:{}", mobile);
         try {
             Integer random1 = new Random().nextInt(10);
             Integer random2 = new Random().nextInt(10);
@@ -86,7 +85,6 @@ public class SmsController {
     @ApiOperation(value = "验证短信验证码", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "mobile", value = "手机号", required = true, dataType = "String")
     public ResponseEntity valid(@RequestParam String mobile, @RequestParam String smscode) {
-        log.info("验证码验证请求参数为:{}", JSONObject.toJSONString(mobile));
         try {
             Assert.notNull(mobile, "手机号不能为空");
             Assert.notNull(smscode, "验证码不能为空");
