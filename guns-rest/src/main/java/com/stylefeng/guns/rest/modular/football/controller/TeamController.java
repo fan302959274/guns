@@ -421,6 +421,11 @@ public class TeamController {
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
+            wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", manid);
+            pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "manid未获取到用户");
+
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
