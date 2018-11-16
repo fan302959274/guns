@@ -122,7 +122,7 @@ public class WeixinController {
             //返回给移动端需要的参数
             List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
             Map<String, Object> response = new HashMap<String, Object>();
-            if (return_code == "SUCCESS") {
+            if ("SUCCESS".equals(return_code)) {
                 // 业务结果
                 String prepay_id = returnInfo.getPrepay_id();//返回的预付单信息
                 response.put("nonceStr", returnInfo.getNonce_str());
