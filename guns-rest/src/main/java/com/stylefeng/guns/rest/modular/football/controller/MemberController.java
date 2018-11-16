@@ -145,6 +145,7 @@ public class MemberController {
                 data.put("teamid", pkTeam.getId());
                 data.put("teamScore", pkTeam.getPoint());
                 data.put("levelid", pkTeam.getLevel());
+                data.put("cityid", pkTeam.getCity());
                 pkAttachmentWrapper = new EntityWrapper<>();
                 pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
                 attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
