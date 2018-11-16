@@ -242,7 +242,7 @@ public class TeamController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).ne("status", "2");
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).ne("status", "1");
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
 
             List<Map> datas = new ArrayList<>();

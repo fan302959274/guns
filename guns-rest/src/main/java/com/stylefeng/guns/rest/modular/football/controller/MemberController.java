@@ -137,7 +137,7 @@ public class MemberController {
             }
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId());
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId()).eq("status","1");
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (CollectionUtils.isNotEmpty(pkTeamMembers)) {
                 PkTeam pkTeam = pkTeamMapper.selectById(pkTeamMembers.get(0).getTeamid());
