@@ -319,7 +319,7 @@ public class TeamController {
             }
             //保存球队球员对应关系
             PkTeamMember pkTeamMember = new PkTeamMember();
-            pkTeamMember.setStatus("2");
+            pkTeamMember.setStatus("1");
             pkTeamMember.setTeamid(pkTeam.getId());
             pkTeamMember.setMemberid(pkMember.getId());
             pkTeamMemberMapper.insert(pkTeamMember);
