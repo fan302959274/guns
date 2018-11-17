@@ -120,7 +120,7 @@ public class TeamController {
             data.put("intro", pkTeam.getTeamdesc());
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", pkTeam.getId());
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", pkTeam.getId()).eq("status", "1");;
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             List<Map> members = new ArrayList<>();
 
@@ -352,7 +352,7 @@ public class TeamController {
 
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId());
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("status", "1");;
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (!CollectionUtils.isEmpty(pkTeamMembers)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "已经加入其它球队"));
@@ -362,8 +362,8 @@ public class TeamController {
             pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid);
             pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
-            if (!CollectionUtils.isEmpty(pkTeamMembers)&&pkTeamMembers.size()>=12) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "球队人员已满12人"));
+            if (!CollectionUtils.isEmpty(pkTeamMembers)&&pkTeamMembers.size()>=24) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "球队人员已满24人"));
             }
 
             PkTeamMember pkTeamMember = new PkTeamMember();
@@ -421,16 +421,26 @@ public class TeamController {
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
+
+
             wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", manid);
             pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "manid未获取到用户");
 
-            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
-            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
 
-            PkTeamMember pkTeamMember = pkTeamMembers.get(0);
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("status", "1");;
+            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+            if (!CollectionUtils.isEmpty(pkTeamMembers)) {
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "已经加入其它球队"));
+            }
+
+            Wrapper<PkTeamMember> pkTeamMemberEntityWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberEntityWrapper = pkTeamMemberEntityWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
+            List<PkTeamMember> teamMembers = pkTeamMemberMapper.selectList(pkTeamMemberEntityWrapper);
+
+            PkTeamMember pkTeamMember = teamMembers.get(0);
             pkTeamMember.setStatus("1");//同意
 
             pkTeamMemberMapper.updateById(pkTeamMember);
