@@ -115,6 +115,15 @@ public class MatchController {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该队员未加入任何队伍"));
             }
 
+            Wrapper<Dict> dictWrapper = new EntityWrapper<Dict>();
+            dictWrapper.eq("pid", "40");
+            List<Dict> list = dictMapper.selectList(dictWrapper);
+            for (Dict dict :list){
+                if (dict.getName().equals(pkTeamMembers.get(0).getTeamid()+"")){
+                    return ResponseEntity.ok(new CommonResp<String>("8", "挑战队伍在黑名单中无法比赛"));
+                }
+            }
+
 
             pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", pkTeamMembers.get(0).getTeamid());
@@ -200,6 +209,12 @@ public class MatchController {
             Integer selectCount = pkOrderMapper.selectCount(orderWrapper);
             if (selectCount > 0) {
                 return ResponseEntity.ok(new CommonResp<String>("4", "匹配队伍有未支付的订单"));
+            }
+
+            for (Dict dict :list){
+                if (dict.getName().equals(teamid+"")){
+                    return ResponseEntity.ok(new CommonResp<String>("8", "匹配队伍在黑名单中无法比赛"));
+                }
             }
 
 
