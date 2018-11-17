@@ -465,9 +465,14 @@ public class TeamController {
             }
 
             if ("2".equals(type)) {
+                //删除球队
                 Wrapper<PkTeam> pkTeamWrapper = new EntityWrapper<PkTeam>();
                 pkTeamWrapper = pkTeamWrapper.eq("id", teamid);
                 pkTeamMapper.delete(pkTeamWrapper);
+                //删除球队球员关系
+                Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+                pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
+                pkTeamMemberMapper.delete(pkTeamMemberWrapper);
             }
 
 

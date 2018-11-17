@@ -52,6 +52,8 @@ public class MatchController {
     @Autowired
     PkTeamMemberMapper pkTeamMemberMapper;
     @Autowired
+    PkRuleMapper pkRuleMapper;
+    @Autowired
     RedisTemplate redisTemplate;
 
 
@@ -357,6 +359,25 @@ public class MatchController {
         }
 
     }
+
+
+    /**
+     * 约战规则 区域规则
+     *
+     * @return
+     */
+    @RequestMapping(value = "/rule", method = RequestMethod.POST)
+    @ApiOperation(value = "约战规则，区域规则(1：约战规则；2：区域规则)", notes = "返回码:1成功;")
+    public ResponseEntity rule() {
+        try {
+            Wrapper<PkRule> wrapper = new EntityWrapper<PkRule>();
+            return ResponseEntity.ok(new CommonListResp<PkRule>(pkRuleMapper.selectList(wrapper)));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonListResp<PkRule>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
 
     /**
      * @description 球队匹配

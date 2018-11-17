@@ -66,7 +66,7 @@ public class WeixinController {
         if (code == null || "".equals(code)) {
             throw new BussinessException(BizExceptionEnum.TOKEN_CODE_ERROR);
         }
-        System.out.println("---------Code:" + code);
+        log.info("---------Code:" + code);
         HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/jscode2session?appid=" + Configure.getAppID() + "&secret=" + Configure.getSecret() + "&js_code=" + code + "&grant_type=authorization_code");
         //设置请求器的配置
         HttpClient httpClient = HttpClients.createDefault();
@@ -77,7 +77,7 @@ public class WeixinController {
         String openid = (String) jsStr.get("openid");
         Map data = new HashMap();
         data.put("openid", openid);
-        System.out.println("---------Openid:" + openid);
+        log.info("---------Openid:" + openid);
         return ResponseEntity.ok(new CommonResp<Map>(data));
     }
     /**
@@ -125,15 +125,15 @@ public class WeixinController {
             if ("SUCCESS".equals(return_code)) {
                 // 业务结果
                 String prepay_id = returnInfo.getPrepay_id();//返回的预付单信息
-                response.put("nonceStr", returnInfo.getNonce_str());
+                response.put("nonceStr", nonce_str);
                 response.put("package", "prepay_id=" + prepay_id);
                 Long timeStamp = System.currentTimeMillis() / 1000;
                 response.put("timeStamp", timeStamp + "");//这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
 
                 SignInfo signInfo = new SignInfo();
                 signInfo.setAppId(Configure.getAppID());
-                long time = System.currentTimeMillis() / 1000;
-                signInfo.setTimeStamp(String.valueOf(time));
+//                long time = System.currentTimeMillis() / 1000;
+                signInfo.setTimeStamp(timeStamp + "");
                 signInfo.setNonceStr(nonce_str);
                 signInfo.setRepay_id("prepay_id=" + returnInfo.getPrepay_id());
                 signInfo.setSignType("MD5");
@@ -171,7 +171,7 @@ public class WeixinController {
         //sb为微信返回的xml
         String notityXml = sb.toString();
         String resXml = "";
-        System.out.println("接收到的报文：" + notityXml);
+        log.info("接收到的报文：" + notityXml);
         Map map = PayUtil.doXMLParse(notityXml);
         String returnCode = (String) map.get("return_code");
         if ("SUCCESS".equals(returnCode)) {
@@ -190,8 +190,8 @@ public class WeixinController {
             resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"
                     + "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
         }
-        System.out.println(resXml);
-        System.out.println("微信支付回调数据结束");
+        log.info(resXml);
+        log.info("微信支付回调数据结束");
 
         BufferedOutputStream out = new BufferedOutputStream(
                 response.getOutputStream());

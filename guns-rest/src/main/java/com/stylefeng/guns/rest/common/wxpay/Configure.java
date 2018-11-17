@@ -10,6 +10,8 @@ public class Configure {
 	private static String appID = "wx7fbf903391250b56";
 	//小程序密钥
 	private static String secret = "98c6e8064de92376e2f93e68d42a8a4b";
+	//回调连接
+	private static String notify_url = "https://qiuwangjue.mybission.com/weixin/wxNotify";
 
 	public static String getSecret() {
 		return secret;
@@ -43,4 +45,11 @@ public class Configure {
 		Configure.mch_id = mch_id;
 	}
 
+	public static String getNotify_url() {
+		return notify_url;
+	}
+
+	public static void setNotify_url(String notify_url) {
+		Configure.notify_url = notify_url;
+	}
 }
