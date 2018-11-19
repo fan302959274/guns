@@ -54,7 +54,40 @@ public class MatchController {
     @Autowired
     PkRuleMapper pkRuleMapper;
     @Autowired
+    PkParkRelationMapper pkParkRelationMapper;
+    @Autowired
+    PkParkMapper pkParkMapper;
+    @Autowired
     RedisTemplate redisTemplate;
+
+
+    /**
+     * 约战时间(周几)
+     *
+     * @return
+     */
+    @RequestMapping(value = "/weeks", method = RequestMethod.POST)
+    @ApiOperation(value = "约战时间(周几)", notes = "返回码:1成功;")
+    public ResponseEntity weeks() {
+        try {
+            Wrapper<Dict> wrapper = new EntityWrapper<Dict>();
+            wrapper.eq("pid", "39");
+            List<Dict> list = dictMapper.selectList(wrapper);
+            List<Map> datas = new ArrayList<>();
+            Map map = new HashMap();
+            map.put("weekid", "6");
+            map.put("weekname", "周六");
+            datas.add(map);
+            map = new HashMap();
+            map.put("weekid", "7");
+            map.put("weekname", "周日");
+            datas.add(map);
+            return ResponseEntity.ok(new CommonListResp<Map>(datas));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonListResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
 
 
     /**
@@ -64,17 +97,22 @@ public class MatchController {
      */
     @RequestMapping(value = "/times", method = RequestMethod.POST)
     @ApiOperation(value = "约战时间段", notes = "返回码:1成功;")
-    public ResponseEntity times() {
+    public ResponseEntity times(String weekid) {
         try {
-            Wrapper<Dict> wrapper = new EntityWrapper<Dict>();
-            wrapper.eq("pid", "39");
-            List<Dict> list = dictMapper.selectList(wrapper);
-            List<Map> datas = new ArrayList<>();
-            list.forEach(dict -> {
-                Map map = new HashMap();
-                map.put("timeid", dict.getId());
-                map.put("time", dict.getName());
-                datas.add(map);
+            Wrapper<PkParkRelation> wrapper = new EntityWrapper<PkParkRelation>();
+            wrapper = wrapper.eq("week", weekid);
+            List<PkParkRelation> list = pkParkRelationMapper.selectList(wrapper);
+            List<Map> datas = new ArrayList<Map>();
+            Set<String> set = new HashSet<>();
+            list.forEach(pkParkRelation -> {
+                String time = pkParkRelation.getStart() + "-" + pkParkRelation.getEnd();
+                if (!set.contains(time)) {
+                    Map map = new HashMap();
+                    map.put("timeid", pkParkRelation.getId());
+                    map.put("time", time);
+                    datas.add(map);
+                    set.add(time);
+                }
             });
             return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
@@ -120,18 +158,18 @@ public class MatchController {
             Assert.notNull(pkTeam, "未获取到球队");
             Integer matchSum = (null == pkTeam.getWinnum() ? 0 : pkTeam.getWinnum()) + (null == pkTeam.getDebtnum() ? 0 : pkTeam.getDebtnum()) + (null == pkTeam.getDrawnum() ? 0 : pkTeam.getDrawnum());
             if (matchSum < 5) {
-                return ResponseEntity.ok(new CommonResp<String>("2", "匹配队伍比赛未满5次"));
+                return ResponseEntity.ok(new CommonResp<String>("2", "队伍比赛未满5次"));
             }
 
             Wrapper<PkOrder> orderWrapper = new EntityWrapper<PkOrder>();
             orderWrapper = orderWrapper.eq("teamid", teamid).eq("status", PayStatusEnum.NOPAY.getCode());
             Integer selectCount = pkOrderMapper.selectCount(orderWrapper);
             if (selectCount > 0) {
-                return ResponseEntity.ok(new CommonResp<String>("4", "匹配队伍有未支付的订单"));
+                return ResponseEntity.ok(new CommonResp<String>("4", "队伍有未支付的订单"));
             }
 
             if ("0".equals(pkTeam.getStatus())) {
-                return ResponseEntity.ok(new CommonResp<String>("8", "匹配队伍在黑名单中无法比赛"));
+                return ResponseEntity.ok(new CommonResp<String>("8", "队伍在黑名单中无法比赛"));
             }
 
 
@@ -231,12 +269,15 @@ public class MatchController {
             //匹配
             PkMatch mPkMatch = matching(timeid, areaid, date, pkTeam.getLevel());
             if (Objects.nonNull(mPkMatch)) {
+                PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
+                PkPark pkPark = pkParkMapper.selectById(pkParkRelation.getParkid());
+
                 mPkMatch.setChallengeteamid(teamid);//挑战方
                 mPkMatch.setStatus(2);//待比赛
                 pkMatchMapper.updateById(mPkMatch);
                 //生成匹配方订单(未支付)
                 PkOrder pkOrderHost = new PkOrder();
-                pkOrderHost.setAmount(new BigDecimal("5.00"));//金额
+                pkOrderHost.setAmount(pkPark.getCost());//金额
                 pkOrderHost.setMatchid(mPkMatch.getId());
                 pkOrderHost.setStatus("0");
                 pkOrderHost.setTeamid(mPkMatch.getHostteamid());
@@ -250,7 +291,7 @@ public class MatchController {
 
                 //生成挑战方订单(未支付)
                 PkOrder pkOrderCh = new PkOrder();
-                pkOrderCh.setAmount(new BigDecimal("5.00"));//金额
+                pkOrderCh.setAmount(pkPark.getCost());//金额
                 pkOrderCh.setMatchid(mPkMatch.getId());
                 pkOrderCh.setStatus("0");
                 pkOrderCh.setTeamid(mPkMatch.getChallengeteamid());

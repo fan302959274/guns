@@ -15,6 +15,7 @@
 		<result column="businesstime" property="businesstime" />
 		<result column="createdate" property="createdate" />
 		<result column="updatedate" property="updatedate" />
+		<result column="cost" property="cost" />
 	</resultMap>
 
 </mapper>
