@@ -102,7 +102,7 @@ public class WebConfig {
     @Bean
     public FilterRegistrationBean xssFilterRegistration() {
         XssFilter xssFilter = new XssFilter();
-        xssFilter.setUrlExclusion(Arrays.asList("/notice/update","/notice/add"));
+        xssFilter.setUrlExclusion(Arrays.asList("/notice/update","/notice/add","/ad/updateRule"));
         FilterRegistrationBean registration = new FilterRegistrationBean(xssFilter);
         registration.addUrlPatterns("/*");
         return registration;

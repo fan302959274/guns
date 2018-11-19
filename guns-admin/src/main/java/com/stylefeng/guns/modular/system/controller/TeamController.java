@@ -91,6 +91,7 @@ public class TeamController extends BaseController {
      */
     @RequestMapping("/team_edit/{teamId}")
     public String toUpdateTeam(@PathVariable Integer teamId, Model model) {
+        Map<String, Object> teamView = this.teamDao.selectTeamView(teamId);
         SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         PkTeam  pkTeam = pkTeamMapper.selectById(teamId);
         Map<String, Object> teamMap = BeanKit.beanToMap(pkTeam);
@@ -102,6 +103,7 @@ public class TeamController extends BaseController {
         }
         teamMap.put("createTime",ss.format(pkTeam.getCreatedate()));
         model.addAttribute("team", teamMap);
+        model.addAttribute("teamView", teamView);
         return PREFIX + "team_edit.html";
     }
 
@@ -163,6 +165,7 @@ public class TeamController extends BaseController {
     @RequestMapping(value = "/detail/{teamId}")
     public String detail(@PathVariable Integer teamId, Model model) {
         SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Map<String, Object> teamView = this.teamDao.selectTeamView(teamId);
         PkTeam  pkTeam = pkTeamMapper.selectById(teamId);
         Map<String, Object> teamMap = BeanKit.beanToMap(pkTeam);
         Wrapper<PkAttachment> teamwrapper = new EntityWrapper<>();
@@ -173,7 +176,7 @@ public class TeamController extends BaseController {
         }
         model.addAttribute("createTime",ss.format(pkTeam.getCreatedate()));
         model.addAttribute("team", teamMap);
-
+        model.addAttribute("teamView", teamView);
         return PREFIX +"team_view.html";
     }
 

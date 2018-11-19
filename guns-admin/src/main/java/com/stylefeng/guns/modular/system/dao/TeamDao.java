@@ -64,10 +64,17 @@ public interface TeamDao {
     PkTeam selectTeamByName(@Param("name") String name);
 
     /**
-     * 修改球场状态
+     * 修改球队状态
      *
      * @param
      * @date 2018年10月9日 下午9:42:31
      */
     int setStatus(@Param("teamId") Integer teamId, @Param("status") int status);
+    /**
+     * 球队评价分
+     *
+     * @param
+     * @date 2018年11月20日 下午01:42:31
+     */
+    Map<String, Object>selectTeamView(@Param("teamid") Integer teamid);
 }

@@ -35,9 +35,9 @@ var TeamInfoDlg = {
  * 验证数据是否为空
  */
 TeamInfoDlg.validate = function () {
-    $('#memberInfoForm').data("bootstrapValidator").resetForm();
-    $('#memberInfoForm').bootstrapValidator('validate');
-    return $("#memberInfoForm").data('bootstrapValidator').isValid();
+    $('#teamInfoForm').data("bootstrapValidator").resetForm();
+    $('#teamInfoForm').bootstrapValidator('validate');
+    return $("#teamInfoForm").data('bootstrapValidator').isValid();
 }
 
 /**

@@ -128,4 +128,15 @@
         update pk_team set status = #{status} where id =
         #{teamId}
     </update>
+
+    <select id="selectTeamView" resultType="map">
+        select  round(AVG(ontime),1) as ontime ,round(AVG(culture),1) as culture ,round(AVG(friendly),1) as friendly
+        from pk_team_review
+        where 1=1
+        <if test="teamid != null">
+            AND teamid =#{teamid}
+        </if>
+    </select>
+
+
 </mapper>

@@ -53,9 +53,9 @@
             </div>
             <div class="row">
                 <div class="col-sm-6 b-r">
-                    <#label id="hostteam" name="面貌评分"  value="4.3"/>
-                    <#label id="hostteam" name="文明评分"  value="4.3"/>
-                    <#label id="hostteam" name="准时评分"  value="4.3"/>
+                    <#label id="hostteam" name="面貌评分"  value="${teamView.culture!0}"/>
+                    <#label id="hostteam" name="文明评分"  value="${teamView.friendly!0}"/>
+                    <#label id="hostteam" name="准时评分"  value="${teamView.ontime!0}"/>
                 </div>
             </div>
 
