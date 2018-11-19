@@ -106,7 +106,7 @@ public class WeixinController {
             order.setTotal_fee(1);
             //获取本机的ip地址
             order.setSpbill_create_ip(IpUtils.getIpAddr(request));
-            order.setNotify_url("https://www.see-source.com/weixinpay/PayResult");
+            order.setNotify_url("https://qiuwangjue.mybission.com/weixin/wxNotify");
             order.setTrade_type("JSAPI");
             order.setOpenid(openid);
             order.setSign_type("MD5");
