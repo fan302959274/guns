@@ -146,6 +146,11 @@ public class TeamController {
 
             data.put("mate", members);//队员数组
 
+            data.put("winnum",pkTeam.getWinnum());//胜
+            data.put("debtnum",pkTeam.getDebtnum());//负
+            data.put("drawnum",pkTeam.getDrawnum());//平
+            data.put("point",pkTeam.getPoint());//积分
+
 
             return ResponseEntity.ok(new CommonResp<Map>(data));
         } catch (Exception e) {
