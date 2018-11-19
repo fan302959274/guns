@@ -350,6 +350,7 @@ public class TeamController {
             PkTeam pkTeam = new PkTeam();
             pkTeam.setId(pkTeamDto.getId());
             pkTeam.setName(pkTeamDto.getName());
+            pkTeam.setTeamdesc(pkTeamDto.getTeamdesc());
 
             //        保存logo
             if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
