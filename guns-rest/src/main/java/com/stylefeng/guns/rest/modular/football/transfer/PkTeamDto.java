@@ -60,7 +60,7 @@ public class PkTeamDto extends Model<PkTeamDto> {
     /**
      * 球队市
      */
-	private String city;
+	private Long city;
     /**
      * 球队区
      */
@@ -175,11 +175,11 @@ public class PkTeamDto extends Model<PkTeamDto> {
 		this.prov = prov;
 	}
 
-	public String getCity() {
+	public Long getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(Long city) {
 		this.city = city;
 	}
 
