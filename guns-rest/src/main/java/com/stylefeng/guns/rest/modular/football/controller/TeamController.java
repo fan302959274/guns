@@ -358,6 +358,7 @@ public class TeamController {
                 return ResponseEntity.ok(new CommonResp<String>("2", "已经申请过加入该球队"));
             }
 
+            pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("status", "1");;
             pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (!CollectionUtils.isEmpty(pkTeamMembers)) {
