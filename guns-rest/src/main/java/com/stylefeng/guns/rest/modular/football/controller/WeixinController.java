@@ -112,6 +112,7 @@ public class WeixinController {
             order.setSign_type("MD5");
             //生成签名
             String sign = Signature.getSign(order);
+            log.info("签名后结果是:{}",sign);
             order.setSign(sign);
             String result = HttpRequest.sendPost("https://api.mch.weixin.qq.com/pay/unifiedorder", order);
             log.info("---------下单返回:" + result);
@@ -175,8 +176,9 @@ public class WeixinController {
         Map map = PayUtil.doXMLParse(notityXml);
         String returnCode = (String) map.get("return_code");
         if ("SUCCESS".equals(returnCode)) {
-            //验证签名是否正确
-            if (PayUtil.verify(PayUtil.createLinkString(map), (String) map.get("sign"), Configure.getKey(), "utf-8")) {
+            //验证签名是否正确(过滤掉sign和sign_type)
+            String sign = PayUtil.sign(PayUtil.createLinkString(PayUtil.paraFilter(map)), Configure.getKey(),"utf-8").toUpperCase();
+            if (sign.equals((String) map.get("sign"))) {
                 /**此处添加自己的业务逻辑代码start**/
 
 
