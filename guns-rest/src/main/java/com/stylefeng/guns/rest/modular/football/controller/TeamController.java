@@ -1,13 +1,15 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
 import com.stylefeng.guns.rest.common.enums.TeamLevelEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
-import com.stylefeng.guns.rest.common.persistence.model.*;
+import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
+import com.stylefeng.guns.rest.common.persistence.model.PkMember;
+import com.stylefeng.guns.rest.common.persistence.model.PkTeam;
+import com.stylefeng.guns.rest.common.persistence.model.PkTeamMember;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
@@ -120,7 +122,8 @@ public class TeamController {
             data.put("intro", pkTeam.getTeamdesc());
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", pkTeam.getId()).eq("status", "1");;
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", pkTeam.getId()).eq("status", "1");
+            ;
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             List<Map> members = new ArrayList<>();
 
@@ -152,7 +155,6 @@ public class TeamController {
     }
 
 
-
     /**
      * 球王榜
      *
@@ -164,7 +166,7 @@ public class TeamController {
         try {
             Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
 
-            wrapper.eq("level", TeamLevelEnum.messageOf(levelid+""));
+            wrapper.eq("level", TeamLevelEnum.messageOf(levelid + ""));
             List<PkTeam> list = pkTeamMapper.selectList(wrapper);
 
             List<Map> datas = new ArrayList<>();
@@ -209,7 +211,7 @@ public class TeamController {
             data.put("teamName", pkTeam.getName());
             data.put("score", pkTeam.getPoint());
             data.put("levelid", pkTeam.getLevel());
-            data.put("differValue", TeamLevelEnum.valueOfMsg(pkTeam.getLevel()).getMax()-pkTeam.getPoint());
+            data.put("differValue", TeamLevelEnum.valueOfMsg(pkTeam.getLevel()).getMax() - pkTeam.getPoint());
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
             List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
@@ -278,7 +280,7 @@ public class TeamController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation(value = "添加球队", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "body", name = "pkTeamDto", value = "球队实体", required = true, dataType = "PkTeamDto")
-    public ResponseEntity valid(@RequestBody PkTeamDto pkTeamDto) {
+    public ResponseEntity add(@RequestBody PkTeamDto pkTeamDto) {
         try {
             Assert.notNull(pkTeamDto.getName(), "名称不能为空");
             Assert.notNull(pkTeamDto.getOpenid(), "openid不能为空");
@@ -291,7 +293,7 @@ public class TeamController {
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId());
             Integer count = pkTeamMemberMapper.selectCount(pkTeamMemberWrapper);
-            if (count>0){
+            if (count > 0) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该球员已经创建其它球队"));
             }
 
@@ -331,6 +333,50 @@ public class TeamController {
 
     }
 
+    /**
+     * 编辑球队资料
+     *
+     * @param pkTeamDto
+     * @return
+     */
+    @RequestMapping(value = "/editData", method = RequestMethod.POST)
+    @ApiOperation(value = "编辑球队资料", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "body", name = "pkTeamDto", value = "球队实体", required = true, dataType = "PkTeamDto")
+    public ResponseEntity editData(@RequestBody PkTeamDto pkTeamDto) {
+        try {
+            Assert.notNull(pkTeamDto.getName(), "名称不能为空");
+            Assert.notNull(pkTeamDto.getId(), "id不能为空");
+
+            PkTeam pkTeam = new PkTeam();
+            pkTeam.setId(pkTeamDto.getId());
+            pkTeam.setName(pkTeamDto.getName());
+
+            //        保存logo
+            if (StringUtils.isNoneBlank(pkTeamDto.getLogo())) {
+
+                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = new EntityWrapper<>();
+                pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
+                pkAttachmentMapper.delete(pkAttachmentWrapper);
+
+
+                PkAttachment pkAttachment = new PkAttachment();
+                pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
+                pkAttachment.setType(AttachTypeEnum.LOGO.getCode());
+                pkAttachment.setLinkid(pkTeam.getId());
+                pkAttachment.setName(pkTeamDto.getLogo());
+                pkAttachment.setSuffix(pkTeamDto.getLogo().substring(pkTeamDto.getLogo().lastIndexOf(".") + 1));
+                pkAttachment.setUrl(pkTeamDto.getLogo());
+                pkAttachmentMapper.insert(pkAttachment);
+            }
+            pkTeamMapper.updateById(pkTeam);
+            return ResponseEntity.ok(new CommonResp<PkTeam>(pkTeam));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<PkTeam>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
 
     /**
      * 加入球队
@@ -352,14 +398,16 @@ public class TeamController {
 
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("teamid", teamid);;
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("teamid", teamid);
+            ;
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (!CollectionUtils.isEmpty(pkTeamMembers)) {
                 return ResponseEntity.ok(new CommonResp<String>("2", "已经申请过加入该球队"));
             }
 
             pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("status", "1");;
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("status", "1");
+            ;
             pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (!CollectionUtils.isEmpty(pkTeamMembers)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "已经加入其它球队"));
@@ -368,7 +416,7 @@ public class TeamController {
             pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid);
             pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
-            if (!CollectionUtils.isEmpty(pkTeamMembers)&&pkTeamMembers.size()>=24) {
+            if (!CollectionUtils.isEmpty(pkTeamMembers) && pkTeamMembers.size() >= 24) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "球队人员已满24人"));
             }
 
@@ -399,11 +447,49 @@ public class TeamController {
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
+            wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", manid);
+            pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "manid未获取到用户");
+
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
             pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
             pkTeamMemberMapper.delete(pkTeamMemberWrapper);
 
             return ResponseEntity.ok(new CommonResp<String>("拒绝成功"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
+        }
+
+    }
+
+
+    /**
+     * 球队踢出球员
+     *
+     * @param teamid
+     * @return
+     */
+    @RequestMapping(value = "/kickMember", method = RequestMethod.POST)
+    @ApiOperation(value = "剔除球员", notes = "返回码:1成功;")
+    @ApiImplicitParam(paramType = "query", name = "teamid", value = "球队id", required = true, dataType = "Long")
+    public ResponseEntity kickMember(@RequestParam Long teamid, @RequestParam String openid, @RequestParam String manid) {
+        try {
+            Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", openid);
+            List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "openid未获取到用户");
+
+            wrapper = new EntityWrapper<PkMember>();
+            wrapper = wrapper.eq("openid", manid);
+            pkMembers = pkMemberMapper.selectList(wrapper);
+            Assert.notEmpty(pkMembers, "manid未获取到用户");
+
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
+            pkTeamMemberMapper.delete(pkTeamMemberWrapper);
+
+            return ResponseEntity.ok(new CommonResp<String>("踢出成功"));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
@@ -428,7 +514,6 @@ public class TeamController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
 
-
             wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", manid);
             pkMembers = pkMemberMapper.selectList(wrapper);
@@ -436,7 +521,8 @@ public class TeamController {
 
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("status", "1");;
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("status", "1");
+            ;
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (!CollectionUtils.isEmpty(pkTeamMembers)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "已经加入其它球队"));
