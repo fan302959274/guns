@@ -370,6 +370,7 @@ public class DateUtil {
         return dateStr;
     }
 
+    //日期转换
     public static String judgeType(String start,String end) throws ParseException {
         String result = null;
         String t1 = "12:00:00";
