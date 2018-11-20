@@ -3,10 +3,7 @@ package com.stylefeng.guns.rest.modular.football.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.core.util.DateUtil;
-import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
-import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
-import com.stylefeng.guns.rest.common.enums.FootEnum;
-import com.stylefeng.guns.rest.common.enums.PositionEnum;
+import com.stylefeng.guns.rest.common.enums.*;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
@@ -27,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -53,6 +51,12 @@ public class MemberController {
     PkTeamMemberMapper pkTeamMemberMapper;
     @Autowired
     PkMatchMapper pkMatchMapper;
+    @Autowired
+    PkParkRelationMapper pkParkRelationMapper;
+    @Autowired
+    AreasMapper areasMapper;
+    @Autowired
+    PkParkMapper pkParkMapper;
 
     /**
      * 个人信息接口
@@ -206,8 +210,12 @@ public class MemberController {
                         data.put("oppoImage", attachmentList.get(0).getUrl());
                     }
                 }
-                data.put("address", pkMatch.getPlace());
-                data.put("time", pkMatch.getTime());
+                try {
+                    data.put("address", getAddress(pkMatch.getStatus(), pkMatch.getParkid(),pkMatch.getArea()));
+                    data.put("time",getTime(pkMatch.getStatus(), pkMatch.getTime()));
+                } catch (ParseException e) {
+                   log.error("地址或者时间转换异常");
+                }
                 data.put("pkstatus", pkMatch.getStatus());
                 datas.add(data);
 
@@ -217,6 +225,47 @@ public class MemberController {
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonListResp<Map>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
+    }
+
+
+    //获取时间接口
+    public String getTime(Integer status,Long timeid) throws ParseException {
+        //匹配中返回下午/晚上
+        if (MatchStatusEnum.FINDING.getCode().equals(status+"")){
+            PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
+            if (Objects.nonNull(pkParkRelation)){
+                return DateUtil.judgeType(pkParkRelation.getStart(),pkParkRelation.getEnd());
+            }
+        }
+        //待比赛返回场地时间
+        if (MatchStatusEnum.WAITING.getCode().equals(status+"")){
+            PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
+            if (Objects.nonNull(pkParkRelation)){
+                return pkParkRelation.getStart()+"-"+pkParkRelation.getEnd();
+            }
+        }
+        return null;
+    }
+
+    //获取地址接口
+    public String getAddress(Integer status,Long parkid,Long areaid) throws ParseException {
+        //匹配中返回区域名称
+        if (MatchStatusEnum.FINDING.getCode().equals(status+"")){
+            Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
+            wrapper = wrapper.eq("areaid", areaid);
+            List<Areas> areas = areasMapper.selectList(wrapper);//获取时间段的球场信息
+            if (CollectionUtils.isNotEmpty(areas)){
+                return areas.get(0).getArea();
+            }
+        }
+        //待比赛返回球场名称
+        if (MatchStatusEnum.WAITING.getCode().equals(status+"")){
+            PkPark pkPark = pkParkMapper.selectById(parkid);//获取球场信息
+            if (Objects.nonNull(pkPark)){
+                return pkPark.getPkname();
+            }
+        }
+        return null;
     }
 
     /**

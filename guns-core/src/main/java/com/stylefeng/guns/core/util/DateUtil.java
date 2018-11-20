@@ -370,18 +370,28 @@ public class DateUtil {
         return dateStr;
     }
 
-    /**
-     * 格式化Oracle Date
-     * @param value
-     * @return
-     */
-//	public static String buildDateValue(Object value){
-//		if(Func.isOracle()){
-//			return "to_date('"+ value +"','yyyy-mm-dd HH24:MI:SS')";
-//		}else{
-//			return Func.toStr(value);
-//		}
-//	}
+    public static String judgeType(String start,String end) throws ParseException {
+        String result = null;
+        String t1 = "12:00:00";
+        String t2 = "18:00:00";
+        String t3 = "18:30:00";
+        String t4 = "22:30:00";
+        DateFormat formart = new SimpleDateFormat("HH:mm:ss");
+        Date date1 = formart.parse(t1);
+        Date date2 = formart.parse(t2);
+        Date date3 = formart.parse(t3);
+        Date date4 = formart.parse(t4);
+        Date startDate = formart.parse(start);
+        Date endDate = formart.parse(end);
+        if (startDate.compareTo(date1)>0 && endDate.compareTo(date2)<0){
+            result = "下午";
+        }
+        if (startDate.compareTo(date3)>0 && endDate.compareTo(date4)<0){
+            result = "晚上";
+        }
+        return result;
+    }
+
 
 	public static void main(String[] args) {
 //		System.out.println(getTime(new Date()));
