@@ -195,15 +195,6 @@ public class MatchController {
             List<PkMatch> pkMatchesHost = pkMatchMapper.selectList(pkMatchWrapperHost);
             if (CollectionUtils.isNotEmpty(pkMatchesHost)) {
                 PkMatch pkMatchesHostPkMatch = pkMatchesHost.get(0);
-                //约战中
-                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
-                    return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
-                }
-                //待比赛
-                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
-                    PkTeam pkTeamHost = pkTeamMapper.selectById(pkMatchesHostPkMatch.getChallengeteamid());
-                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "队伍待比赛", pkTeamHost));
-                }
                 //匹配中超过12小时
                 if (MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
                     long hour = DateUtil.getHourSub(pkMatchesHostPkMatch.getCreatedate(), new Date());
@@ -211,6 +202,16 @@ public class MatchController {
                         return ResponseEntity.ok(new CommonResp<String>("7", "队伍约战12小时无反应"));
                     }
                 }
+                //约战中
+                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesHostPkMatch.getStatus())||MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
+                    return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
+                }
+                //待比赛
+                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
+                    PkTeam pkTeamHost = pkTeamMapper.selectById(pkMatchesHostPkMatch.getChallengeteamid());
+                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "队伍待比赛", pkTeamHost));
+                }
+
             }
             //被挑战
             Wrapper<PkMatch> pkMatchWrapperChallenge = new EntityWrapper<PkMatch>();
@@ -218,15 +219,6 @@ public class MatchController {
             List<PkMatch> pkMatchesChallenge = pkMatchMapper.selectList(pkMatchWrapperChallenge);
             if (CollectionUtils.isNotEmpty(pkMatchesChallenge)) {
                 PkMatch pkMatchesChallengePkMatch = pkMatchesChallenge.get(0);
-                //约战中
-                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
-                    return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
-                }
-                //待比赛
-                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
-                    PkTeam pkTeamChallenge = pkTeamMapper.selectById(pkMatchesChallengePkMatch.getHostteamid());
-                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "队伍待比赛", pkTeamChallenge));
-                }
                 //匹配中超过12小时
                 if (MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
                     long hour = DateUtil.getHourSub(pkMatchesChallengePkMatch.getCreatedate(), new Date());
@@ -234,6 +226,16 @@ public class MatchController {
                         return ResponseEntity.ok(new CommonResp<String>("7", "队伍约战12小时无反应"));
                     }
                 }
+                //约战中
+                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesChallengePkMatch.getStatus())||MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
+                    return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
+                }
+                //待比赛
+                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
+                    PkTeam pkTeamChallenge = pkTeamMapper.selectById(pkMatchesChallengePkMatch.getHostteamid());
+                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "队伍待比赛", pkTeamChallenge));
+                }
+
             }
 
 

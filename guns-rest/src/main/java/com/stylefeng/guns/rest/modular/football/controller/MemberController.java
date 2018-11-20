@@ -411,8 +411,14 @@ public class MemberController {
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
+            Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId());
+            List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
+            Assert.notEmpty(pkTeamMembers, "openid未加入任何球队");
+
+            //删除该队伍匹配中的订单
             Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
-            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", pkMembers.get(0).getId());
+            pkMatchWrapper = pkMatchWrapper.eq("hostteamid",pkTeamMembers.get(0).getTeamid()).eq("status",MatchStatusEnum.FINDING.getCode());
             pkMatchMapper.delete(pkMatchWrapper);
 
             return ResponseEntity.ok(new CommonResp<String>("取消约战成功"));
