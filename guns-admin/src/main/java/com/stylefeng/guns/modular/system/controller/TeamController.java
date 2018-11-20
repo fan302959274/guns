@@ -74,8 +74,15 @@ public class TeamController extends BaseController {
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(String name) {
-        List<Map<String, Object>> banners = this.teamDao.selectTeams(super.getPara("name"));
-        return super.warpObject(new TeamWarpper(banners));
+        List<Map<String, Object>> teams = this.teamDao.selectTeams(super.getPara("name"));
+        for(Map<String, Object> team : teams){
+            Integer point= (Integer)team.get("point");
+            if(point!=null){
+                int rank=this.teamDao.selectTeamRank(point);
+                team.put("rank",rank);
+            }
+        }
+        return super.warpObject(new TeamWarpper(teams));
     }
     /**
      * 获取球队成员列表
@@ -94,6 +101,7 @@ public class TeamController extends BaseController {
         Map<String, Object> teamView = this.teamDao.selectTeamView(teamId);
         SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         PkTeam  pkTeam = pkTeamMapper.selectById(teamId);
+        int rank=this.teamDao.selectTeamRank(pkTeam.getPoint());
         Map<String, Object> teamMap = BeanKit.beanToMap(pkTeam);
         Wrapper<PkAttachment> teamwrapper = new EntityWrapper<>();
         teamwrapper = teamwrapper.eq("linkid", teamId).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
@@ -103,6 +111,7 @@ public class TeamController extends BaseController {
         }
         teamMap.put("createTime",ss.format(pkTeam.getCreatedate()));
         model.addAttribute("team", teamMap);
+        model.addAttribute("rank", rank);
         model.addAttribute("teamView", teamView);
         return PREFIX + "team_edit.html";
     }
@@ -174,8 +183,10 @@ public class TeamController extends BaseController {
         if (!CollectionUtils.isEmpty(teamList)) {
             teamMap.put("teamLog", teamList.get(0).getUrl());
         }
+        int rank=this.teamDao.selectTeamRank(pkTeam.getPoint());
         model.addAttribute("createTime",ss.format(pkTeam.getCreatedate()));
         model.addAttribute("team", teamMap);
+        model.addAttribute("rank", rank);
         model.addAttribute("teamView", teamView);
         return PREFIX +"team_view.html";
     }

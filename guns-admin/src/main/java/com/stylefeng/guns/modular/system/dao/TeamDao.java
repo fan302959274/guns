@@ -77,4 +77,11 @@ public interface TeamDao {
      * @date 2018年11月20日 下午01:42:31
      */
     Map<String, Object>selectTeamView(@Param("teamid") Integer teamid);
+    /**
+     * 球队排名
+     *
+     * @param
+     * @date 2018年11月20日 下午01:42:31
+     */
+    int selectTeamRank(@Param("point") Integer point);
 }
