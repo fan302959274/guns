@@ -216,7 +216,7 @@ public class TeamController {
             Map data = new HashMap();
             data.put("teamName", pkTeam.getName());
             data.put("score", pkTeam.getPoint());
-            data.put("levelid", pkTeam.getLevel());
+            data.put("level", pkTeam.getLevel());
             data.put("differValue", TeamLevelEnum.valueOfMsg(pkTeam.getLevel()).getMax() - pkTeam.getPoint());
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
