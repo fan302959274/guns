@@ -75,10 +75,12 @@ public class MatchController {
             List<Dict> list = dictMapper.selectList(wrapper);
             List<Map> datas = new ArrayList<>();
             Map map = new HashMap();
+            map.put("date", DateUtil.getRecentWeekSixDay());
             map.put("weekid", "6");
             map.put("weekname", "周六");
             datas.add(map);
             map = new HashMap();
+            map.put("date", DateUtil.getRecentWeekSevenDay());
             map.put("weekid", "7");
             map.put("weekname", "周日");
             datas.add(map);

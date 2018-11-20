@@ -307,6 +307,69 @@ public class DateUtil {
 		return dateStr;
 	}
 
+
+	/**
+	 * 获取最近的周六
+	 *
+	 * @return
+	 */
+	public static String getRecentWeekSixDay() {
+		String dateStr = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Calendar canlendar = Calendar.getInstance(); // java.util包
+		canlendar.setTime(new Date());
+		int w = canlendar.get(Calendar.DAY_OF_WEEK)-1;
+		if (w==6){
+			canlendar = Calendar.getInstance(); // java.util包
+			canlendar.add(Calendar.DATE, 7); // 日期减 如果不够减会将月变动
+			Date date = canlendar.getTime();
+			dateStr = sdf.format(date);
+		} else if (w==7){
+			canlendar = Calendar.getInstance(); // java.util包
+			canlendar.add(Calendar.DATE, 6); // 日期减 如果不够减会将月变动
+			Date date = canlendar.getTime();
+			dateStr = sdf.format(date);
+		} else{
+			canlendar = Calendar.getInstance(); // java.util包
+			canlendar.add(Calendar.DATE, (6-w)); // 日期减 如果不够减会将月变动
+			Date date = canlendar.getTime();
+			dateStr = sdf.format(date);
+		}
+
+		return dateStr;
+	}
+
+	/**
+	 * 获取最近的周日
+	 *
+	 * @return
+	 */
+	public static String getRecentWeekSevenDay() {
+		String dateStr = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Calendar canlendar = Calendar.getInstance(); // java.util包
+		canlendar.setTime(new Date());
+		int w = canlendar.get(Calendar.DAY_OF_WEEK)-1;
+		if (w==6){
+			canlendar = Calendar.getInstance(); // java.util包
+			canlendar.add(Calendar.DATE, 1); // 日期减 如果不够减会将月变动
+			Date date = canlendar.getTime();
+			dateStr = sdf.format(date);
+		} else if (w==7){
+			canlendar = Calendar.getInstance(); // java.util包
+			canlendar.add(Calendar.DATE, 7); // 日期减 如果不够减会将月变动
+			Date date = canlendar.getTime();
+			dateStr = sdf.format(date);
+		} else{
+			canlendar = Calendar.getInstance(); // java.util包
+			canlendar.add(Calendar.DATE, (7-w)); // 日期减 如果不够减会将月变动
+			Date date = canlendar.getTime();
+			dateStr = sdf.format(date);
+		}
+
+		return dateStr;
+	}
+
 	/**
 	 * 格式化Oracle Date
 	 * @param value
@@ -321,8 +384,15 @@ public class DateUtil {
 //	}
 
 	public static void main(String[] args) {
-		System.out.println(getTime(new Date()));
-		System.out.println(getAfterDayWeek("3"));
+//		System.out.println(getTime(new Date()));
+//		System.out.println(getAfterDayWeek("0"));
+
+		System.out.println(getRecentWeekSixDay());
+		System.out.println(getRecentWeekSevenDay());
+
+
+
+
 	}
 
 }
