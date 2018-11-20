@@ -120,7 +120,7 @@ public class MatchController {
                 } catch (ParseException e) {
                     log.error("类型转换异常");
                 }
-                if (!StringUtils.isNoneBlank(type)&&!set.contains(type)) {
+                if (StringUtils.isNoneBlank(type)&&!set.contains(type)) {
                     Map map = new HashMap();
                     map.put("timeid", pkParkRelation.getId());
                     map.put("time", time);
