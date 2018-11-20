@@ -57,22 +57,24 @@ public class AdController {
         try {
             Assert.notNull(type, "轮播图类型不能为空");
             Wrapper<PkAd> wrapper = new EntityWrapper<PkAd>();
-            wrapper.eq("type", ("1".equals(type))?"0":"1");//文档要求
+            wrapper.eq("type", ("1".equals(type)) ? "0" : "1");//文档要求
             wrapper.lt("starttime", new Date());
             wrapper.gt("endtime", new Date());
             wrapper.groupBy("createdate desc");
             List<PkAd> list = pkAdMapper.selectList(wrapper);
             if (CollectionUtils.isNotEmpty(list)) {
-                PkAd pkAd = list.get(0);
-                Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<PkAttachment>();
-                pkAttachmentWrapper.eq("linkid", pkAd.getId()).eq("category", AttachCategoryEnum.AD.getCode());
-                List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
-                attachmentList.forEach(pkAttachment -> {
-                    Map map = new HashMap();
-                    map.put("image", pkAttachment.getUrl());
-                    map.put("url", pkAd.getUrl());
-                    results.add(map);
-                });
+                for (PkAd pkAd : list) {
+                    Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<PkAttachment>();
+                    pkAttachmentWrapper.eq("linkid", pkAd.getId()).eq("category", AttachCategoryEnum.AD.getCode());
+                    List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
+                    if (CollectionUtils.isNotEmpty(attachmentList)) {
+                        Map map = new HashMap();
+                        map.put("image", attachmentList.get(0).getUrl());
+                        map.put("url", pkAd.getUrl());
+                        results.add(map);
+                    }
+                }
+
             }
             return ResponseEntity.ok(new CommonListResp<Map>(results));
         } catch (Exception e) {
