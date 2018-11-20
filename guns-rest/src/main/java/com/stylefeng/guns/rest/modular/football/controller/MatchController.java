@@ -13,6 +13,7 @@ import com.stylefeng.guns.rest.common.util.response.ResponseCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -77,12 +81,12 @@ public class MatchController {
             Map map = new HashMap();
             map.put("date", DateUtil.getRecentWeekSixDay());
             map.put("weekid", "6");
-            map.put("weekname", "周六");
+            map.put("weekname", "周六 "+DateUtil.getRecentWeekSixDay());
             datas.add(map);
             map = new HashMap();
             map.put("date", DateUtil.getRecentWeekSevenDay());
             map.put("weekid", "7");
-            map.put("weekname", "周日");
+            map.put("weekname", "周日 "+DateUtil.getRecentWeekSevenDay());
             datas.add(map);
             return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
@@ -101,19 +105,28 @@ public class MatchController {
     @ApiOperation(value = "约战时间段", notes = "返回码:1成功;")
     public ResponseEntity times(String weekid) {
         try {
+
             Wrapper<PkParkRelation> wrapper = new EntityWrapper<PkParkRelation>();
             wrapper = wrapper.eq("week", weekid);
             List<PkParkRelation> list = pkParkRelationMapper.selectList(wrapper);
             List<Map> datas = new ArrayList<Map>();
             Set<String> set = new HashSet<>();
             list.forEach(pkParkRelation -> {
+
                 String time = pkParkRelation.getStart() + "-" + pkParkRelation.getEnd();
-                if (!set.contains(time)) {
+                String type = null;
+                try {
+                    type = judgeType(pkParkRelation.getStart(),pkParkRelation.getEnd());
+                } catch (ParseException e) {
+                    log.error("类型转换异常");
+                }
+                if (!StringUtils.isNoneBlank(type)&&!set.contains(type)) {
                     Map map = new HashMap();
                     map.put("timeid", pkParkRelation.getId());
                     map.put("time", time);
+                    map.put("type", type);
                     datas.add(map);
-                    set.add(time);
+                    set.add(type);
                 }
             });
             return ResponseEntity.ok(new CommonListResp<Map>(datas));
@@ -123,6 +136,28 @@ public class MatchController {
 
     }
 
+
+    public String judgeType(String start,String end) throws ParseException {
+        String result = null;
+        String t1 = "12:00:00";
+        String t2 = "18:00:00";
+        String t3 = "18:30:00";
+        String t4 = "22:30:00";
+        DateFormat formart = new SimpleDateFormat("hh:mm:ss");
+        Date date1 = formart.parse(t1);
+        Date date2 = formart.parse(t2);
+        Date date3 = formart.parse(t3);
+        Date date4 = formart.parse(t4);
+        Date startDate = formart.parse(start);
+        Date endDate = formart.parse(end);
+        if (startDate.compareTo(date1)>0 && endDate.compareTo(date2)<0){
+            result = "下午";
+        }
+        if (startDate.compareTo(date3)>0 && endDate.compareTo(date4)<0){
+            result = "晚上";
+        }
+        return result;
+    }
 
     /**
      * 查询约战资格
