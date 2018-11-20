@@ -110,7 +110,7 @@ public class TeamController {
 
             data.put("id", pkTeam.getId());
             data.put("name", pkTeam.getName());
-            data.put("levelid", TeamLevelEnum.codeOf(pkTeam.getLevel()));
+            data.put("level", pkTeam.getLevel());
 
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
