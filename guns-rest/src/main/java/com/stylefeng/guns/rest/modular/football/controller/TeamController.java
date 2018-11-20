@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
+import com.stylefeng.guns.rest.common.enums.PositionEnum;
 import com.stylefeng.guns.rest.common.enums.TeamLevelEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
@@ -132,7 +133,7 @@ public class TeamController {
                 PkMember pkMember = pkMemberMapper.selectById(teamMember.getMemberid());
                 member.put("name", pkMember.getName());
                 member.put("openid", pkMember.getOpenid());
-                member.put("position", pkMember.getPosition());
+                member.put("position", PositionEnum.messageOf(pkMember.getPosition()));
                 member.put("isCaptain", "1".equals(pkMember.getType()) ? 1 : 0);//是否是队长
                 Wrapper<PkAttachment> attachmentWrapper = new EntityWrapper<>();
                 attachmentWrapper = attachmentWrapper.eq("linkid", pkMember.getId()).eq("category", AttachCategoryEnum.MEMBER.getCode()).eq("type", AttachTypeEnum.HEAD.getCode());
