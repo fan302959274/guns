@@ -256,7 +256,7 @@ public class MatchController {
             PkPark pkPark = pkParkMapper.selectById(pkParkRelation.getParkid());
             Map map = new HashMap();
             map.put("minCost", pkPark.getCost());
-            map.put("maxCost", pkPark.getCost().subtract(new BigDecimal("100")));
+            map.put("maxCost", pkPark.getCost().add(new BigDecimal("100")));
             return ResponseEntity.ok(new CommonResp<Map>(map));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
