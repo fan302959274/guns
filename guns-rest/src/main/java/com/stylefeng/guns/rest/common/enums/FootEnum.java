@@ -5,9 +5,10 @@ package com.stylefeng.guns.rest.common.enums;
  */
 public enum FootEnum {
 
-    //队员左右脚
+    //队员惯用脚
     LEFT("1", "左"),
-    RIGHT("2", "右");
+    RIGHT("2", "右"),
+    BOTH("3","双脚");
 
 
     String code;
