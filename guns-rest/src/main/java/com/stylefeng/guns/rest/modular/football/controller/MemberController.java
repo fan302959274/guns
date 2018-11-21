@@ -186,7 +186,7 @@ public class MemberController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
             Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
-            pkMatchWrapper = pkMatchWrapper.and("hostteamid= {0} or challengeteamid={1}", teamid,teamid);
+            pkMatchWrapper = pkMatchWrapper.and("hostteamid= {0} or challengeteamid={1}", teamid, teamid);
             if (0 != type) {
                 pkMatchWrapper = pkMatchWrapper.eq("status", type);
             }
@@ -199,7 +199,13 @@ public class MemberController {
             pkMatches.forEach(pkMatch -> {
                 Map data = new HashMap();
                 data.put("team", pkTeam.getName());
-                PkTeam challengeTeam = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
+                PkTeam challengeTeam;
+                if (teamid.equals(pkMatch.getChallengeteamid())) {
+                    challengeTeam = pkTeamMapper.selectById(pkMatch.getHostteamid());
+                } else {
+                    challengeTeam = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
+                }
+
                 //对手信息
                 if (Objects.nonNull(challengeTeam)) {
                     data.put("opponent", challengeTeam.getName());
@@ -214,16 +220,16 @@ public class MemberController {
                 }
                 try {
                     data.put("address", getAddress(pkMatch.getStatus(), pkMatch.getParkid(), pkMatch.getArea()));
-                    data.put("time", DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(),"yyyyMMdd"),"yyyy-MM-dd")+" "+getTime(pkMatch.getStatus(), pkMatch.getTime()));
+                    data.put("time", DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy-MM-dd") + " " + getTime(pkMatch.getStatus(), pkMatch.getTime()));
                 } catch (ParseException e) {
                     log.error("地址或者时间转换异常");
                 }
                 data.put("pkstatus", pkMatch.getStatus());
 
                 Wrapper<PkOrder> pkOrderWrapper = new EntityWrapper<PkOrder>();
-                pkOrderWrapper = pkOrderWrapper.eq("matchid", pkMatch.getId()).eq("teamid",teamid);
+                pkOrderWrapper = pkOrderWrapper.eq("matchid", pkMatch.getId()).eq("teamid", teamid);
                 List<PkOrder> list = pkOrderMapper.selectList(pkOrderWrapper);
-                if (CollectionUtils.isNotEmpty(list)){
+                if (CollectionUtils.isNotEmpty(list)) {
                     data.put("orderno", list.get(0).getNo());//订单号
                     data.put("paystatus", list.get(0).getStatus());//订单状态
                 }
@@ -247,9 +253,7 @@ public class MemberController {
             if (Objects.nonNull(pkParkRelation)) {
                 return DateUtil.judgeType(pkParkRelation.getStart(), pkParkRelation.getEnd());
             }
-        }
-        //待比赛返回场地时间
-        if (MatchStatusEnum.WAITING.getCode().equals(status + "")) {
+        } else {
             PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
             if (Objects.nonNull(pkParkRelation)) {
                 return pkParkRelation.getStart() + "-" + pkParkRelation.getEnd();
@@ -268,9 +272,7 @@ public class MemberController {
             if (CollectionUtils.isNotEmpty(areas)) {
                 return areas.get(0).getArea();
             }
-        }
-        //待比赛返回球场名称
-        if (MatchStatusEnum.WAITING.getCode().equals(status + "")) {
+        } else {
             PkPark pkPark = pkParkMapper.selectById(parkid);//获取球场信息
             if (Objects.nonNull(pkPark)) {
                 return pkPark.getPkname();

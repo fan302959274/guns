@@ -103,6 +103,7 @@ public class WeixinController {
     public Object wxPay(HttpServletRequest request) {
         String openid = request.getParameter("openid");
         String orderno = request.getParameter("orderno");
+        log.info("支付订单的openid:{};orderno:{}",openid,orderno);
         if (openid == null || "".equals(openid)) {
             throw new BussinessException(BizExceptionEnum.OPEN_ID_ERROR);
         }
