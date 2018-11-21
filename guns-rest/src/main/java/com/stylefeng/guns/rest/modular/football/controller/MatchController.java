@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
 
@@ -251,9 +252,11 @@ public class MatchController {
     @ApiOperation(value = "约战费用", notes = "返回码:1成功;")
     public ResponseEntity fee(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
         try {
+            PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
+            PkPark pkPark = pkParkMapper.selectById(pkParkRelation.getParkid());
             Map map = new HashMap();
-            map.put("minCost", 300);
-            map.put("maxCost", 600);
+            map.put("minCost", pkPark.getCost());
+            map.put("maxCost", pkPark.getCost().subtract(new BigDecimal("100")));
             return ResponseEntity.ok(new CommonResp<Map>(map));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
