@@ -383,7 +383,7 @@ public class MemberController {
             PkMember pkMember = new PkMember();
             pkMember.setPosition(PositionEnum.codeOf(pkMemberDto.getPlayer()));
             pkMember.setHabitfeet(FootEnum.codeOf(pkMemberDto.getFoot()));
-            pkMember.setBirth(DateUtil.parse(pkMemberDto.getBirth(), "yyyy"));
+            pkMember.setBirth(StringUtils.isNoneBlank(pkMemberDto.getBirth())?DateUtil.parse(pkMemberDto.getBirth(), "yyyy"):null);
             pkMember.setHeight(pkMemberDto.getHeight());
             pkMember.setWeight(pkMemberDto.getWeight());
             pkMember.setId(pkMembers.get(0).getId());
