@@ -1,20 +1,21 @@
-package com.stylefeng.guns.rest.common.enums;
+package com.stylefeng.guns.core.enums;
 
 /**
- * 队员左右脚枚举类
+ * 队员所踢位置枚举类
  */
-public enum FootEnum {
+public enum PositionEnum {
 
-    //队员惯用脚
-    LEFT("1", "左"),
-    RIGHT("2", "右"),
-    BOTH("3","双脚");
+    //队员所踢位置
+    FORWARD("1", "前锋"),
+    CENTER("2", "中场"),
+    BACK("3", "后卫"),
+    DOOR("4", "门将");
 
 
     String code;
     String message;
 
-    FootEnum(String code, String message) {
+    PositionEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -39,7 +40,7 @@ public enum FootEnum {
         if (message == null) {
             return "";
         } else {
-            for (FootEnum s : FootEnum.values()) {
+            for (PositionEnum s : PositionEnum.values()) {
                 if (s.getMessage() .equals(message) ) {
                     return s.getCode();
                 }
@@ -52,7 +53,7 @@ public enum FootEnum {
         if (code == null) {
             return "";
         } else {
-            for (FootEnum s : FootEnum.values()) {
+            for (PositionEnum s : PositionEnum.values()) {
                 if (s.getCode() .equals(code) ) {
                     return s.getMessage();
                 }
@@ -60,4 +61,5 @@ public enum FootEnum {
             return "";
         }
     }
+
 }

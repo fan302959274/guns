@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.common.enums;
+package com.stylefeng.guns.core.enums;
 
 /**
  * 附件类型枚举类

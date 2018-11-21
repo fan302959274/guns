@@ -2,10 +2,10 @@ package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
-import com.stylefeng.guns.rest.common.enums.AttachTypeEnum;
-import com.stylefeng.guns.rest.common.enums.PositionEnum;
-import com.stylefeng.guns.rest.common.enums.TeamLevelEnum;
+import com.stylefeng.guns.core.enums.AttachCategoryEnum;
+import com.stylefeng.guns.core.enums.AttachTypeEnum;
+import com.stylefeng.guns.core.enums.PositionEnum;
+import com.stylefeng.guns.core.enums.TeamLevelEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.rest.common.persistence.model.PkMember;

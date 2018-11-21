@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.common.enums;
+package com.stylefeng.guns.core.enums;
 
 /**
  * 球队级别枚举类

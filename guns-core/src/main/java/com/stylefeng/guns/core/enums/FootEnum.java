@@ -1,19 +1,20 @@
-package com.stylefeng.guns.rest.common.enums;
+package com.stylefeng.guns.core.enums;
 
 /**
- * 支付状态枚举类
+ * 队员左右脚枚举类
  */
-public enum PayStatusEnum {
+public enum FootEnum {
 
-    //支付状态
-    NOPAY("0", "未支付"),
-    PAYED("1", "已支付");
+    //队员惯用脚
+    LEFT("1", "左"),
+    RIGHT("2", "右"),
+    BOTH("3","双脚");
 
 
     String code;
     String message;
 
-    PayStatusEnum(String code, String message) {
+    FootEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -38,7 +39,7 @@ public enum PayStatusEnum {
         if (message == null) {
             return "";
         } else {
-            for (PayStatusEnum s : PayStatusEnum.values()) {
+            for (FootEnum s : FootEnum.values()) {
                 if (s.getMessage() .equals(message) ) {
                     return s.getCode();
                 }
@@ -51,7 +52,7 @@ public enum PayStatusEnum {
         if (code == null) {
             return "";
         } else {
-            for (PayStatusEnum s : PayStatusEnum.values()) {
+            for (FootEnum s : FootEnum.values()) {
                 if (s.getCode() .equals(code) ) {
                     return s.getMessage();
                 }
@@ -59,5 +60,4 @@ public enum PayStatusEnum {
             return "";
         }
     }
-
 }

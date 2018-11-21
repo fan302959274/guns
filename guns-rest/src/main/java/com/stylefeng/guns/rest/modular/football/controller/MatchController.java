@@ -2,9 +2,9 @@ package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.core.enums.MatchStatusEnum;
+import com.stylefeng.guns.core.enums.PayStatusEnum;
 import com.stylefeng.guns.core.util.DateUtil;
-import com.stylefeng.guns.rest.common.enums.MatchStatusEnum;
-import com.stylefeng.guns.rest.common.enums.PayStatusEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
@@ -25,10 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -81,12 +78,12 @@ public class MatchController {
             Map map = new HashMap();
             map.put("date", DateUtil.getRecentWeekSixDay());
             map.put("weekid", "6");
-            map.put("weekname", "周六 "+DateUtil.getRecentWeekSixDay());
+            map.put("weekname", "周六 " + DateUtil.getRecentWeekSixDay());
             datas.add(map);
             map = new HashMap();
             map.put("date", DateUtil.getRecentWeekSevenDay());
             map.put("weekid", "7");
-            map.put("weekname", "周日 "+DateUtil.getRecentWeekSevenDay());
+            map.put("weekname", "周日 " + DateUtil.getRecentWeekSevenDay());
             datas.add(map);
             return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
@@ -116,11 +113,11 @@ public class MatchController {
                 String time = pkParkRelation.getStart() + "-" + pkParkRelation.getEnd();
                 String type = null;
                 try {
-                    type = DateUtil.judgeType(pkParkRelation.getStart(),pkParkRelation.getEnd());
+                    type = DateUtil.judgeType(pkParkRelation.getStart(), pkParkRelation.getEnd());
                 } catch (ParseException e) {
                     log.error("类型转换异常");
                 }
-                if (StringUtils.isNoneBlank(type)&&!set.contains(type)) {
+                if (StringUtils.isNoneBlank(type) && !set.contains(type)) {
                     Map map = new HashMap();
                     map.put("timeid", pkParkRelation.getId());
                     map.put("time", time);
@@ -135,7 +132,6 @@ public class MatchController {
         }
 
     }
-
 
 
     /**
@@ -203,7 +199,7 @@ public class MatchController {
                     }
                 }
                 //约战中
-                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesHostPkMatch.getStatus())||MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
+                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesHostPkMatch.getStatus()) || MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
                     return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
                 }
                 //待比赛
@@ -227,7 +223,7 @@ public class MatchController {
                     }
                 }
                 //约战中
-                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesChallengePkMatch.getStatus())||MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
+                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesChallengePkMatch.getStatus()) || MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
                     return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
                 }
                 //待比赛
@@ -277,17 +273,14 @@ public class MatchController {
     @ApiOperation(value = "约战", notes = "返回码:1成功;")
     public ResponseEntity willPK(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
         try {
-
-
             PkTeam pkTeam = pkTeamMapper.selectById(teamid);
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
-
+            PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
             //匹配
             PkMatch mPkMatch = matching(timeid, areaid, date, pkTeam.getLevel());
             if (Objects.nonNull(mPkMatch)) {
-                PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
                 PkPark pkPark = pkParkMapper.selectById(pkParkRelation.getParkid());
 
                 mPkMatch.setChallengeteamid(teamid);//挑战方
@@ -329,6 +322,9 @@ public class MatchController {
                 pkMatch.setStatus(1);//匹配中
                 pkMatch.setDate(date);
                 pkMatch.setTime(timeid);
+                String formatDate = DateUtil.formatDate(DateUtil.parse(date,"yyyyMMdd"),"yyyy-MM-dd");
+                pkMatch.setStarttime(DateUtil.parse((formatDate+" "+pkParkRelation.getStart()),"yyyy-MM-dd HH:mm:ss"));
+                pkMatch.setEndtime(DateUtil.parse((formatDate+" "+pkParkRelation.getEnd()),"yyyy-MM-dd HH:mm:ss"));
                 Long no = redisTemplate.opsForValue().increment("matchKey", 1);
                 if (no > 99998) {
                     redisTemplate.opsForValue().set("matchKey", 1);

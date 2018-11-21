@@ -2,8 +2,8 @@ package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.core.enums.*;
 import com.stylefeng.guns.core.util.DateUtil;
-import com.stylefeng.guns.rest.common.enums.*;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
@@ -141,7 +141,7 @@ public class MemberController {
             }
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId()).eq("status","1");
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId()).eq("status", "1");
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (CollectionUtils.isNotEmpty(pkTeamMembers)) {
                 PkTeam pkTeam = pkTeamMapper.selectById(pkTeamMembers.get(0).getTeamid());
@@ -211,10 +211,10 @@ public class MemberController {
                     }
                 }
                 try {
-                    data.put("address", getAddress(pkMatch.getStatus(), pkMatch.getParkid(),pkMatch.getArea()));
-                    data.put("time",getTime(pkMatch.getStatus(), pkMatch.getTime()));
+                    data.put("address", getAddress(pkMatch.getStatus(), pkMatch.getParkid(), pkMatch.getArea()));
+                    data.put("time", getTime(pkMatch.getStatus(), pkMatch.getTime()));
                 } catch (ParseException e) {
-                   log.error("地址或者时间转换异常");
+                    log.error("地址或者时间转换异常");
                 }
                 data.put("pkstatus", pkMatch.getStatus());
                 datas.add(data);
@@ -229,39 +229,39 @@ public class MemberController {
 
 
     //获取时间接口
-    public String getTime(Integer status,Long timeid) throws ParseException {
+    public String getTime(Integer status, Long timeid) throws ParseException {
         //匹配中返回下午/晚上
-        if (MatchStatusEnum.FINDING.getCode().equals(status+"")){
+        if (MatchStatusEnum.FINDING.getCode().equals(status + "")) {
             PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
-            if (Objects.nonNull(pkParkRelation)){
-                return DateUtil.judgeType(pkParkRelation.getStart(),pkParkRelation.getEnd());
+            if (Objects.nonNull(pkParkRelation)) {
+                return DateUtil.judgeType(pkParkRelation.getStart(), pkParkRelation.getEnd());
             }
         }
         //待比赛返回场地时间
-        if (MatchStatusEnum.WAITING.getCode().equals(status+"")){
+        if (MatchStatusEnum.WAITING.getCode().equals(status + "")) {
             PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
-            if (Objects.nonNull(pkParkRelation)){
-                return pkParkRelation.getStart()+"-"+pkParkRelation.getEnd();
+            if (Objects.nonNull(pkParkRelation)) {
+                return pkParkRelation.getStart() + "-" + pkParkRelation.getEnd();
             }
         }
         return null;
     }
 
     //获取地址接口
-    public String getAddress(Integer status,Long parkid,Long areaid) throws ParseException {
+    public String getAddress(Integer status, Long parkid, Long areaid) throws ParseException {
         //匹配中返回区域名称
-        if (MatchStatusEnum.FINDING.getCode().equals(status+"")){
+        if (MatchStatusEnum.FINDING.getCode().equals(status + "")) {
             Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
             wrapper = wrapper.eq("areaid", areaid);
             List<Areas> areas = areasMapper.selectList(wrapper);//获取时间段的球场信息
-            if (CollectionUtils.isNotEmpty(areas)){
+            if (CollectionUtils.isNotEmpty(areas)) {
                 return areas.get(0).getArea();
             }
         }
         //待比赛返回球场名称
-        if (MatchStatusEnum.WAITING.getCode().equals(status+"")){
+        if (MatchStatusEnum.WAITING.getCode().equals(status + "")) {
             PkPark pkPark = pkParkMapper.selectById(parkid);//获取球场信息
-            if (Objects.nonNull(pkPark)){
+            if (Objects.nonNull(pkPark)) {
                 return pkPark.getPkname();
             }
         }
@@ -383,7 +383,7 @@ public class MemberController {
             PkMember pkMember = new PkMember();
             pkMember.setPosition(PositionEnum.codeOf(pkMemberDto.getPlayer()));
             pkMember.setHabitfeet(FootEnum.codeOf(pkMemberDto.getFoot()));
-            pkMember.setBirth(StringUtils.isNoneBlank(pkMemberDto.getBirth())?DateUtil.parse(pkMemberDto.getBirth(), "yyyy"):null);
+            pkMember.setBirth(StringUtils.isNoneBlank(pkMemberDto.getBirth()) ? DateUtil.parse(pkMemberDto.getBirth(), "yyyy") : null);
             pkMember.setHeight(pkMemberDto.getHeight());
             pkMember.setWeight(pkMemberDto.getWeight());
             pkMember.setId(pkMembers.get(0).getId());
@@ -418,7 +418,7 @@ public class MemberController {
 
             //删除该队伍匹配中的订单
             Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
-            pkMatchWrapper = pkMatchWrapper.eq("hostteamid",pkTeamMembers.get(0).getTeamid()).eq("status",MatchStatusEnum.FINDING.getCode());
+            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", pkTeamMembers.get(0).getTeamid()).eq("status", MatchStatusEnum.FINDING.getCode());
             pkMatchMapper.delete(pkMatchWrapper);
 
             return ResponseEntity.ok(new CommonResp<String>("取消约战成功"));

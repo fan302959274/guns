@@ -2,8 +2,8 @@ package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.core.enums.AttachCategoryEnum;
 import com.stylefeng.guns.core.util.DateUtil;
-import com.stylefeng.guns.rest.common.enums.AttachCategoryEnum;
 import com.stylefeng.guns.rest.common.persistence.dao.PkAdMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
 import com.stylefeng.guns.rest.common.persistence.model.PkAd;

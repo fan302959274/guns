@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.common.enums;
+package com.stylefeng.guns.core.enums;
 
 /**
  * 约战状态枚举类
