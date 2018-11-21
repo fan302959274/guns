@@ -42,7 +42,7 @@ spring:
 
 logging:
   level.root: info
-  level.com.stylefeng: info
+  level.com.stylefeng: debug
   path: logs/
   file: guns-rest.log
 

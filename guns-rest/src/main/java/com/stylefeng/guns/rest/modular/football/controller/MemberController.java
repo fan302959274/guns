@@ -186,7 +186,7 @@ public class MemberController {
             Assert.notEmpty(pkMembers, "openid未获取到用户");
 
             Wrapper<PkMatch> pkMatchWrapper = new EntityWrapper<PkMatch>();
-            pkMatchWrapper = pkMatchWrapper.eq("hostteamid", teamid);
+            pkMatchWrapper = pkMatchWrapper.and("hostteamid= {0} or challengeteamid={1}", teamid,teamid);
             if (0 != type) {
                 pkMatchWrapper = pkMatchWrapper.eq("status", type);
             }
