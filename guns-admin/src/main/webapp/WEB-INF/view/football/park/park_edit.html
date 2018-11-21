@@ -63,7 +63,7 @@
 										<div class="form-group" name="dictItem" id="dictItem">
 											<div class="col-sm-3" style="margin-left: 65px;">
 												<div class="col-sm-9">
-													<select class="form-control" id="week" name="week" value="${item.week}">
+													<select class="form-control" id="week${item.id}" name="week" value="${item.week}">
 														<option value="1">周一</option>
 														<option value="2">周二</option>
 														<option value="3">周三</option>
@@ -89,7 +89,7 @@
 												</div>
 											</div>;
 										<script>
-											$('#week').val(${item.week});
+											$('#week${item.id}').val(${item.week});
                                             laydate.render({
                                                 elem: '#start${item.id}' //指定元素
                                                 ,type: 'time'
