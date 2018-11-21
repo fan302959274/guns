@@ -269,7 +269,7 @@ public class MemberController extends BaseController {
             if (StringUtils.isNoneBlank(pkMemberDto.getTeamlogo())) {
                 PkAttachment pkAttachment = new PkAttachment();
                 pkAttachment.setCategory(AttachCategoryEnum.TEAM.getCode());
-                pkAttachment.setType(AttachTypeEnum.HEAD.getCode());
+                pkAttachment.setType(AttachTypeEnum.LOGO.getCode());
                 pkAttachment.setLinkid(pkMemberDto.getTeamId());
                 pkAttachment.setName("球队logo");
                 pkAttachment.setSuffix(pkMemberDto.getTeamlogo().substring(pkMemberDto.getTeamlogo().lastIndexOf(".") + 1));
