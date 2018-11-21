@@ -288,6 +288,7 @@ public class MatchController {
 
                 mPkMatch.setChallengeteamid(teamid);//挑战方
                 mPkMatch.setStatus(2);//待比赛
+                mPkMatch.setParkid(pkPark.getId());//球场id
                 pkMatchMapper.updateById(mPkMatch);
                 //生成匹配方订单(未支付)
                 PkOrder pkOrderHost = new PkOrder();
