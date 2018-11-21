@@ -57,6 +57,8 @@ public class MemberController {
     AreasMapper areasMapper;
     @Autowired
     PkParkMapper pkParkMapper;
+    @Autowired
+    PkOrderMapper pkOrderMapper;
 
     /**
      * 个人信息接口
@@ -217,6 +219,15 @@ public class MemberController {
                     log.error("地址或者时间转换异常");
                 }
                 data.put("pkstatus", pkMatch.getStatus());
+
+                Wrapper<PkOrder> pkOrderWrapper = new EntityWrapper<PkOrder>();
+                pkOrderWrapper = pkOrderWrapper.eq("matchid", pkMatch.getId()).eq("teamid",teamid);
+                List<PkOrder> list = pkOrderMapper.selectList(pkOrderWrapper);
+                if (CollectionUtils.isNotEmpty(list)){
+                    data.put("orderno", list.get(0).getNo());//订单号
+                    data.put("paystatus", list.get(0).getStatus());//订单状态
+                }
+
                 datas.add(data);
 
             });

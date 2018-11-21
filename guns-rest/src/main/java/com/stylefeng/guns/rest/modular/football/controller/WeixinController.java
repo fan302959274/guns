@@ -1,8 +1,13 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.core.enums.PayStatusEnum;
 import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.rest.common.exception.BussinessException;
+import com.stylefeng.guns.rest.common.persistence.dao.PkOrderMapper;
+import com.stylefeng.guns.rest.common.persistence.model.PkOrder;
 import com.stylefeng.guns.rest.common.util.response.CommonListResp;
 import com.stylefeng.guns.rest.common.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.util.response.ResponseCode;
@@ -14,6 +19,7 @@ import com.thoughtworks.xstream.XStream;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -22,6 +28,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,6 +56,9 @@ import java.util.Map;
 @Api(value = "WeixinController|一个用来测试swagger注解的控制器")
 public class WeixinController {
     private Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    PkOrderMapper pkOrderMapper;
 
     /**
      * 小程序后台登录，向微信平台发送获取access_token请求，并返回openId
@@ -92,6 +102,7 @@ public class WeixinController {
     @ApiImplicitParam(paramType = "query", name = "openid", value = "openid", required = true, dataType = "String")
     public Object wxPay(HttpServletRequest request) {
         String openid = request.getParameter("openid");
+        String orderno = request.getParameter("orderno");
         if (openid == null || "".equals(openid)) {
             throw new BussinessException(BizExceptionEnum.OPEN_ID_ERROR);
         }
@@ -102,7 +113,7 @@ public class WeixinController {
             String nonce_str = RandomStringGenerator.getRandomStringByLength(32);
             order.setNonce_str(nonce_str);
             order.setBody("测试支付啦");
-            order.setOut_trade_no(RandomStringGenerator.getRandomStringByLength(32));
+            order.setOut_trade_no(orderno);
             order.setTotal_fee(1);
             //获取本机的ip地址
             order.setSpbill_create_ip(IpUtils.getIpAddr(request));
@@ -181,6 +192,15 @@ public class WeixinController {
             if (sign.equals((String) map.get("sign"))) {
                 /**此处添加自己的业务逻辑代码start**/
 
+                String orderno = (String) map.get("out_trade_no");//订单号
+                Wrapper<PkOrder> pkOrderWrapper = new EntityWrapper<PkOrder>();
+                pkOrderWrapper = pkOrderWrapper.eq("no", orderno);
+                List<PkOrder> orders = pkOrderMapper.selectList(pkOrderWrapper);
+                if (CollectionUtils.isNotEmpty(orders)){
+                    PkOrder pkOrder = orders.get(0);
+                    pkOrder.setStatus(PayStatusEnum.PAYED.getCode());//已支付
+                    pkOrderMapper.updateById(pkOrder);
+                }
 
                 /**此处添加自己的业务逻辑代码end**/
 
