@@ -33,7 +33,7 @@ public class MatchStatusTask {
      */
     @Scheduled(fixedRate = 5000)
     public void task() {
-        log.info("---------------比赛状态同步开始-------------");
+//        log.info("---------------比赛状态同步开始-------------");
         //所有待比赛的时间一到改成约战中  一过就改为约战完成
         Wrapper<PkMatch> wrapper = new EntityWrapper<PkMatch>();
         wrapper = wrapper.eq("status", MatchStatusEnum.WAITING.getCode());
@@ -51,7 +51,7 @@ public class MatchStatusTask {
             pkMatch.setStatus(Integer.parseInt(status));
             pkMatchMapper.updateById(pkMatch);
         });
-        log.info("---------------比赛状态同步结束-------------");
+//        log.info("---------------比赛状态同步结束-------------");
 
     }
 }

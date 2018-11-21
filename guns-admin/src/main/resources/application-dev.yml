@@ -81,7 +81,7 @@ mybatis-plus:
 
 logging:
   level.root: info
-  level.com.stylefeng: debug
+  level.com.stylefeng: info
   path: logs/
   file: guns.log
 
