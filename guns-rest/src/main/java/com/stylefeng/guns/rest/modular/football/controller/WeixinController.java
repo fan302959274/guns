@@ -144,7 +144,6 @@ public class WeixinController {
 
                 SignInfo signInfo = new SignInfo();
                 signInfo.setAppId(Configure.getAppID());
-//                long time = System.currentTimeMillis() / 1000;
                 signInfo.setTimeStamp(timeStamp + "");
                 signInfo.setNonceStr(nonce_str);
                 signInfo.setRepay_id("prepay_id=" + returnInfo.getPrepay_id());
