@@ -150,7 +150,7 @@ public class MemberController {
                 data.put("team", pkTeam.getName());
                 data.put("teamid", pkTeam.getId());
                 data.put("teamScore", pkTeam.getPoint());
-                data.put("level", pkTeam.getLevel());
+                data.put("level", TeamLevelEnum.calcLevel(pkTeam.getPoint()).getMessage());
                 data.put("cityid", pkTeam.getCity());
                 pkAttachmentWrapper = new EntityWrapper<>();
                 pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());

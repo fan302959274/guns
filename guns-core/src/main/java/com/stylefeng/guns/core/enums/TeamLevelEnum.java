@@ -6,14 +6,13 @@ package com.stylefeng.guns.core.enums;
 public enum TeamLevelEnum {
 
     //球队级别
-    SHIZHE("1",0,999, "使者"),
-    SHOUWEI("2",1000,1499, "守卫"),
-    ZHANSHI("3",1500,1999, "战士"),
-    TONGZHI("4",2000,2499, "统治"),
-    JINGDIAN("5",2500,2999, "经典"),
-    CHUANQI("6",3000,3499, "传奇"),
-    SHENLING("7",3500,9999, "神灵")
-    ;
+    SHIZHE("1", 0, 999, "使者"),
+    SHOUWEI("2", 1000, 1499, "守卫"),
+    ZHANSHI("3", 1500, 1999, "战士"),
+    TONGZHI("4", 2000, 2499, "统治"),
+    JINGDIAN("5", 2500, 2999, "经典"),
+    CHUANQI("6", 3000, 3499, "传奇"),
+    SHENLING("7", 3500, 9999, "神灵");
 
 
     String code;
@@ -21,7 +20,7 @@ public enum TeamLevelEnum {
     Integer max;
     String message;
 
-    TeamLevelEnum(String code,Integer min ,Integer max,String message) {
+    TeamLevelEnum(String code, Integer min, Integer max, String message) {
         this.code = code;
         this.min = min;
         this.max = max;
@@ -65,7 +64,7 @@ public enum TeamLevelEnum {
             return "";
         } else {
             for (TeamLevelEnum s : TeamLevelEnum.values()) {
-                if (s.getMessage() .equals(message) ) {
+                if (s.getMessage().equals(message)) {
                     return s.getCode();
                 }
             }
@@ -78,7 +77,7 @@ public enum TeamLevelEnum {
             return "";
         } else {
             for (TeamLevelEnum s : TeamLevelEnum.values()) {
-                if (s.getCode() .equals(code) ) {
+                if (s.getCode().equals(code)) {
                     return s.getMessage();
                 }
             }
@@ -91,12 +90,40 @@ public enum TeamLevelEnum {
             return TeamLevelEnum.SHIZHE;
         } else {
             for (TeamLevelEnum s : TeamLevelEnum.values()) {
-                if (s.getMessage() .equals(message) ) {
+                if (s.getMessage().equals(message)) {
                     return s;
                 }
             }
             return TeamLevelEnum.SHIZHE;
         }
     }
+
+    public static TeamLevelEnum valueOfCode(String code) {
+        if (code == null) {
+            return TeamLevelEnum.SHIZHE;
+        } else {
+            for (TeamLevelEnum s : TeamLevelEnum.values()) {
+                if (s.getCode().equals(code)) {
+                    return s;
+                }
+            }
+            return TeamLevelEnum.SHIZHE;
+        }
+    }
+
+
+    public static TeamLevelEnum calcLevel(Integer point) {
+        if (point == null) {
+            return TeamLevelEnum.SHIZHE;
+        } else {
+            for (TeamLevelEnum s : TeamLevelEnum.values()) {
+                if (s.getMin() < point && point < s.getMax()) {
+                    return s;
+                }
+            }
+            return TeamLevelEnum.SHIZHE;
+        }
+    }
+
 
 }

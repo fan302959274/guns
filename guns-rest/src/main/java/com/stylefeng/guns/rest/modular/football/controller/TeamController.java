@@ -110,7 +110,7 @@ public class TeamController {
 
             data.put("id", pkTeam.getId());
             data.put("name", pkTeam.getName());
-            data.put("level", pkTeam.getLevel());
+            data.put("level", TeamLevelEnum.calcLevel(pkTeam.getPoint()).getMessage());
 
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
@@ -172,7 +172,7 @@ public class TeamController {
         try {
             Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
 
-            wrapper.eq("level", TeamLevelEnum.messageOf(levelid + ""));
+            wrapper.and("point > {0} and point < {1}", TeamLevelEnum.valueOfCode(levelid + "").getMin(),TeamLevelEnum.valueOfCode(levelid + "").getMin());
             List<PkTeam> list = pkTeamMapper.selectList(wrapper);
 
             List<Map> datas = new ArrayList<>();
@@ -216,7 +216,7 @@ public class TeamController {
             Map data = new HashMap();
             data.put("teamName", pkTeam.getName());
             data.put("score", pkTeam.getPoint());
-            data.put("level", pkTeam.getLevel());
+            data.put("level", TeamLevelEnum.calcLevel(pkTeam.getPoint()).getMessage());
             data.put("differValue", TeamLevelEnum.valueOfMsg(pkTeam.getLevel()).getMax() - pkTeam.getPoint());
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
