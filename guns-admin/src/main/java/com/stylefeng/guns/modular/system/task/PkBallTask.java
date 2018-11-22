@@ -85,11 +85,11 @@ public class PkBallTask {
             if (times >= 12 * 60 * 60 * 1000) {
                 pkMatch.setStatus(Integer.parseInt(MatchStatusEnum.FAIL.getCode()));
                 pkMatchMapper.updateById(pkMatch);
-            }
-            try {
-                sendFailMsg(pkMatch.getId());
-            } catch (ParseException e) {
-                log.error("约战失败短信发送失败");
+                try {
+                    sendFailMsg(pkMatch.getId());
+                } catch (ParseException e) {
+                    log.error("约战失败短信发送失败");
+                }
             }
         });
 
