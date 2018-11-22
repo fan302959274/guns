@@ -198,6 +198,7 @@ public class MemberController {
             List<Map> datas = new ArrayList<>();
             pkMatches.forEach(pkMatch -> {
                 Map data = new HashMap();
+                data.put("matchid",pkMatch.getId());
                 data.put("team", pkTeam.getName());
                 PkTeam challengeTeam;
                 if (teamid.equals(pkMatch.getChallengeteamid())) {
@@ -341,7 +342,7 @@ public class MemberController {
     @RequestMapping(value = "/review", method = RequestMethod.POST)
     @ApiOperation(value = "评价", notes = "返回码:1成功;")
     @ApiImplicitParam(paramType = "query", name = "openid", value = "队员评价", required = true, dataType = "String")
-    public ResponseEntity review(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Long oppoid, @RequestParam BigDecimal culture, @RequestParam BigDecimal ontime, @RequestParam BigDecimal friendly) {
+    public ResponseEntity review(@RequestParam String openid, @RequestParam Long teamid, @RequestParam Long oppoid, @RequestParam Long matchid, @RequestParam BigDecimal culture, @RequestParam BigDecimal ontime, @RequestParam BigDecimal friendly) {
         try {
             Wrapper<PkMember> wrapper = new EntityWrapper<PkMember>();
             wrapper = wrapper.eq("openid", openid);
@@ -351,7 +352,7 @@ public class MemberController {
             }
             Assert.notEmpty(pkMembers, "openid未获取到用户");
             Wrapper<PkTeamReview> pkTeamReviewWrapper = new EntityWrapper<PkTeamReview>();
-            pkTeamReviewWrapper = pkTeamReviewWrapper.eq("openid", openid).eq("teamid", teamid).eq("oppoid", oppoid);
+            pkTeamReviewWrapper = pkTeamReviewWrapper.eq("openid", openid).eq("teamid", teamid).eq("oppoid", oppoid).eq("matchid",matchid);
             List<PkTeamReview> pkTeamReviews = pkTeamReviewMapper.selectList(pkTeamReviewWrapper);
             if (CollectionUtils.isNotEmpty(pkTeamReviews)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该用户对球队已经评价过"));
@@ -361,6 +362,7 @@ public class MemberController {
             PkTeamReview pkTeamReview = new PkTeamReview();
             pkTeamReview.setOpenid(openid);
             pkTeamReview.setOppoid(oppoid);
+            pkTeamReview.setMatchid(matchid);
             pkTeamReview.setCulture(culture);
             pkTeamReview.setFriendly(friendly);
             pkTeamReview.setOntime(ontime);

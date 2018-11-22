@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-10-30
+ * @since 2018-11-22
  */
 @TableName("pk_team_review")
 public class PkTeamReview extends Model<PkTeamReview> {
@@ -51,6 +51,10 @@ public class PkTeamReview extends Model<PkTeamReview> {
      * 球队面貌评分 1-5
      */
 	private BigDecimal friendly;
+    /**
+     * 比赛id
+     */
+	private Long matchid;
 
 
 	public Long getId() {
@@ -109,6 +113,14 @@ public class PkTeamReview extends Model<PkTeamReview> {
 		this.friendly = friendly;
 	}
 
+	public Long getMatchid() {
+		return matchid;
+	}
+
+	public void setMatchid(Long matchid) {
+		this.matchid = matchid;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -124,6 +136,7 @@ public class PkTeamReview extends Model<PkTeamReview> {
 			", culture=" + culture +
 			", ontime=" + ontime +
 			", friendly=" + friendly +
+			", matchid=" + matchid +
 			"}";
 	}
 }

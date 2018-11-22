@@ -11,6 +11,7 @@
 		<result column="culture" property="culture" />
 		<result column="ontime" property="ontime" />
 		<result column="friendly" property="friendly" />
+		<result column="matchid" property="matchid" />
 	</resultMap>
 
 </mapper>
