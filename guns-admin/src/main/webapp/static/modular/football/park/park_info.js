@@ -136,6 +136,7 @@ ParkInfoDlg.editSubmit = function () {
         Feng.error("修改失败!" + data.responseJSON.message + "!");
     });
     ajax.set(this.parkInfoData);
+    ajax.set('usetime',this.mutiString);
     ajax.start();
 };
 
