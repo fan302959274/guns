@@ -355,7 +355,7 @@ public class MemberController {
             pkTeamReviewWrapper = pkTeamReviewWrapper.eq("openid", openid).eq("teamid", teamid).eq("oppoid", oppoid).eq("matchid",matchid);
             List<PkTeamReview> pkTeamReviews = pkTeamReviewMapper.selectList(pkTeamReviewWrapper);
             if (CollectionUtils.isNotEmpty(pkTeamReviews)) {
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该用户对球队已经评价过"));
+                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该用户对该局比赛已经评价过"));
             }
 
             //存储评价记录
