@@ -33,7 +33,7 @@ public class PkMatchDto extends Model<PkMatchDto> {
     /**
      * 比赛时间
      */
-    private Integer time;
+    private String time;
     /**
      * 比赛地点
      */
@@ -107,6 +107,8 @@ public class PkMatchDto extends Model<PkMatchDto> {
      */
     private String isdeleted;
 
+    private Long timeid;
+
 
     public Long getId() {
         return id;
@@ -124,13 +126,7 @@ public class PkMatchDto extends Model<PkMatchDto> {
         this.name = name;
     }
 
-    public Integer getTime() {
-        return time;
-    }
 
-    public void setTime(Integer time) {
-        this.time = time;
-    }
 
     public String getPlace() {
         return place;
@@ -276,6 +272,22 @@ public class PkMatchDto extends Model<PkMatchDto> {
 
     public void setIsdeleted(String isdeleted) {
         this.isdeleted = isdeleted;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Long getTimeid() {
+        return timeid;
+    }
+
+    public void setTimeid(Long timeid) {
+        this.timeid = timeid;
     }
 
     @Override

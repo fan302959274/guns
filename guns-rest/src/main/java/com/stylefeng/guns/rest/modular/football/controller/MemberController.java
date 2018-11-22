@@ -220,7 +220,7 @@ public class MemberController {
                 }
                 try {
                     data.put("address", getAddress(pkMatch.getStatus(), pkMatch.getParkid(), pkMatch.getArea()));
-                    data.put("time", DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy-MM-dd") + " " + getTime(pkMatch.getStatus(), pkMatch.getTime()));
+                    data.put("time", DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy-MM-dd") + " " + getTime(pkMatch.getStatus(), pkMatch.getTimeid(),pkMatch));
                 } catch (ParseException e) {
                     log.error("地址或者时间转换异常");
                 }
@@ -246,7 +246,7 @@ public class MemberController {
 
 
     //获取时间接口
-    public String getTime(Integer status, Long timeid) throws ParseException {
+    public String getTime(Integer status, Long timeid,PkMatch pkMatch) throws ParseException {
         //匹配中返回下午/晚上
         if (MatchStatusEnum.FINDING.getCode().equals(status + "")) {
             PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
@@ -254,10 +254,7 @@ public class MemberController {
                 return DateUtil.judgeType(pkParkRelation.getStart(), pkParkRelation.getEnd());
             }
         } else {
-            PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
-            if (Objects.nonNull(pkParkRelation)) {
-                return pkParkRelation.getStart() + "-" + pkParkRelation.getEnd();
-            }
+            return pkMatch.getTime();
         }
         return null;
     }

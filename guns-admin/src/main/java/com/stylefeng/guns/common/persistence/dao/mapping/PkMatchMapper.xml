@@ -25,6 +25,7 @@
 		<result column="isdeleted" property="isdeleted" />
 		<result column="no" property="no" />
 		<result column="date" property="date" />
+		<result column="timeid" property="timeid" />
 	</resultMap>
 
 </mapper>

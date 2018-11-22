@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-09
+ * @since 2018-11-22
  */
 @TableName("pk_team")
 public class PkTeam extends Model<PkTeam> {
@@ -97,7 +97,7 @@ public class PkTeam extends Model<PkTeam> {
      */
 	private Integer reviewcount;
     /**
-     * 球队状态:0:禁用1:启用
+     * 球队状态:1:禁用0:启用
      */
 	private String status;
     /**

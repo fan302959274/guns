@@ -32,7 +32,7 @@
         END)
         as status,
         m.date,
-        CONCAT(pr.start,'-',pr.end) as time,
+        m.time as time,
         d.name as time
     </sql>
 
@@ -76,7 +76,6 @@
         LEFT JOIN pk_park park ON m.parkid = park.id
         LEFT JOIN areas area ON m.area = area.areaid
         LEFT JOIN dict d on m.time = d.id
-        LEFT JOIN pk_park_relation pr on m.time = pr.id
         where o.id=#{id}
     </select>
 
