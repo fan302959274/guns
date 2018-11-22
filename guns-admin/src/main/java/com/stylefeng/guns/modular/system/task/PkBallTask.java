@@ -3,14 +3,21 @@ package com.stylefeng.guns.modular.system.task;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.common.persistence.dao.PkMatchMapper;
+import com.stylefeng.guns.common.persistence.dao.PkTeamMapper;
+import com.stylefeng.guns.common.persistence.dao.PkTeamReviewMapper;
 import com.stylefeng.guns.common.persistence.model.PkMatch;
+import com.stylefeng.guns.common.persistence.model.PkTeam;
+import com.stylefeng.guns.common.persistence.model.PkTeamReview;
 import com.stylefeng.guns.core.enums.MatchStatusEnum;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -23,13 +30,17 @@ import java.util.List;
  * @date 2018/11/21
  */
 @Component
-public class MatchStatusTask {
+public class PkBallTask {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     PkMatchMapper pkMatchMapper;
+    @Autowired
+    PkTeamMapper pkTeamMapper;
+    @Autowired
+    PkTeamReviewMapper pkTeamReviewMapper;
 
     /**
-     * 时间间隔，每隔5秒执行一次
+     * 比赛状态修改，每隔5秒执行一次
      */
     @Scheduled(fixedRate = 5000)
     public void task() {
@@ -65,6 +76,42 @@ public class MatchStatusTask {
             }
         });
 
+
     }
+
+    /**
+     * 球队评分统计，每隔60秒执行一次
+     */
+    @Scheduled(fixedRate = 60000)
+    public void task2() {
+        Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
+        List<PkTeam> teamList = pkTeamMapper.selectList(wrapper);
+        for (PkTeam pkTeam : teamList) {
+            Wrapper<PkTeamReview> pkTeamReviewWrapper = new EntityWrapper<PkTeamReview>();
+            pkTeamReviewWrapper.eq("teamid", pkTeam.getId());
+            List<PkTeamReview> reviews = pkTeamReviewMapper.selectList(pkTeamReviewWrapper);
+            if (CollectionUtils.isNotEmpty(reviews)) {
+                BigDecimal total = new BigDecimal("" + reviews.size());
+                BigDecimal cultureSum = new BigDecimal("0");
+                BigDecimal ontimeSum = new BigDecimal("0");
+                BigDecimal friendlySum = new BigDecimal("0");
+                for (PkTeamReview pkTeamReview : reviews) {
+                    cultureSum = cultureSum.add(pkTeamReview.getCulture());
+                    ontimeSum = ontimeSum.add(pkTeamReview.getOntime());
+                    friendlySum = friendlySum.add(pkTeamReview.getFriendly());
+                }
+                BigDecimal cultureAver = cultureSum.divide(total, 2, RoundingMode.HALF_UP);
+                BigDecimal ontimeAver = ontimeSum.divide(total, 2, RoundingMode.HALF_UP);
+                BigDecimal friendlyAver = friendlySum.divide(total, 2, RoundingMode.HALF_UP);
+
+                pkTeam.setCulture(cultureAver);
+                pkTeam.setOntime(ontimeAver);
+                pkTeam.setFriendly(friendlyAver);
+                pkTeamMapper.updateById(pkTeam);
+            }
+        }
+
+    }
+
 
 }
