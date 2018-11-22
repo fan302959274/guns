@@ -172,7 +172,7 @@ public class TeamController {
         try {
             Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
 
-            wrapper.and("point > {0} and point < {1}", TeamLevelEnum.valueOfCode(levelid + "").getMin(),TeamLevelEnum.valueOfCode(levelid + "").getMax()).orderBy("point",false);
+            wrapper.and("point >= {0} and point <= {1}", TeamLevelEnum.valueOfCode(levelid + "").getMin(),TeamLevelEnum.valueOfCode(levelid + "").getMax()).orderBy("point",false);
             List<PkTeam> list = pkTeamMapper.selectList(wrapper);
 
             List<Map> datas = new ArrayList<>();
