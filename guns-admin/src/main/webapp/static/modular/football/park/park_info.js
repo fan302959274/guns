@@ -70,7 +70,7 @@ ParkInfoDlg.close = function () {
  */
 ParkInfoDlg.collectData = function () {
     this.set('id').set('pkname').set('area').set('pkdesc').set('imgs')
-        .set('pkaddr').set('cost');
+        .set('pkaddr').set('cost').set('usetime');
     var mutiString ='';
     $("[name='dictItem']").each(function(){
         var week = $(this).find("[name='week']").val();

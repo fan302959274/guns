@@ -21,7 +21,9 @@ import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.modular.system.dao.ParkDao;
 import com.stylefeng.guns.modular.system.dao.TeamDao;
+import com.stylefeng.guns.modular.system.transfer.PkParkDto;
 import com.stylefeng.guns.modular.system.warpper.ParkWarpper;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,6 +63,7 @@ public class ParkController extends BaseController {
     PkAttachmentMapper pkAttachmentMapper;
     @Resource
     PkParkRelationMapper pkParkRelationMapper;
+
     /**
      * 跳转到球场首页
      */
@@ -73,9 +76,9 @@ public class ParkController extends BaseController {
      * 跳转到添加球场
      */
     @RequestMapping("/park_add")
-    public String parkAdd(Model  model) {
+    public String parkAdd(Model model) {
         List<Map<String, Object>> areaInfo = this.teamDao.getAreaInfos();
-        model.addAttribute("areaInfo",areaInfo);
+        model.addAttribute("areaInfo", areaInfo);
         return PREFIX + "park_add.html";
     }
 
@@ -84,12 +87,12 @@ public class ParkController extends BaseController {
      */
     @RequestMapping(value = "/add")
     @ResponseBody
-    public Object add(PkPark park ,String imgs ,String usetime) {
+    public Object add(PkPark park, String imgs, String usetime) {
         this.pkParkMapper.insert(park);
         // 保存可用时间
         if (StringUtils.isNoneBlank(usetime)) {
             Arrays.asList(usetime.split(",")).forEach(s -> {
-                String [] ss=s.split("&");
+                String[] ss = s.split("&");
                 PkParkRelation pkParkRelation = new PkParkRelation();
                 pkParkRelation.setParkid(park.getId());
                 pkParkRelation.setWeek(ss[0]);
@@ -123,12 +126,12 @@ public class ParkController extends BaseController {
         }
         List<Map<String, Object>> areaInfo = this.teamDao.getAreaInfos();
         List<Map<String, Object>> relation = this.parkDao.selectParksRelation(parkId);
-        model.addAttribute("areaInfo",areaInfo);
-        model.addAttribute("relation",relation);
+        model.addAttribute("areaInfo", areaInfo);
+        model.addAttribute("relation", relation);
         PkPark park = this.pkParkMapper.selectById(parkId);
 
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", parkId).eq("category",AttachCategoryEnum.PARK.getCode());
+        wrapper = wrapper.eq("linkid", parkId).eq("category", AttachCategoryEnum.PARK.getCode());
         List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
         String ads = "";
         if (!CollectionUtils.isEmpty(list)) {
@@ -173,11 +176,33 @@ public class ParkController extends BaseController {
      */
     @RequestMapping(value = "/edit")
     @ResponseBody
-    public Object update(@Valid PkPark park, BindingResult result) {
+    public Object update(@Valid PkParkDto pkParkDto, BindingResult result) {
         if (result.hasErrors()) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
-        this.pkParkMapper.updateById(park);
+        PkPark pkPark = new PkPark();
+        try {
+            PropertyUtils.copyProperties(pkPark, pkParkDto);
+        } catch (Exception e) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        this.pkParkMapper.updateById(pkPark);
+
+        Wrapper<PkParkRelation> wrapper = new EntityWrapper<>();
+        wrapper = wrapper.eq("parkid", pkPark.getId());
+        pkParkRelationMapper.delete(wrapper);
+        if (StringUtils.isNoneBlank(pkParkDto.getUsetime())) {
+            String[] usetimes = pkParkDto.getUsetime().split(",");
+            for (String usetime : usetimes) {
+                String[] times = usetime.split("&");
+                PkParkRelation pkParkRelation = new PkParkRelation();
+                pkParkRelation.setParkid(pkPark.getId());
+                pkParkRelation.setWeek(times[0]);
+                pkParkRelation.setStart(times[1]);
+                pkParkRelation.setEnd(times[2]);
+                pkParkRelationMapper.insert(pkParkRelation);
+            }
+        }
         return SUCCESS_TIP;
 
     }
@@ -203,7 +228,7 @@ public class ParkController extends BaseController {
         if (ToolUtil.isEmpty(parkId)) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
-        this.parkDao.setStatus(parkId,1 );
+        this.parkDao.setStatus(parkId, 1);
         return SUCCESS_TIP;
     }
 

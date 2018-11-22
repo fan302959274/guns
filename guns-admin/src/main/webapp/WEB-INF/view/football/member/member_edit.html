@@ -43,8 +43,8 @@
                     <div class="row">
                         <div class="col-sm-6 b-r">
                             <input type="hidden" id="teamId" value="${teamInfo.id!}">
-                            <#input id="teamname" name="球队名称" underline="true" value="${teamInfo.name!}"/>
-                            <#avatar id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog!}"/>
+                            <#input id="teamname" readonly="readonly" name="球队名称" underline="true" value="${teamInfo.name!}"/>
+                            <#avatarview id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog!}"/>
                         </div>
                         <div class="col-sm-6 b-r">
                             <input type="hidden" id="areaValue" value="${teamInfo.areaid!}">
