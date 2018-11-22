@@ -181,7 +181,7 @@ public class MatchController {
                 return ResponseEntity.ok(new CommonResp<String>("4", "队伍有未支付的订单"));
             }
 
-            if ("0".equals(pkTeam.getStatus())) {
+            if ("1".equals(pkTeam.getStatus())) {
                 return ResponseEntity.ok(new CommonResp<String>("8", "队伍在黑名单中无法比赛"));
             }
 
@@ -370,7 +370,7 @@ public class MatchController {
      */
     public PkMatch matching(Long timeid, Long areaid, String date, String level) {
         Wrapper<PkMatch> wrapper = new EntityWrapper<PkMatch>();
-        wrapper = wrapper.eq("area", areaid).eq("time", timeid).eq("date", date).groupBy("createdate desc");
+        wrapper = wrapper.eq("area", areaid).eq("time", timeid).eq("date", date).eq("status",MatchStatusEnum.FINDING.getCode()).groupBy("createdate desc");
         List<PkMatch> list = pkMatchMapper.selectList(wrapper);
         if (CollectionUtils.isNotEmpty(list)) {
             return list.get(0);
