@@ -4,6 +4,15 @@
     <sql id="Base_Column_List">
         o.id,
         o.no,
+        (CASE
+        WHEN o.status  = '0' THEN
+        '未支付'
+        WHEN o.status  = '1' THEN
+        '已支付'
+        ELSE
+        '未支付'
+        END)
+        as paystatus,
         tm.name as challengeteam,
         tm2.name as hostteam,
         area.area,
@@ -23,6 +32,7 @@
         END)
         as status,
         m.date,
+        CONCAT(pr.start,'-',pr.end) as time,
         d.name as time
     </sql>
 
@@ -34,8 +44,9 @@
         LEFT JOIN pk_team tm ON m.challengeteamid = tm.id
         LEFT JOIN pk_team tm2 ON m.hostteamid = tm2.id
         LEFT JOIN pk_park park ON m.parkid = park.id
-        LEFT JOIN areas area ON park.area = area.areaid
+        LEFT JOIN areas area ON m.area = area.areaid
         LEFT JOIN dict d on m.time = d.id
+        LEFT JOIN pk_park_relation pr on m.time = pr.id
         where 1=1
         <if test="areas != null and areas != ''">
             AND area.id=#{areas}
@@ -63,8 +74,9 @@
         LEFT JOIN pk_team tm ON m.challengeteamid = tm.id
         LEFT JOIN pk_team tm2 ON m.hostteamid = tm2.id
         LEFT JOIN pk_park park ON m.parkid = park.id
-        LEFT JOIN areas area ON park.area = area.areaid
+        LEFT JOIN areas area ON m.area = area.areaid
         LEFT JOIN dict d on m.time = d.id
+        LEFT JOIN pk_park_relation pr on m.time = pr.id
         where o.id=#{id}
     </select>
 

@@ -21,7 +21,7 @@ Order.initColumn = function () {
         {title: '球场区域', field: 'area', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '球场名', field: 'parkname', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛状态', field: 'status', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '比赛日期', field: 'matchdate', align: 'center', valign: 'middle',width: '200px', sortable: true},
+        {title: '比赛日期', field: 'date', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛时间', field: 'time', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '支付状态', field: 'paystatus', align: 'center', valign: 'middle',width: '200px', sortable: true}];
 };
