@@ -33,7 +33,6 @@ public class MatchStatusTask {
      */
     @Scheduled(fixedRate = 5000)
     public void task() {
-//        log.info("---------------比赛状态同步开始-------------");
         //所有待比赛的时间一到改成约战中  一过就改为约战完成
         Wrapper<PkMatch> wrapper = new EntityWrapper<PkMatch>();
         wrapper = wrapper.eq("status", MatchStatusEnum.WAITING.getCode());
@@ -51,7 +50,21 @@ public class MatchStatusTask {
             pkMatch.setStatus(Integer.parseInt(status));
             pkMatchMapper.updateById(pkMatch);
         });
-//        log.info("---------------比赛状态同步结束-------------");
+
+        //超过12小时为匹配成功的就标记匹配失败
+        wrapper = new EntityWrapper<PkMatch>();
+        wrapper = wrapper.eq("status", MatchStatusEnum.FINDING.getCode());
+        list = pkMatchMapper.selectList(wrapper);
+        list.forEach(pkMatch -> {
+            Date createDate = pkMatch.getCreatedate();
+            Date now = new Date();
+            long times = (now.getTime() - createDate.getTime());
+            if (times >= 12 * 60 * 60 * 1000) {
+                pkMatch.setStatus(Integer.parseInt(MatchStatusEnum.FAIL.getCode()));
+                pkMatchMapper.updateById(pkMatch);
+            }
+        });
 
     }
+
 }
