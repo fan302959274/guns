@@ -9,6 +9,7 @@ import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.modular.system.dao.MatchDao;
 import com.stylefeng.guns.modular.system.warpper.MatchWarpper;
+import com.stylefeng.guns.modular.system.warpper.OrderWarpper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,15 +76,8 @@ public class MatchController extends BaseController {
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(@RequestParam(required = false) Long areas,@RequestParam(required = false) Long pkstatus,@RequestParam(required = false) String hostname, @RequestParam(required = false) String no, Integer page, Integer pageSize) {
-
-        Integer start = 0;
-        Integer size = 10;
-        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
-            start = (page - 1) * pageSize;
-            size = pageSize;
-        }
-        List<Map<String, Object>> list = this.matchDao.selects(areas,pkstatus,hostname,no,start, size);
-        return new MatchWarpper(list).warp();
+        List<Map<String, Object>> list = this.matchDao.selects(areas,pkstatus,hostname,no);
+        return super.warpObject(new MatchWarpper(list));
     }
 
     /**

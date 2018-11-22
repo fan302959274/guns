@@ -117,7 +117,6 @@
         <if test="no != null and no != ''">
             AND t.no=#{no}
         </if>
-        LIMIT #{start}, #{size}
     </select>
 
     <select id="selectById" resultType="map">

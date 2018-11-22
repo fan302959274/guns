@@ -10,6 +10,7 @@ import com.stylefeng.guns.common.persistence.model.PkPark;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.modular.system.dao.OrderDao;
+import com.stylefeng.guns.modular.system.warpper.MemberWarpper;
 import com.stylefeng.guns.modular.system.warpper.OrderWarpper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,15 +80,9 @@ public class OrderController extends BaseController {
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(@RequestParam(required = false) Long areas,@RequestParam(required = false) Long parks,@RequestParam(required = false) Long pkstatus,@RequestParam(required = false) String hostname, @RequestParam(required = false) String no, Integer page, Integer pageSize) {
+        List<Map<String, Object>> list = this.orderDao.selects(areas,parks,pkstatus,hostname,no);
+        return super.warpObject(new OrderWarpper(list));
 
-        Integer start = 0;
-        Integer size = 10;
-        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
-            start = (page - 1) * pageSize;
-            size = pageSize;
-        }
-        List<Map<String, Object>> list = this.orderDao.selects(areas,parks,pkstatus,hostname,no, start, size);
-        return new OrderWarpper(list).warp();
     }
 
     /**

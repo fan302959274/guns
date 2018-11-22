@@ -20,7 +20,7 @@ public interface MatchDao {
      * @return
      * @date 2017年2月12日 下午9:14:34
      */
-    List<Map<String, Object>> selects(@Param("areas") Long areas, @Param("pkstatus") Long pkstatus, @Param("hostname") String hostname, @Param("no") String no, @Param("start") Integer start, @Param("size") Integer size);
+    List<Map<String, Object>> selects(@Param("areas") Long areas, @Param("pkstatus") Long pkstatus, @Param("hostname") String hostname, @Param("no") String no);
 
 
     /**
