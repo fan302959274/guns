@@ -87,6 +87,10 @@ logging:
   path: logs/
   file: guns.log
 
+sms:
+  url: http://utf8.api.smschinese.cn/?Uid=毕盛小程序&Key=d57ba7e3dcc263b1ff5f&
+  charset: utf-8
+
 file:
   path: /data/wwwroot/file/
 
