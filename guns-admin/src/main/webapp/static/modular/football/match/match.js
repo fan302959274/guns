@@ -19,7 +19,7 @@ Match.initColumn = function () {
         {title: '发起方', field: 'hostteam', align: 'center', valign: 'middle', width: '200px',sortable: true},
         {title: '球场区域', field: 'area', align: 'center', valign: 'middle',width: '200px', sortable: true},
         {title: '比赛状态', field: 'status', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '比赛时间', field: 'createdate', align: 'center', valign: 'middle',width: '200px', sortable: true}];
+        {title: '比赛时间', field: 'date', align: 'center', valign: 'middle',width: '200px', sortable: true}];
 };
 
 /**
