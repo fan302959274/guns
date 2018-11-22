@@ -262,10 +262,64 @@ public class MatchController {
     public ResponseEntity fee(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
         try {
             PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
-            PkPark pkPark = pkParkMapper.selectById(pkParkRelation.getParkid());
+            String dateType = DateUtil.judgeType(pkParkRelation.getStart(),pkParkRelation.getEnd());
+            BigDecimal minCost = new BigDecimal("0");
+            BigDecimal maxCost = new BigDecimal("0");
+            if ("下午".equals(dateType)){
+                Wrapper<PkParkRelation> pkParkRelationEntityWrapper = new EntityWrapper<>();
+                pkParkRelationEntityWrapper = pkParkRelationEntityWrapper.ge("start", "12:00:00").le("end","18:00:00");
+                List<PkParkRelation> list = pkParkRelationMapper.selectList(pkParkRelationEntityWrapper);
+                if (CollectionUtils.isNotEmpty(list)){
+                    //设置初始值
+                    PkPark pkParkFirst = pkParkMapper.selectById(list.get(0).getParkid());
+                    minCost = pkParkFirst.getCost();
+                    maxCost = pkParkFirst.getCost();
+                    //多个值则比较
+                    for (PkParkRelation pre : list){
+                        PkPark pkPark = pkParkMapper.selectById(pre.getParkid());
+                        if (pkPark.getCost().compareTo(minCost)<=0){
+                            minCost = pkPark.getCost();
+                        }
+                        if (pkPark.getCost().compareTo(maxCost)>=0){
+                            maxCost = pkPark.getCost();
+                        }
+
+                    }
+
+                }
+
+            }else if ("晚上".equals(dateType)){
+                Wrapper<PkParkRelation> pkParkRelationEntityWrapper = new EntityWrapper<>();
+                pkParkRelationEntityWrapper = pkParkRelationEntityWrapper.ge("start", "18:30:00").le("end","22:30:00");
+                List<PkParkRelation> list = pkParkRelationMapper.selectList(pkParkRelationEntityWrapper);
+                if (CollectionUtils.isNotEmpty(list)){
+                    //设置初始值
+                    PkPark pkParkFirst = pkParkMapper.selectById(list.get(0).getParkid());
+                    minCost = pkParkFirst.getCost();
+                    maxCost = pkParkFirst.getCost();
+                    //多个值则比较
+                    for (PkParkRelation pre : list){
+                        PkPark pkPark = pkParkMapper.selectById(pre.getParkid());
+                        if (pkPark.getCost().compareTo(minCost)<=0){
+                            minCost = pkPark.getCost();
+                        }
+                        if (pkPark.getCost().compareTo(maxCost)>=0){
+                            maxCost = pkPark.getCost();
+                        }
+
+                    }
+
+                }
+            }
+
+            //如果最大最小相同则最大加100元
+            if (minCost.compareTo(maxCost)==0){
+                maxCost = minCost.add(new BigDecimal("100"));
+            }
+
             Map map = new HashMap();
-            map.put("minCost", pkPark.getCost());
-            map.put("maxCost", pkPark.getCost().add(new BigDecimal("100")));
+            map.put("minCost", minCost);
+            map.put("maxCost", maxCost);
             return ResponseEntity.ok(new CommonResp<Map>(map));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<Dict>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
