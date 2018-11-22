@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.common.util.response;
+package com.stylefeng.guns.core.util.response;
 
 /**
  * @author sh00859

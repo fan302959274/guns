@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.common.util.httpclient;
+package com.stylefeng.guns.core.util.httpclient;
 
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;

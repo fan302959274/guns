@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.core.enums.MatchStatusEnum;
 import com.stylefeng.guns.core.enums.PayStatusEnum;
+import com.stylefeng.guns.core.enums.TeamLevelEnum;
 import com.stylefeng.guns.core.util.DateUtil;
+import com.stylefeng.guns.core.util.httpclient.HttpClientUtil;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
-import com.stylefeng.guns.rest.common.util.response.CommonListResp;
-import com.stylefeng.guns.rest.common.util.response.CommonResp;
-import com.stylefeng.guns.rest.common.util.response.ResponseCode;
+import com.stylefeng.guns.core.util.response.CommonListResp;
+import com.stylefeng.guns.core.util.response.CommonResp;
+import com.stylefeng.guns.core.util.response.ResponseCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
@@ -17,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
@@ -60,7 +63,13 @@ public class MatchController {
     @Autowired
     PkParkMapper pkParkMapper;
     @Autowired
+    AreasMapper areasMapper;
+    @Autowired
     RedisTemplate redisTemplate;
+    @Value("${sms.url}")
+    private String smsUrl;
+    @Value("${sms.charset}")
+    private String charset;
 
 
     /**
@@ -317,6 +326,8 @@ public class MatchController {
                 pkOrderCh.setNo("y" + DateUtil.getDays() + String.format("%05d", noCh));
                 pkOrderMapper.insert(pkOrderCh);
 
+                //发送约战成功短信
+                sendSuccMsg(mPkMatch.getId(),pkPark.getId());
             } else {
                 PkMatch pkMatch = new PkMatch();
                 pkMatch.setArea(areaid);
@@ -326,9 +337,9 @@ public class MatchController {
                 pkMatch.setStatus(1);//匹配中
                 pkMatch.setDate(date);
                 pkMatch.setTime(timeid);
-                String formatDate = DateUtil.formatDate(DateUtil.parse(date,"yyyyMMdd"),"yyyy-MM-dd");
-                pkMatch.setStarttime(DateUtil.parse((formatDate+" "+pkParkRelation.getStart()),"yyyy-MM-dd HH:mm:ss"));
-                pkMatch.setEndtime(DateUtil.parse((formatDate+" "+pkParkRelation.getEnd()),"yyyy-MM-dd HH:mm:ss"));
+                String formatDate = DateUtil.formatDate(DateUtil.parse(date, "yyyyMMdd"), "yyyy-MM-dd");
+                pkMatch.setStarttime(DateUtil.parse((formatDate + " " + pkParkRelation.getStart()), "yyyy-MM-dd HH:mm:ss"));
+                pkMatch.setEndtime(DateUtil.parse((formatDate + " " + pkParkRelation.getEnd()), "yyyy-MM-dd HH:mm:ss"));
                 Long no = redisTemplate.opsForValue().increment("matchKey", 1);
                 if (no > 99998) {
                     redisTemplate.opsForValue().set("matchKey", 1);
@@ -370,12 +381,55 @@ public class MatchController {
      */
     public PkMatch matching(Long timeid, Long areaid, String date, String level) {
         Wrapper<PkMatch> wrapper = new EntityWrapper<PkMatch>();
-        wrapper = wrapper.eq("area", areaid).eq("time", timeid).eq("date", date).eq("status",MatchStatusEnum.FINDING.getCode()).groupBy("createdate desc");
+        wrapper = wrapper.eq("area", areaid).eq("time", timeid).eq("date", date).eq("status", MatchStatusEnum.FINDING.getCode()).groupBy("createdate desc");
         List<PkMatch> list = pkMatchMapper.selectList(wrapper);
         if (CollectionUtils.isNotEmpty(list)) {
             return list.get(0);
         }
         return null;
     }
+
+
+    //发送约战成功短信
+    public void sendSuccMsg(Long matchid, Long parkid) throws ParseException {
+        PkMatch pkMatch = pkMatchMapper.selectById(matchid);
+        PkTeam pkTeamHost = pkTeamMapper.selectById(pkMatch.getHostteamid());
+        PkMember pkMemberHost = pkMemberMapper.selectById(pkTeamHost.getOwnerid());
+
+        PkTeam pkTeamChallge = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
+        PkMember pkMemberChallge = pkMemberMapper.selectById(pkTeamChallge.getOwnerid());
+        //东道主短信发送
+        String msgHost = "【球王决】尊敬的" + pkMemberHost.getName() + "，您所属的球队" + pkTeamHost.getName() + "约战信息如下：\n" +
+                "时间：" + getTime(pkMatch.getTime()) + " ；地点：" + getAddress(parkid) + "；对手：" + pkTeamChallge.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamChallge.getPoint()) + ")\n" +
+                "赛制为7+1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
+        String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
+
+
+        //挑战者短信发送
+        String msgChallge = "【球王决】尊敬的" + pkMemberChallge.getName() + "，您所属的球队" + pkTeamChallge.getName() + "约战信息如下：\n" +
+                "时间：" + getTime(pkMatch.getTime()) + " ；地点：" + getAddress(parkid) + "；对手：" + pkTeamHost.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamHost.getPoint()) + ")\n" +
+                "赛制为7+1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
+        String resultChallge = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberChallge.getMobile() + "&smsText=" + msgChallge, new HashMap<>(), charset);
+
+    }
+
+    //获取时间接口
+    public String getTime(Long timeid) throws ParseException {
+        PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
+        if (Objects.nonNull(pkParkRelation)) {
+            return pkParkRelation.getStart() + "-" + pkParkRelation.getEnd();
+        }
+        return null;
+    }
+
+    //获取地址接口
+    public String getAddress(Long parkid) throws ParseException {
+        PkPark pkPark = pkParkMapper.selectById(parkid);//获取球场信息
+        if (Objects.nonNull(pkPark)) {
+            return pkPark.getPkname();
+        }
+        return null;
+    }
+
 
 }

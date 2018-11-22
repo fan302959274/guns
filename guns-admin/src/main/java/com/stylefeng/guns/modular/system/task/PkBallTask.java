@@ -2,24 +2,25 @@ package com.stylefeng.guns.modular.system.task;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.stylefeng.guns.common.persistence.dao.PkMatchMapper;
-import com.stylefeng.guns.common.persistence.dao.PkTeamMapper;
-import com.stylefeng.guns.common.persistence.dao.PkTeamReviewMapper;
-import com.stylefeng.guns.common.persistence.model.PkMatch;
-import com.stylefeng.guns.common.persistence.model.PkTeam;
-import com.stylefeng.guns.common.persistence.model.PkTeamReview;
+import com.stylefeng.guns.common.persistence.dao.*;
+import com.stylefeng.guns.common.persistence.model.*;
 import com.stylefeng.guns.core.enums.MatchStatusEnum;
+import com.stylefeng.guns.core.util.httpclient.HttpClientUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -38,6 +39,17 @@ public class PkBallTask {
     PkTeamMapper pkTeamMapper;
     @Autowired
     PkTeamReviewMapper pkTeamReviewMapper;
+    @Autowired
+    PkMemberMapper pkMemberMapper;
+    @Autowired
+    PkParkRelationMapper pkParkRelationMapper;
+    @Autowired
+    PkParkMapper pkParkMapper;
+
+    @Value("${sms.url}")
+    private String smsUrl;
+    @Value("${sms.charset}")
+    private String charset;
 
     /**
      * 比赛状态修改，每隔5秒执行一次
@@ -73,6 +85,11 @@ public class PkBallTask {
             if (times >= 12 * 60 * 60 * 1000) {
                 pkMatch.setStatus(Integer.parseInt(MatchStatusEnum.FAIL.getCode()));
                 pkMatchMapper.updateById(pkMatch);
+            }
+            try {
+                sendFailMsg(pkMatch.getId());
+            } catch (ParseException e) {
+                log.error("约战失败短信发送失败");
             }
         });
 
@@ -111,6 +128,29 @@ public class PkBallTask {
             }
         }
 
+    }
+
+
+    //发送约战失败短信
+    public void sendFailMsg(Long matchid) throws ParseException {
+        PkMatch pkMatch = pkMatchMapper.selectById(matchid);
+        PkTeam pkTeamHost = pkTeamMapper.selectById(pkMatch.getHostteamid());
+        PkMember pkMemberHost = pkMemberMapper.selectById(pkTeamHost.getOwnerid());
+
+        //东道主短信发送
+        String msgHost = "【球王决】尊敬的队长您好，您选择的" + pkMatch.getDate() + getTime(pkMatch.getTime()) + "约战由于没有实力匹配的对手/球场，因此本次约战订单已被自动取消。请您更换约赛时间或约赛区域，祝您约战成功。";
+        String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
+
+
+    }
+
+    //获取时间接口
+    public String getTime(Long timeid) throws ParseException {
+        PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
+        if (Objects.nonNull(pkParkRelation)) {
+            return pkParkRelation.getStart() + "-" + pkParkRelation.getEnd();
+        }
+        return null;
     }
 
 

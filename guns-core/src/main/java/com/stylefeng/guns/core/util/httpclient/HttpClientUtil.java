@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.common.util.httpclient;
+package com.stylefeng.guns.core.util.httpclient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,7 +20,7 @@ import java.util.Map.Entry;
  */  
 public class HttpClientUtil {  
     public String doPost(String url,Map<String,String> map,String charset){  
-        HttpClient httpClient = null;  
+        HttpClient httpClient = null;
         HttpPost httpPost = null;  
         String result = null;  
         try{  

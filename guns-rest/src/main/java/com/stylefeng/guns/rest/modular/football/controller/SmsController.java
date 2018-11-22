@@ -1,9 +1,10 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.stylefeng.guns.rest.common.util.httpclient.HttpClientUtil;
-import com.stylefeng.guns.rest.common.util.response.CommonResp;
-import com.stylefeng.guns.rest.common.util.response.ResponseCode;
+import com.stylefeng.guns.core.util.httpclient.HttpClientUtil;
+import com.stylefeng.guns.core.util.response.CommonListResp;
+import com.stylefeng.guns.core.util.response.CommonResp;
+import com.stylefeng.guns.core.util.response.ResponseCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;

@@ -3,7 +3,7 @@ package com.stylefeng.guns.rest.modular.football.controller;
 import com.stylefeng.guns.core.util.FileUtil;
 import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.rest.common.exception.BussinessException;
-import com.stylefeng.guns.rest.common.util.response.CommonResp;
+import com.stylefeng.guns.core.util.response.CommonResp;
 import com.stylefeng.guns.rest.config.properties.GunsProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
