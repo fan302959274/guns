@@ -7,11 +7,11 @@ import com.stylefeng.guns.core.enums.PayStatusEnum;
 import com.stylefeng.guns.core.enums.TeamLevelEnum;
 import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.core.util.httpclient.HttpClientUtil;
-import com.stylefeng.guns.rest.common.persistence.dao.*;
-import com.stylefeng.guns.rest.common.persistence.model.*;
 import com.stylefeng.guns.core.util.response.CommonListResp;
 import com.stylefeng.guns.core.util.response.CommonResp;
 import com.stylefeng.guns.core.util.response.ResponseCode;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
+import com.stylefeng.guns.rest.common.persistence.model.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
@@ -200,22 +200,24 @@ public class MatchController {
             pkMatchWrapperHost = pkMatchWrapperHost.eq("hostteamid", teamid);
             List<PkMatch> pkMatchesHost = pkMatchMapper.selectList(pkMatchWrapperHost);
             if (CollectionUtils.isNotEmpty(pkMatchesHost)) {
-                PkMatch pkMatchesHostPkMatch = pkMatchesHost.get(0);
-                //匹配中超过12小时
-                if (MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
-                    long hour = DateUtil.getHourSub(pkMatchesHostPkMatch.getCreatedate(), new Date());
-                    if (hour > 12) {
-                        return ResponseEntity.ok(new CommonResp<String>("7", "队伍约战12小时无反应"));
+                for (PkMatch pkMatchesHostPkMatch : pkMatchesHost) {
+                    //匹配中超过12小时
+                    if (MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus().toString())) {
+                        long hour = DateUtil.getHourSub(pkMatchesHostPkMatch.getCreatedate(), new Date());
+                        if (hour > 12) {
+                            return ResponseEntity.ok(new CommonResp<String>("7", "队伍约战12小时无反应"));
+                        }
                     }
-                }
-                //约战中
-                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesHostPkMatch.getStatus()) || MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
-                    return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
-                }
-                //待比赛
-                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesHostPkMatch.getStatus())) {
-                    PkTeam pkTeamHost = pkTeamMapper.selectById(pkMatchesHostPkMatch.getChallengeteamid());
-                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "队伍待比赛", pkTeamHost));
+                    //约战中
+                    if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesHostPkMatch.getStatus().toString()) || MatchStatusEnum.FINDING.getCode().equals(pkMatchesHostPkMatch.getStatus().toString())) {
+                        return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
+                    }
+                    //待比赛
+                    if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesHostPkMatch.getStatus().toString())) {
+                        PkTeam pkTeamHost = pkTeamMapper.selectById(pkMatchesHostPkMatch.getChallengeteamid());
+                        return ResponseEntity.ok(new CommonResp<PkTeam>("6", "队伍待比赛", pkTeamHost));
+                    }
+
                 }
 
             }
@@ -224,22 +226,24 @@ public class MatchController {
             pkMatchWrapperChallenge = pkMatchWrapperChallenge.eq("challengeteamid", teamid);
             List<PkMatch> pkMatchesChallenge = pkMatchMapper.selectList(pkMatchWrapperChallenge);
             if (CollectionUtils.isNotEmpty(pkMatchesChallenge)) {
-                PkMatch pkMatchesChallengePkMatch = pkMatchesChallenge.get(0);
-                //匹配中超过12小时
-                if (MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
-                    long hour = DateUtil.getHourSub(pkMatchesChallengePkMatch.getCreatedate(), new Date());
-                    if (hour > 12) {
-                        return ResponseEntity.ok(new CommonResp<String>("7", "队伍约战12小时无反应"));
+                for (PkMatch pkMatchesChallengePkMatch : pkMatchesChallenge) {
+                    //匹配中超过12小时
+                    if (MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus().toString())) {
+                        long hour = DateUtil.getHourSub(pkMatchesChallengePkMatch.getCreatedate(), new Date());
+                        if (hour > 12) {
+                            return ResponseEntity.ok(new CommonResp<String>("7", "队伍约战12小时无反应"));
+                        }
                     }
-                }
-                //约战中
-                if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesChallengePkMatch.getStatus()) || MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
-                    return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
-                }
-                //待比赛
-                if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesChallengePkMatch.getStatus())) {
-                    PkTeam pkTeamChallenge = pkTeamMapper.selectById(pkMatchesChallengePkMatch.getHostteamid());
-                    return ResponseEntity.ok(new CommonResp<PkTeam>("6", "队伍待比赛", pkTeamChallenge));
+                    //约战中
+                    if (MatchStatusEnum.MATCHING.getCode().equals(pkMatchesChallengePkMatch.getStatus().toString()) || MatchStatusEnum.FINDING.getCode().equals(pkMatchesChallengePkMatch.getStatus().toString())) {
+                        return ResponseEntity.ok(new CommonResp<String>("5", "队伍约战中"));
+                    }
+                    //待比赛
+                    if (MatchStatusEnum.WAITING.getCode().equals(pkMatchesChallengePkMatch.getStatus().toString())) {
+                        PkTeam pkTeamChallenge = pkTeamMapper.selectById(pkMatchesChallengePkMatch.getHostteamid());
+                        return ResponseEntity.ok(new CommonResp<PkTeam>("6", "队伍待比赛", pkTeamChallenge));
+                    }
+
                 }
 
             }
@@ -262,25 +266,25 @@ public class MatchController {
     public ResponseEntity fee(@RequestParam String openid, @RequestParam Long teamid, @RequestParam String date, @RequestParam Long timeid, @RequestParam Long areaid) {
         try {
             PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
-            String dateType = DateUtil.judgeType(pkParkRelation.getStart(),pkParkRelation.getEnd());
+            String dateType = DateUtil.judgeType(pkParkRelation.getStart(), pkParkRelation.getEnd());
             BigDecimal minCost = new BigDecimal("0");
             BigDecimal maxCost = new BigDecimal("0");
-            if ("下午".equals(dateType)){
+            if ("下午".equals(dateType)) {
                 Wrapper<PkParkRelation> pkParkRelationEntityWrapper = new EntityWrapper<>();
-                pkParkRelationEntityWrapper = pkParkRelationEntityWrapper.ge("start", "12:00:00").le("end","18:00:00");
+                pkParkRelationEntityWrapper = pkParkRelationEntityWrapper.ge("start", "12:00:00").le("end", "18:00:00");
                 List<PkParkRelation> list = pkParkRelationMapper.selectList(pkParkRelationEntityWrapper);
-                if (CollectionUtils.isNotEmpty(list)){
+                if (CollectionUtils.isNotEmpty(list)) {
                     //设置初始值
                     PkPark pkParkFirst = pkParkMapper.selectById(list.get(0).getParkid());
                     minCost = pkParkFirst.getCost();
                     maxCost = pkParkFirst.getCost();
                     //多个值则比较
-                    for (PkParkRelation pre : list){
+                    for (PkParkRelation pre : list) {
                         PkPark pkPark = pkParkMapper.selectById(pre.getParkid());
-                        if (pkPark.getCost().compareTo(minCost)<=0){
+                        if (pkPark.getCost().compareTo(minCost) <= 0) {
                             minCost = pkPark.getCost();
                         }
-                        if (pkPark.getCost().compareTo(maxCost)>=0){
+                        if (pkPark.getCost().compareTo(maxCost) >= 0) {
                             maxCost = pkPark.getCost();
                         }
 
@@ -288,22 +292,22 @@ public class MatchController {
 
                 }
 
-            }else if ("晚上".equals(dateType)){
+            } else if ("晚上".equals(dateType)) {
                 Wrapper<PkParkRelation> pkParkRelationEntityWrapper = new EntityWrapper<>();
-                pkParkRelationEntityWrapper = pkParkRelationEntityWrapper.ge("start", "18:30:00").le("end","22:30:00");
+                pkParkRelationEntityWrapper = pkParkRelationEntityWrapper.ge("start", "18:30:00").le("end", "22:30:00");
                 List<PkParkRelation> list = pkParkRelationMapper.selectList(pkParkRelationEntityWrapper);
-                if (CollectionUtils.isNotEmpty(list)){
+                if (CollectionUtils.isNotEmpty(list)) {
                     //设置初始值
                     PkPark pkParkFirst = pkParkMapper.selectById(list.get(0).getParkid());
                     minCost = pkParkFirst.getCost();
                     maxCost = pkParkFirst.getCost();
                     //多个值则比较
-                    for (PkParkRelation pre : list){
+                    for (PkParkRelation pre : list) {
                         PkPark pkPark = pkParkMapper.selectById(pre.getParkid());
-                        if (pkPark.getCost().compareTo(minCost)<=0){
+                        if (pkPark.getCost().compareTo(minCost) <= 0) {
                             minCost = pkPark.getCost();
                         }
-                        if (pkPark.getCost().compareTo(maxCost)>=0){
+                        if (pkPark.getCost().compareTo(maxCost) >= 0) {
                             maxCost = pkPark.getCost();
                         }
 
@@ -313,7 +317,7 @@ public class MatchController {
             }
 
             //如果最大最小相同则最大加100元
-            if (minCost.compareTo(maxCost)==0){
+            if (minCost.compareTo(maxCost) == 0) {
                 maxCost = minCost.add(new BigDecimal("100"));
             }
 
@@ -381,7 +385,7 @@ public class MatchController {
                 pkOrderMapper.insert(pkOrderCh);
 
                 //发送约战成功短信
-                sendSuccMsg(mPkMatch.getId(),pkPark.getId());
+                sendSuccMsg(mPkMatch.getId(), pkPark.getId());
             } else {
                 PkMatch pkMatch = new PkMatch();
                 pkMatch.setArea(areaid);
@@ -454,16 +458,16 @@ public class MatchController {
         PkTeam pkTeamChallge = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
         PkMember pkMemberChallge = pkMemberMapper.selectById(pkTeamChallge.getOwnerid());
         //东道主短信发送
-        String msgHost = "【球王决】尊敬的" + pkMemberHost.getName() + "，您所属的球队" + pkTeamHost.getName() + "约战信息如下：时间：" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(),"yyyyMMdd"),"yyyy年MM月dd日")+pkMatch.getTime() + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamChallge.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamChallge.getPoint()).getMessage() + ")赛制为7+1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
-        log.info("东道主发送的信息为:{}",msgHost);
+        String msgHost = "【球王决】尊敬的" + pkMemberHost.getName() + "，您所属的球队" + pkTeamHost.getName() + "约战信息如下：时间：" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy年MM月dd日") + pkMatch.getTime() + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamChallge.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamChallge.getPoint()).getMessage() + ")赛制为7+1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
+        log.info("东道主发送的信息为:{}", msgHost);
         String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
-        log.info("东道主发送的结果为:{}",resultHost);
+        log.info("东道主发送的结果为:{}", resultHost);
 
         //挑战者短信发送
-        String msgChallge = "【球王决】尊敬的" + pkMemberChallge.getName() + "，您所属的球队" + pkTeamChallge.getName() + "约战信息如下：时间：" +  DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(),"yyyyMMdd"),"yyyy年MM月dd日")+pkMatch.getTime()  + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamHost.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamHost.getPoint()).getMessage() + ")赛制为7+1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
-        log.info("挑战者发送的信息为:{}",msgHost);
+        String msgChallge = "【球王决】尊敬的" + pkMemberChallge.getName() + "，您所属的球队" + pkTeamChallge.getName() + "约战信息如下：时间：" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy年MM月dd日") + pkMatch.getTime() + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamHost.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamHost.getPoint()).getMessage() + ")赛制为7+1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
+        log.info("挑战者发送的信息为:{}", msgHost);
         String resultChallge = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberChallge.getMobile() + "&smsText=" + msgChallge, new HashMap<>(), charset);
-        log.info("挑战者发送的结果为:{}",resultChallge);
+        log.info("挑战者发送的结果为:{}", resultChallge);
 
     }
 
