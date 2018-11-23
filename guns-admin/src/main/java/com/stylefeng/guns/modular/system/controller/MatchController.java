@@ -6,8 +6,10 @@ import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.AreasMapper;
 import com.stylefeng.guns.common.persistence.dao.PkMatchMapper;
+import com.stylefeng.guns.common.persistence.dao.PkTeamMapper;
 import com.stylefeng.guns.common.persistence.model.Areas;
 import com.stylefeng.guns.common.persistence.model.PkMatch;
+import com.stylefeng.guns.common.persistence.model.PkTeam;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.util.ToolUtil;
@@ -15,6 +17,7 @@ import com.stylefeng.guns.modular.system.dao.MatchDao;
 import com.stylefeng.guns.modular.system.transfer.PkMatchDto;
 import com.stylefeng.guns.modular.system.warpper.MatchWarpper;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.omg.PortableInterceptor.Interceptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +48,8 @@ public class MatchController extends BaseController {
     PkMatchMapper pkMatchMapper;
     @Resource
     AreasMapper areasMapper;
+    @Resource
+    PkTeamMapper pkTeamMapper;
     @Resource
     MatchDao matchDao;
 
@@ -94,10 +99,22 @@ public class MatchController extends BaseController {
         if (ToolUtil.isEmpty(pkMatchDto) || pkMatchDto.getId() == null) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
-        PkMatch pkMatch = new PkMatch();
+
+        PkMatch pkMatch = pkMatchMapper.selectById(pkMatchDto.getId());
+        PkTeam pkTeamHost = pkTeamMapper.selectById(pkMatch.getHostteamid());
+        PkTeam pkTeamChallenge = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
 
         PropertyUtils.copyProperties(pkMatch, pkMatchDto);
+        //修改比赛结果
         pkMatchMapper.updateById(pkMatch);
+
+
+        //东道主和挑战者积分修改
+        pkTeamHost.setPoint(pkTeamHost.getPoint()+calcGoals(pkMatchDto.getHostgoals()-pkMatchDto.getChallengegoals()));//东道主积分修改
+        pkTeamMapper.updateById(pkTeamHost);
+        pkTeamChallenge.setPoint(pkTeamChallenge.getPoint()+calcGoals(pkMatchDto.getChallengegoals()-pkMatchDto.getHostgoals()));//挑战者积分修改
+        pkTeamMapper.updateById(pkTeamChallenge);
+
         return super.SUCCESS_TIP;
     }
 
@@ -133,6 +150,29 @@ public class MatchController extends BaseController {
         pkMatchMapper.deleteById(matchId);
 
         return SUCCESS_TIP;
+    }
+
+
+    //计算积分points
+    public Integer calcGoals(Integer finalgoals) {
+        if (finalgoals > 6){
+            return 100;
+        }else if(3<finalgoals && finalgoals<=6){
+            return 50;
+        }else if(0<finalgoals && finalgoals<=3){
+            return 25;
+        }else if(finalgoals==0){
+            return 10;
+        }else if(-3<=finalgoals && finalgoals<0){
+            return -25;
+        }else if(-6<=finalgoals && finalgoals<-3){
+            return -50;
+        }else if(finalgoals<-6){
+            return 100;
+        }
+        return 0;
+
+
     }
 
 
