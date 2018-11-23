@@ -282,7 +282,7 @@ public class MemberController extends BaseController {
 
         //1、删除
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", record.getId()).eq("category",AttachCategoryEnum.MEMBER.getCode()).eq("type",AttachTypeEnum.HEAD.getCode());
+        wrapper = wrapper.eq("linkid", record.getId()).eq("category",AttachCategoryEnum.MEMBER.getCode());
         pkAttachmentMapper.delete(wrapper);
         //        保存头像
         if (StringUtils.isNoneBlank(pkMemberDto.getAvatar())) {
