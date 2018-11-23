@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-22
+ * @since 2018-11-23
  */
 @TableName("pk_rule")
 public class PkRule extends Model<PkRule> {

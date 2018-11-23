@@ -55,7 +55,9 @@
         ELSE
         '未支付'
         END)
-        as hostpaystatus
+        as hostpaystatus,
+        t.hostgoals,
+        t.challengegoals
     </sql>
 
     <sql id="Base_Column_List2">

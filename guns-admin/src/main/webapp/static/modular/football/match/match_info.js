@@ -60,7 +60,7 @@ MatchInfoDlg.close = function () {
  * 收集数据
  */
 MatchInfoDlg.collectData = function () {
-    this.set('id').set('challengepaystatus').set('hostpaystatus');
+    this.set('id').set('challengepaystatus').set('hostpaystatus').set("hostgoals").set("challengegoals");
 }
 
 /**
@@ -115,6 +115,31 @@ MatchInfoDlg.editSubmit = function () {
         MatchInfoDlg.close();
     }, function (data) {
         Feng.error("修改失败!" + data.responseJSON.message + "!");
+    });
+    ajax.set(this.adInfoData);
+    ajax.start();
+}
+
+
+/**
+ * 提交修改
+ */
+MatchInfoDlg.uploadResult = function () {
+
+    this.clearData();
+    this.collectData();
+
+    if (!this.validate()) {
+        return;
+    }
+
+    //提交信息
+    var ajax = new $ax(Feng.ctxPath + "/match/uploadResult", function (data) {
+        Feng.success("上传成功!");
+        window.parent.Match.table.refresh();
+        MatchInfoDlg.close();
+    }, function (data) {
+        Feng.error("上传失败!" + data.responseJSON.message + "!");
     });
     ajax.set(this.adInfoData);
     ajax.start();

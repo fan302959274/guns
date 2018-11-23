@@ -109,6 +109,15 @@ public class PkMatchDto extends Model<PkMatchDto> {
 
     private Long timeid;
 
+    /**
+     * 东道主进球数
+     */
+    private Integer hostgoals;
+    /**
+     * 挑战队进球数
+     */
+    private Integer challengegoals;
+
 
     public Long getId() {
         return id;
@@ -288,6 +297,22 @@ public class PkMatchDto extends Model<PkMatchDto> {
 
     public void setTimeid(Long timeid) {
         this.timeid = timeid;
+    }
+
+    public Integer getHostgoals() {
+        return hostgoals;
+    }
+
+    public void setHostgoals(Integer hostgoals) {
+        this.hostgoals = hostgoals;
+    }
+
+    public Integer getChallengegoals() {
+        return challengegoals;
+    }
+
+    public void setChallengegoals(Integer challengegoals) {
+        this.challengegoals = challengegoals;
     }
 
     @Override

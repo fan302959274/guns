@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-22
+ * @since 2018-11-23
  */
 @TableName("pk_match")
 public class PkMatch extends Model<PkMatch> {
@@ -102,6 +102,14 @@ public class PkMatch extends Model<PkMatch> {
 	private String no;
 	private String date;
 	private Long timeid;
+    /**
+     * 东道主进球数
+     */
+	private Integer hostgoals;
+    /**
+     * 挑战队进球数
+     */
+	private Integer challengegoals;
 
 
 	public Long getId() {
@@ -280,6 +288,22 @@ public class PkMatch extends Model<PkMatch> {
 		this.timeid = timeid;
 	}
 
+	public Integer getHostgoals() {
+		return hostgoals;
+	}
+
+	public void setHostgoals(Integer hostgoals) {
+		this.hostgoals = hostgoals;
+	}
+
+	public Integer getChallengegoals() {
+		return challengegoals;
+	}
+
+	public void setChallengegoals(Integer challengegoals) {
+		this.challengegoals = challengegoals;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -310,6 +334,8 @@ public class PkMatch extends Model<PkMatch> {
 			", no=" + no +
 			", date=" + date +
 			", timeid=" + timeid +
+			", hostgoals=" + hostgoals +
+			", challengegoals=" + challengegoals +
 			"}";
 	}
 }

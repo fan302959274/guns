@@ -26,6 +26,8 @@
 		<result column="no" property="no" />
 		<result column="date" property="date" />
 		<result column="timeid" property="timeid" />
+		<result column="hostgoals" property="hostgoals" />
+		<result column="challengegoals" property="challengegoals" />
 	</resultMap>
 
 </mapper>

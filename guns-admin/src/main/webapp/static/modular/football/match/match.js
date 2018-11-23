@@ -14,12 +14,24 @@ var Match = {
 Match.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: 'id', field: 'id',visible: false},
+        {title: 'id', field: 'id', visible: false},
         {title: '订单号', field: 'no', align: 'center', valign: 'middle', width: '50px'},
-        {title: '发起方', field: 'hostteam', align: 'center', valign: 'middle', width: '200px',sortable: true},
-        {title: '球场区域', field: 'area', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '比赛状态', field: 'status', align: 'center', valign: 'middle',width: '200px', sortable: true},
-        {title: '比赛时间', field: 'date', align: 'center', valign: 'middle',width: '200px', sortable: true}];
+        {title: '发起方', field: 'hostteam', align: 'center', valign: 'middle', width: '200px', sortable: true},
+        {title: '球场区域', field: 'area', align: 'center', valign: 'middle', width: '200px', sortable: true},
+        {title: '比赛状态', field: 'status', align: 'center', valign: 'middle', width: '200px', sortable: true},
+        {title: '比赛时间', field: 'date', align: 'center', valign: 'middle', width: '200px', sortable: true},
+        {
+            title: "操作",
+            align: 'center',
+            valign: 'middle',
+            width: 160, // 定义列的宽度，单位为像素px
+            formatter: function (value, row, index) {
+                if ("约战完成" == row.status) {
+                    return '<button class="btn btn-primary btn-sm" onclick="Match.uploadResult(\'' + row.id + '\')">上传结果</button>';
+                }
+
+            }
+        }];
 };
 
 /**
@@ -36,6 +48,22 @@ Match.check = function () {
     }
 };
 
+/**
+ * 上传比赛结果
+ */
+Match.uploadResult = function (id) {
+
+    var index = layer.open({
+        type: 2,
+        title: '比赛比分',
+        area: ['800px', '250px'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/match/match_upload_result/' + id
+    });
+    this.layerIndex = index;
+
+};
 
 
 /**

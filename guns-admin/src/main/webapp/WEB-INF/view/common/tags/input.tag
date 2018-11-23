@@ -32,6 +32,12 @@
                @if(isNotEmpty(placeholder)){
                placeholder="${placeholder}"
                @}
+               @if(isNotEmpty(min)){
+               min="${min}"
+               @}
+               @if(isNotEmpty(max)){
+               max="${max}"
+               @}
                @if(isNotEmpty(disabled)){
                     disabled="${disabled}"
                @}
