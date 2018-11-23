@@ -30,7 +30,7 @@ spring:
       filters: log4j,wall,mergeStat
   redis:
       datasource: 0
-      host: 47.100.175.14
+      host: 127.0.0.1
       port: 6379
       timeout: 0
       pool:
