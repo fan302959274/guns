@@ -217,7 +217,7 @@ public class TeamController {
             data.put("teamName", pkTeam.getName());
             data.put("score", pkTeam.getPoint());
             data.put("level", TeamLevelEnum.calcLevel(pkTeam.getPoint()).getMessage());
-            data.put("differValue", TeamLevelEnum.valueOfMsg(pkTeam.getLevel()).getMax() - pkTeam.getPoint());
+            data.put("differValue", (TeamLevelEnum.calcLevel(pkTeam.getPoint()).getMax() - pkTeam.getPoint())+1);
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
             List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);

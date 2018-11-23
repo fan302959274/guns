@@ -263,7 +263,7 @@ public class MemberController extends BaseController {
             //1、删除
             Wrapper<PkAttachment> wrappers = new EntityWrapper<>();
             wrappers = wrappers.eq("linkid", pkMemberDto.getTeamId());
-            wrappers = wrappers.eq("category", AttachCategoryEnum.TEAM.getCode());
+            wrappers = wrappers.eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type",AttachTypeEnum.LOGO.getCode());
             pkAttachmentMapper.delete(wrappers);
             //新增球隊信息
             if (StringUtils.isNoneBlank(pkMemberDto.getTeamlogo())) {
@@ -282,7 +282,7 @@ public class MemberController extends BaseController {
 
         //1、删除
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", record.getId());
+        wrapper = wrapper.eq("linkid", record.getId()).eq("category",AttachCategoryEnum.MEMBER.getCode()).eq("type",AttachTypeEnum.HEAD.getCode());
         pkAttachmentMapper.delete(wrapper);
         //        保存头像
         if (StringUtils.isNoneBlank(pkMemberDto.getAvatar())) {

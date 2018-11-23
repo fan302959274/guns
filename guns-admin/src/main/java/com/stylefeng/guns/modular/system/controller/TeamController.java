@@ -152,7 +152,7 @@ public class TeamController extends BaseController {
         //1、删除
         Wrapper<PkAttachment> wrappers = new EntityWrapper<>();
         wrappers = wrappers.eq("linkid", pkTeam.getId());
-        wrappers = wrappers.eq("category", AttachCategoryEnum.TEAM.getCode());
+        wrappers = wrappers.eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type",AttachTypeEnum.LOGO.getCode());
         pkAttachmentMapper.delete(wrappers);
         //新增球隊信息logo
         if (StringUtils.isNoneBlank(logo)) {

@@ -384,10 +384,10 @@ public class DateUtil {
         Date date4 = formart.parse(t4);
         Date startDate = formart.parse(start);
         Date endDate = formart.parse(end);
-        if (startDate.compareTo(date1)>0 && endDate.compareTo(date2)<0){
+        if (startDate.compareTo(date1)>=0 && endDate.compareTo(date2)<=0){
             result = "下午";
         }
-        if (startDate.compareTo(date3)>0 && endDate.compareTo(date4)<0){
+        if (startDate.compareTo(date3)>=0 && endDate.compareTo(date4)<=0){
             result = "晚上";
         }
         return result;

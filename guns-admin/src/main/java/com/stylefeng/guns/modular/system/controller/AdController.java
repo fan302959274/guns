@@ -206,7 +206,7 @@ public class AdController extends BaseController {
         pkAdMapper.updateById(record);
         //1、删除
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", record.getId());
+        wrapper = wrapper.eq("linkid", record.getId()).eq("category",AttachCategoryEnum.AD.getCode());
         pkAttachmentMapper.delete(wrapper);
         ///2、保存附件
         if (StringUtils.isNoneBlank(ads)) {
