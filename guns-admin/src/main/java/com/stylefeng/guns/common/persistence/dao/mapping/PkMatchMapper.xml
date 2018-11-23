@@ -28,6 +28,7 @@
 		<result column="timeid" property="timeid" />
 		<result column="hostgoals" property="hostgoals" />
 		<result column="challengegoals" property="challengegoals" />
+		<result column="isupload" property="isupload" />
 	</resultMap>
 
 </mapper>

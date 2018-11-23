@@ -110,6 +110,10 @@ public class PkMatch extends Model<PkMatch> {
      * 挑战队进球数
      */
 	private Integer challengegoals;
+    /**
+     * 是否上传过比赛结果:0:没有；1:有
+     */
+	private Integer isupload;
 
 
 	public Long getId() {
@@ -304,6 +308,14 @@ public class PkMatch extends Model<PkMatch> {
 		this.challengegoals = challengegoals;
 	}
 
+	public Integer getIsupload() {
+		return isupload;
+	}
+
+	public void setIsupload(Integer isupload) {
+		this.isupload = isupload;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -336,6 +348,7 @@ public class PkMatch extends Model<PkMatch> {
 			", timeid=" + timeid +
 			", hostgoals=" + hostgoals +
 			", challengegoals=" + challengegoals +
+			", isupload=" + isupload +
 			"}";
 	}
 }
