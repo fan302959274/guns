@@ -13,14 +13,14 @@
         from pk_member a
 
         <if test="type == 1">
-            LEFT  JOIN  pk_team_member b on   a.id=b.memberid
+            LEFT  JOIN  pk_team_member b on   a.id=b.memberid and  b.status='1'
             LEFT  JOIN  pk_team c on   c.ownerid=a.id
         </if>
         <if test="type == 2">
-            LEFT  JOIN  pk_team_member b on   a.id=b.memberid
+            LEFT  JOIN  pk_team_member b on   a.id=b.memberid and  b.status='1'
             LEFT  JOIN  pk_team c on   c.id=b.teamid
         </if>
-        where 1=1 and  b.status='1'
+        where 1=1
         <if test="type != null">
            AND  a.type=${type}
         </if>
