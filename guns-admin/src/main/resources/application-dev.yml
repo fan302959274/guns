@@ -86,7 +86,7 @@ logging:
   file: guns.log
 
 file:
-  path: E:\football
+  path: D:\football
 
 
 sms:

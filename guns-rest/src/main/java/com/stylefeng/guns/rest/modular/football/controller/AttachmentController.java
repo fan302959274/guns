@@ -1,12 +1,12 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
-import com.stylefeng.guns.core.util.FileUtil;
+import com.stylefeng.guns.core.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.rest.common.exception.BussinessException;
-import com.stylefeng.guns.core.util.response.CommonResp;
 import com.stylefeng.guns.rest.config.properties.GunsProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -52,17 +52,23 @@ public class AttachmentController {
 
 
     /**
-     *@description 返回图片
-     *@author sh00859
-     *@date 2018/11/6
+     * @description 返回图片
+     * @author sh00859
+     * @date 2018/11/6
      */
     @ApiOperation(value = "获取图片", notes = "返回码:1成功;")
     @GetMapping(value = "/detail/{pictureId}")
     public void renderPicture(@PathVariable("pictureId") String pictureId, HttpServletResponse response) {
         String path = gunsProperties.getFileUploadPath() + pictureId + ".jpg";
         try {
-            byte[] bytes = FileUtil.toByteArray(path);
-            response.getOutputStream().write(bytes);
+            File file = new File(path);
+            log.info("图片大小:{}", file.length());
+            //小于50KB不处理
+            if (file.length() < 51200) {
+                Thumbnails.of(file).scale(1f).toOutputStream(response.getOutputStream());
+            } else {
+                Thumbnails.of(file).scale(0.4f).toOutputStream(response.getOutputStream());
+            }
         } catch (Exception e) {
             //如果找不到图片就返回一个默认图片
             try {
