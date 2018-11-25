@@ -31,4 +31,6 @@ public interface MemberDao {
      */
     PkMember selectMemberByAcount(@Param("account") String account);
 
+    List<PkMember> selectAllMemberByType(@Param("type") String type);
+
 }

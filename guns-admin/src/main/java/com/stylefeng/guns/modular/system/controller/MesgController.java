@@ -1,17 +1,28 @@
 package com.stylefeng.guns.modular.system.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.PkMesgMapper;
+import com.stylefeng.guns.common.persistence.model.PkAttachment;
+import com.stylefeng.guns.common.persistence.model.PkMember;
 import com.stylefeng.guns.common.persistence.model.PkMesg;
 import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.enums.AttachCategoryEnum;
+import com.stylefeng.guns.core.enums.AttachTypeEnum;
+import com.stylefeng.guns.core.enums.PositionEnum;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.util.ToolUtil;
+import com.stylefeng.guns.core.util.httpclient.HttpClientUtil;
+import com.stylefeng.guns.modular.system.dao.MemberDao;
 import com.stylefeng.guns.modular.system.dao.MesgDao;
 import com.stylefeng.guns.modular.system.warpper.MesgWarpper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +49,14 @@ public class MesgController extends BaseController {
     private String PREFIX = "/football/mesg/";
     @Resource
     MesgDao mesgDao;
-
+    @Resource
+    MemberDao memberDao;
     @Resource
     PkMesgMapper pkMesgMapper;
+    @Value("${sms.url}")
+    private String smsUrl;
+    @Value("${sms.charset}")
+    private String charset;
 
     /**
      * 跳转到消息首页
@@ -75,8 +92,18 @@ public class MesgController extends BaseController {
     @ResponseBody
     public Object add(PkMesg mesg ) {
         this.pkMesgMapper.insert(mesg);
+        String  type =null;
+        if(!"0".equals(mesg.getObjtype())){
+            type=mesg.getObjtype();
+        }
+        List<PkMember> members=memberDao.selectAllMemberByType(type);
+        members.forEach(member -> {
+            new HttpClientUtil().doPost(smsUrl + "smsMob="+member.getAccount()  + "&smsText=" + mesg.getContent(), new HashMap<>(), charset);
+        });
         return super.SUCCESS_TIP;
     }
+
+
 
     /**
      * 跳转到修改消息
@@ -116,6 +143,14 @@ public class MesgController extends BaseController {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
         this.pkMesgMapper.updateById(mesg);
+        String  type =null;
+        if(!"0".equals(mesg.getObjtype())){
+            type=mesg.getObjtype();
+        }
+        List<PkMember> members=memberDao.selectAllMemberByType(type);
+        members.forEach(member -> {
+            new HttpClientUtil().doPost(smsUrl + "smsMob="+member.getAccount()  + "&smsText=" + mesg.getContent(), new HashMap<>(), charset);
+        });
         return SUCCESS_TIP;
 
     }
