@@ -582,6 +582,10 @@ public class TeamController {
                 Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
                 pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
                 pkTeamMemberMapper.delete(pkTeamMemberWrapper);
+                //队长转换为普通球员
+                PkMember pkMember = pkMembers.get(0);
+                pkMember.setType("2");//普通球员
+                pkMemberMapper.updateById(pkMember);
             }
 
 

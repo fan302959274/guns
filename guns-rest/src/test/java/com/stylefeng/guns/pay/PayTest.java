@@ -1,28 +1,9 @@
 package com.stylefeng.guns.pay;
 
-import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.InjectionConfig;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
-import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import com.baomidou.mybatisplus.generator.config.rules.DbType;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.stylefeng.guns.core.util.httpclient.HttpClientUtil;
-import com.stylefeng.guns.core.util.response.CommonResp;
-import com.stylefeng.guns.core.util.response.ResponseCode;
-import com.stylefeng.guns.rest.common.wxpay.Configure;
-import com.stylefeng.guns.rest.common.wxpay.PayUtil;
-import com.stylefeng.guns.rest.common.wxpay.Signature;
 import org.junit.Test;
-import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 实体生成
@@ -45,7 +26,8 @@ public class PayTest {
 
 
         //发送第三方 TODO2018112321382320659
-        String result = new HttpClientUtil().doPost("http://utf8.api.smschinese.cn/?Uid=毕盛小程序&Key=d57ba7e3dcc263b1ff5f&smsMob=13651638713&smsText=【球王决】赛制为7十1裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱", new HashMap<>(), "utf-8");
+        String msg = "【球王决】尊敬的郭大王，您所属的球队测试球队约战信息如下：时间：2018年12月01日12:00:00-14:00:00；地点：球场1；对手：郭郭的球队(使者)赛制为7十1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
+        String result = new HttpClientUtil().doPost("http://utf8.api.smschinese.cn/?Uid=毕盛小程序&Key=d57ba7e3dcc263b1ff5f&smsMob=13651638713&smsText="+msg, new HashMap<>(), "utf-8");
         System.out.println(result);
     }
 }

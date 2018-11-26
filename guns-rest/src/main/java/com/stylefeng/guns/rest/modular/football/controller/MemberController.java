@@ -198,7 +198,7 @@ public class MemberController {
             List<Map> datas = new ArrayList<>();
             pkMatches.forEach(pkMatch -> {
                 Map data = new HashMap();
-                data.put("matchid",pkMatch.getId());
+                data.put("matchid", pkMatch.getId());
                 data.put("team", pkTeam.getName());
                 PkTeam challengeTeam;
                 if (teamid.equals(pkMatch.getChallengeteamid())) {
@@ -221,7 +221,7 @@ public class MemberController {
                 }
                 try {
                     data.put("address", getAddress(pkMatch.getStatus(), pkMatch.getParkid(), pkMatch.getArea()));
-                    data.put("time", DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy-MM-dd") + " " + getTime(pkMatch.getStatus(), pkMatch.getTimeid(),pkMatch));
+                    data.put("time", DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy-MM-dd") + " " + getTime(pkMatch.getStatus(), pkMatch.getTimeid(), pkMatch));
                 } catch (ParseException e) {
                     log.error("地址或者时间转换异常");
                 }
@@ -247,9 +247,9 @@ public class MemberController {
 
 
     //获取时间接口
-    public String getTime(Integer status, Long timeid,PkMatch pkMatch) throws ParseException {
+    public String getTime(Integer status, Long timeid, PkMatch pkMatch) throws ParseException {
         //匹配中返回下午/晚上
-        if (MatchStatusEnum.FINDING.getCode().equals(status + "")) {
+        if (MatchStatusEnum.FINDING.getCode().equals(status + "") || MatchStatusEnum.FAIL.getCode().equals(status + "")) {
             PkParkRelation pkParkRelation = pkParkRelationMapper.selectById(timeid);//获取时间段的球场信息
             if (Objects.nonNull(pkParkRelation)) {
                 return DateUtil.judgeType(pkParkRelation.getStart(), pkParkRelation.getEnd());
@@ -263,7 +263,7 @@ public class MemberController {
     //获取地址接口
     public String getAddress(Integer status, Long parkid, Long areaid) throws ParseException {
         //匹配中返回区域名称
-        if (MatchStatusEnum.FINDING.getCode().equals(status + "")) {
+        if (MatchStatusEnum.FINDING.getCode().equals(status + "") || MatchStatusEnum.FAIL.getCode().equals(status + "")) {
             Wrapper<Areas> wrapper = new EntityWrapper<Areas>();
             wrapper = wrapper.eq("areaid", areaid);
             List<Areas> areas = areasMapper.selectList(wrapper);//获取时间段的球场信息
@@ -352,7 +352,7 @@ public class MemberController {
             }
             Assert.notEmpty(pkMembers, "openid未获取到用户");
             Wrapper<PkTeamReview> pkTeamReviewWrapper = new EntityWrapper<PkTeamReview>();
-            pkTeamReviewWrapper = pkTeamReviewWrapper.eq("openid", openid).eq("teamid", teamid).eq("oppoid", oppoid).eq("matchid",matchid);
+            pkTeamReviewWrapper = pkTeamReviewWrapper.eq("openid", openid).eq("teamid", teamid).eq("oppoid", oppoid).eq("matchid", matchid);
             List<PkTeamReview> pkTeamReviews = pkTeamReviewMapper.selectList(pkTeamReviewWrapper);
             if (CollectionUtils.isNotEmpty(pkTeamReviews)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该用户对该局比赛已经评价过"));
