@@ -7,6 +7,7 @@ import com.stylefeng.guns.core.enums.PayStatusEnum;
 import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.rest.common.exception.BussinessException;
 import com.stylefeng.guns.rest.common.persistence.dao.PkOrderMapper;
+import com.stylefeng.guns.rest.common.persistence.model.PkMember;
 import com.stylefeng.guns.rest.common.persistence.model.PkOrder;
 import com.stylefeng.guns.core.util.response.CommonListResp;
 import com.stylefeng.guns.core.util.response.CommonResp;
@@ -41,6 +42,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,6 +110,11 @@ public class WeixinController {
             throw new BussinessException(BizExceptionEnum.OPEN_ID_ERROR);
         }
         try {
+            //获取订单
+            Wrapper<PkOrder> wrapper = new EntityWrapper<PkOrder>();
+            wrapper = wrapper.eq("no", orderno);
+            List<PkOrder> list = pkOrderMapper.selectList(wrapper);
+
             OrderInfo order = new OrderInfo();
             order.setAppid(Configure.getAppID());
             order.setMch_id(Configure.getMch_id());
@@ -115,7 +122,11 @@ public class WeixinController {
             order.setNonce_str(nonce_str);
             order.setBody("测试支付啦");
             order.setOut_trade_no(orderno);
-            order.setTotal_fee(1);
+            if (CollectionUtils.isNotEmpty(list)){
+                order.setTotal_fee(list.get(0).getAmount().multiply(new BigDecimal("100")).intValue());
+            }else{
+                order.setTotal_fee(1);
+            }
             //获取本机的ip地址
             order.setSpbill_create_ip(IpUtils.getIpAddr(request));
             order.setNotify_url("https://qiuwangjue.mybission.com/weixin/wxNotify");
