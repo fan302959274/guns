@@ -19,6 +19,7 @@
 		<result column="status" property="status" />
 		<result column="createdate" property="createdate" />
 		<result column="updatedate" property="updatedate" />
+		<result column="lastjointime" property="lastjointime" />
 	</resultMap>
 
 </mapper>

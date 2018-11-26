@@ -27,6 +27,8 @@
         '约战中'
         WHEN m.`status` = 4 THEN
         '约战完成'
+        WHEN m.`status` = 5 THEN
+        '约战失败'
         ELSE
         '未知'
         END)

@@ -18,6 +18,8 @@
         '约战中'
         WHEN t.status = 4 THEN
         '约战完成'
+        WHEN t.status = 5 THEN
+        '约战失败'
         ELSE
         '未知'
         END)
@@ -83,6 +85,8 @@
         '约战中'
         WHEN t.status = 4 THEN
         '约战完成'
+        WHEN t.status = 5 THEN
+        '约战失败'
         ELSE
         '未知'
         END)

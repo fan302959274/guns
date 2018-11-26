@@ -130,12 +130,12 @@ public class DateUtil {
     }
 
     /**
-     * @Title: compareDate
-     * @Description:(日期比较，如果s>=e 返回true 否则返回false)
      * @param s
      * @param e
      * @return boolean
      * @throws
+     * @Title: compareDate
+     * @Description:(日期比较，如果s>=e 返回true 否则返回false)
      * @author luguosui
      */
     public static boolean compareDate(String s, String e) {
@@ -247,6 +247,24 @@ public class DateUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        day = (endDate.getTime() - beginDate.getTime()) / (24 * 60 * 60 * 1000);
+        // System.out.println("相隔的天数="+day);
+
+        return day;
+    }
+
+    /**
+     * <li>功能描述：时间相减得到天数
+     *
+     * @param beginDate
+     * @param endDate
+     * @return long
+     * @author Administrator
+     */
+    public static long getDaySub(Date beginDate, Date endDate) {
+        long day = 0;
+        SimpleDateFormat format = new SimpleDateFormat(
+                "yyyy-MM-dd");
         day = (endDate.getTime() - beginDate.getTime()) / (24 * 60 * 60 * 1000);
         // System.out.println("相隔的天数="+day);
 
@@ -371,7 +389,7 @@ public class DateUtil {
     }
 
     //日期转换
-    public static String judgeType(String start,String end) throws ParseException {
+    public static String judgeType(String start, String end) throws ParseException {
         String result = null;
         String t1 = "12:00:00";
         String t2 = "18:00:00";
@@ -384,26 +402,24 @@ public class DateUtil {
         Date date4 = formart.parse(t4);
         Date startDate = formart.parse(start);
         Date endDate = formart.parse(end);
-        if (startDate.compareTo(date1)>=0 && endDate.compareTo(date2)<=0){
+        if (startDate.compareTo(date1) >= 0 && endDate.compareTo(date2) <= 0) {
             result = "下午";
         }
-        if (startDate.compareTo(date3)>=0 && endDate.compareTo(date4)<=0){
+        if (startDate.compareTo(date3) >= 0 && endDate.compareTo(date4) <= 0) {
             result = "晚上";
         }
         return result;
     }
 
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 //		System.out.println(getTime(new Date()));
 //		System.out.println(getAfterDayWeek("0"));
 
-		System.out.println(getRecentWeekSixDay());
-		System.out.println(getRecentWeekSevenDay());
+        System.out.println(getRecentWeekSixDay());
+        System.out.println(getRecentWeekSevenDay());
 
 
-
-
-	}
+    }
 
 }
