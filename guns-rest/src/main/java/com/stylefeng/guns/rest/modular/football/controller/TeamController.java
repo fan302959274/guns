@@ -305,6 +305,7 @@ public class TeamController {
             }
 
             pkMember.setType("1");
+            pkMember.setLastjointime(new Date());//创建球队也算加入球队
             pkMemberMapper.updateById(pkMember);//更新创建球队的人为队长
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
@@ -430,7 +431,7 @@ public class TeamController {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "球队人员已满24人"));
             }
 
-            if (DateUtil.getDaySub(pkMember.getLastjointime(),new Date())<=30){
+            if (Objects.nonNull(pkMember.getLastjointime()) && DateUtil.getDaySub(pkMember.getLastjointime(),new Date())<=30){
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "您一个月内加入过球队！"));
             }
 
