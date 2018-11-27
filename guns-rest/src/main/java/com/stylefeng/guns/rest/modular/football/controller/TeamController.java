@@ -304,8 +304,13 @@ public class TeamController {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该球员已经创建其它球队"));
             }
 
+
+            if (Objects.nonNull(pkMember.getLastjointime()) && DateUtil.getDaySub(pkMember.getLastjointime(),new Date())<=30){
+                return ResponseEntity.ok(new CommonResp<String>("2", "您一个月内加入过球队！"));
+            }
+
+
             pkMember.setType("1");
-            pkMember.setLastjointime(new Date());//创建球队也算加入球队
             pkMemberMapper.updateById(pkMember);//更新创建球队的人为队长
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
@@ -432,7 +437,7 @@ public class TeamController {
             }
 
             if (Objects.nonNull(pkMember.getLastjointime()) && DateUtil.getDaySub(pkMember.getLastjointime(),new Date())<=30){
-                return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "您一个月内加入过球队！"));
+                return ResponseEntity.ok(new CommonResp<String>("3", "您一个月内加入过球队！"));
             }
 
 
@@ -442,7 +447,6 @@ public class TeamController {
             pkTeamMemberMapper.insert(pkTeamMember);
 
             //更新球员的最近加入球队时间
-            pkMember.setLastjointime(new Date());//最近加入球队时间
             pkMemberMapper.updateById(pkMember);
             return ResponseEntity.ok(new CommonResp<String>("加入成功"));
         } catch (Exception e) {
@@ -598,6 +602,7 @@ public class TeamController {
                 //队长转换为普通球员
                 PkMember pkMember = pkMembers.get(0);
                 pkMember.setType("2");//普通球员
+                pkMember.setLastjointime(new Date());//最近解散球队时间
                 pkMemberMapper.updateById(pkMember);
             }
 
