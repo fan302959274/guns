@@ -106,20 +106,26 @@ public class MatchController extends BaseController {
         //没有上传过比赛结果的则操作
         if (!"1".equals(pkMatch.getIsupload()+"")){
             //东道主和挑战者积分修改
-            pkTeamHost.setPoint(pkTeamHost.getPoint()+calcGoals(pkMatchDto.getHostgoals()-pkMatchDto.getChallengegoals()));//东道主积分修改
+            Integer hostPoint = pkTeamHost.getPoint()+calcGoals(pkMatchDto.getHostgoals()-pkMatchDto.getChallengegoals());
+            pkTeamHost.setPoint(hostPoint>0?hostPoint:0);//东道主积分修改
             pkTeamMapper.updateById(pkTeamHost);
-            pkTeamChallenge.setPoint(pkTeamChallenge.getPoint()+calcGoals(pkMatchDto.getChallengegoals()-pkMatchDto.getHostgoals()));//挑战者积分修改
+            Integer challengePoint = pkTeamChallenge.getPoint()+calcGoals(pkMatchDto.getChallengegoals()-pkMatchDto.getHostgoals());
+            pkTeamChallenge.setPoint(challengePoint>0?challengePoint:0);//挑战者积分修改
             pkTeamMapper.updateById(pkTeamChallenge);
         }else {
             //上传过结果如果再修改的话就先还原成之前的再修改
-            pkTeamHost.setPoint(pkTeamHost.getPoint()-calcGoals(pkMatch.getHostgoals()-pkMatch.getChallengegoals()));//东道主积分修改
+            Integer hostPointOld = pkTeamHost.getPoint()-calcGoals(pkMatch.getHostgoals()-pkMatch.getChallengegoals());
+            pkTeamHost.setPoint(hostPointOld>0?hostPointOld:0);//东道主积分修改
             pkTeamMapper.updateById(pkTeamHost);
-            pkTeamChallenge.setPoint(pkTeamChallenge.getPoint()-calcGoals(pkMatch.getChallengegoals()-pkMatch.getHostgoals()));//挑战者积分修改
+            Integer challengePointOld = pkTeamChallenge.getPoint()-calcGoals(pkMatch.getChallengegoals()-pkMatch.getHostgoals());
+            pkTeamChallenge.setPoint(challengePointOld>0?challengePointOld:0);//挑战者积分修改
             pkTeamMapper.updateById(pkTeamChallenge);
             //东道主和挑战者积分修改
-            pkTeamHost.setPoint(pkTeamHost.getPoint()+calcGoals(pkMatchDto.getHostgoals()-pkMatchDto.getChallengegoals()));//东道主积分修改
+            Integer hostPoint = pkTeamHost.getPoint()+calcGoals(pkMatchDto.getHostgoals()-pkMatchDto.getChallengegoals());
+            pkTeamHost.setPoint(hostPoint>0?hostPoint:0);//东道主积分修改
             pkTeamMapper.updateById(pkTeamHost);
-            pkTeamChallenge.setPoint(pkTeamChallenge.getPoint()+calcGoals(pkMatchDto.getChallengegoals()-pkMatchDto.getHostgoals()));//挑战者积分修改
+            Integer challengePoint = pkTeamChallenge.getPoint()+calcGoals(pkMatchDto.getChallengegoals()-pkMatchDto.getHostgoals());
+            pkTeamChallenge.setPoint(challengePoint>0?challengePoint:0);//挑战者积分修改
             pkTeamMapper.updateById(pkTeamChallenge);
         }
 
