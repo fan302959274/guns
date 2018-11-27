@@ -1,8 +1,6 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.stylefeng.guns.core.util.httpclient.HttpClientUtil;
-import com.stylefeng.guns.core.util.response.CommonListResp;
 import com.stylefeng.guns.core.util.response.CommonResp;
 import com.stylefeng.guns.core.util.response.ResponseCode;
 import io.swagger.annotations.Api;
@@ -73,7 +71,6 @@ public class SmsController {
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
         }
-
     }
 
     /**
