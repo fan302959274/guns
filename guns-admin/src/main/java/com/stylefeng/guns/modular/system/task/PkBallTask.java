@@ -139,7 +139,7 @@ public class PkBallTask {
         PkMember pkMemberHost = pkMemberMapper.selectById(pkTeamHost.getOwnerid());
 
         //东道主短信发送
-        String msgHost = "【球王决】尊敬的队长您好，您选择的" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(),"yyyyMMdd"),"yyyy年MM月dd日") + pkMatch.getTime() + "约战由于没有实力匹配的对手/球场，因此本次约战订单已被自动取消。请您更换约赛时间或约赛区域，祝您约战成功。";
+        String msgHost = "【球王决】您好，您选择的" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(),"yyyyMMdd"),"yyyy年MM月dd日") + pkMatch.getTime() + "约战由于没有实力匹配的对手，订单已被系统取消。请您更换约赛时间或约赛区域，祝您约战成功。";
         String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
 
 

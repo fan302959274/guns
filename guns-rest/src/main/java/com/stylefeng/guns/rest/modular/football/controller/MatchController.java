@@ -458,13 +458,13 @@ public class MatchController {
         PkTeam pkTeamChallge = pkTeamMapper.selectById(pkMatch.getChallengeteamid());
         PkMember pkMemberChallge = pkMemberMapper.selectById(pkTeamChallge.getOwnerid());
         //东道主短信发送
-        String msgHost = "【球王决】尊敬的" + pkMemberHost.getName() + "，您所属的球队" + pkTeamHost.getName() + "约战信息如下：时间：" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy年MM月dd日") + pkMatch.getTime() + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamChallge.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamChallge.getPoint()).getMessage() + ")赛制为7十1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
+        String msgHost = "【球王决】尊敬的" + pkMemberHost.getName() + "，您的约战时间：" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy年MM月dd日") + pkMatch.getTime() + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamChallge.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamChallge.getPoint()).getMessage() + ")赛制为7十1，裁判为一主两边，请按时到达。";
         log.info("东道主发送的信息为:{}", msgHost);
         String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
         log.info("东道主发送的结果为:{}", resultHost);
 
         //挑战者短信发送
-        String msgChallge = "【球王决】尊敬的" + pkMemberChallge.getName() + "，您所属的球队" + pkTeamChallge.getName() + "约战信息如下：时间：" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy年MM月dd日") + pkMatch.getTime() + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamHost.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamHost.getPoint()).getMessage() + ")赛制为7十1，裁判为一主两边，同时我们为您的球队赠送恒大冰泉一箱。请您通知参赛队员提前半小时到场热身，并做好参赛准备。";
+        String msgChallge = "【球王决】尊敬的" + pkMemberChallge.getName() + "，您的约战时间：" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy年MM月dd日") + pkMatch.getTime() + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamHost.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamHost.getPoint()).getMessage() + ")赛制为7十1，裁判为一主两边，请按时到达。";
         log.info("挑战者发送的信息为:{}", msgHost);
         String resultChallge = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberChallge.getMobile() + "&smsText=" + msgChallge, new HashMap<>(), charset);
         log.info("挑战者发送的结果为:{}", resultChallge);
