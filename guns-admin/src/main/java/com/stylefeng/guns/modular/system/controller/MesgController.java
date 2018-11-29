@@ -1,28 +1,23 @@
 package com.stylefeng.guns.modular.system.controller;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.persistence.dao.PkMesgMapper;
-import com.stylefeng.guns.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.common.persistence.model.PkMember;
 import com.stylefeng.guns.common.persistence.model.PkMesg;
 import com.stylefeng.guns.core.base.controller.BaseController;
-import com.stylefeng.guns.core.enums.AttachCategoryEnum;
-import com.stylefeng.guns.core.enums.AttachTypeEnum;
-import com.stylefeng.guns.core.enums.PositionEnum;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.core.util.httpclient.HttpClientUtil;
 import com.stylefeng.guns.modular.system.dao.MemberDao;
 import com.stylefeng.guns.modular.system.dao.MesgDao;
 import com.stylefeng.guns.modular.system.warpper.MesgWarpper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +48,8 @@ public class MesgController extends BaseController {
     MemberDao memberDao;
     @Resource
     PkMesgMapper pkMesgMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
     @Value("${sms.url}")
     private String smsUrl;
     @Value("${sms.charset}")
@@ -78,10 +75,9 @@ public class MesgController extends BaseController {
 
     /**
      * 跳转到添加消息
-     *
      */
     @RequestMapping("/mesg_add")
-    public String parkAdd(Model  model) {
+    public String parkAdd(Model model) {
         return PREFIX + "mesg_add.html";
     }
 
@@ -90,19 +86,22 @@ public class MesgController extends BaseController {
      */
     @RequestMapping(value = "/add")
     @ResponseBody
-    public Object add(PkMesg mesg ) {
+    public Object add(PkMesg mesg) {
         this.pkMesgMapper.insert(mesg);
-        String  type =null;
-        if(!"0".equals(mesg.getObjtype())){
-            type=mesg.getObjtype();
+        String type = null;
+        if (!"0".equals(mesg.getObjtype())) {
+            type = mesg.getObjtype();
         }
-        List<PkMember> members=memberDao.selectAllMemberByType(type);
-        members.forEach(member -> {
-            new HttpClientUtil().doPost(smsUrl + "smsMob="+member.getAccount()  + "&smsText=【球王决】" + mesg.getContent(), new HashMap<>(), charset);
-        });
+        List<PkMember> members = memberDao.selectAllMemberByType(type);
+        //开关开启才发送
+        Object switchFlag = redisTemplate.opsForValue().get("sms:switch");
+        if ((switchFlag == null) ? true : (Boolean.parseBoolean(switchFlag.toString()))) {
+            members.forEach(member -> {
+                new HttpClientUtil().doPost(smsUrl + "smsMob=" + member.getAccount() + "&smsText=【球王决】" + mesg.getContent(), new HashMap<>(), charset);
+            });
+        }
         return super.SUCCESS_TIP;
     }
-
 
 
     /**
@@ -116,7 +115,7 @@ public class MesgController extends BaseController {
         SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         PkMesg pkMesg = pkMesgMapper.selectById(mesgId);
         model.addAttribute(pkMesg);
-        model.addAttribute("creatTime",ss.format(pkMesg.getCreatedate()));
+        model.addAttribute("creatTime", ss.format(pkMesg.getCreatedate()));
         LogObjectHolder.me().set(pkMesg);
         return PREFIX + "mesg_edit.html";
     }
@@ -143,14 +142,18 @@ public class MesgController extends BaseController {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
         this.pkMesgMapper.updateById(mesg);
-        String  type =null;
-        if(!"0".equals(mesg.getObjtype())){
-            type=mesg.getObjtype();
+        String type = null;
+        if (!"0".equals(mesg.getObjtype())) {
+            type = mesg.getObjtype();
         }
-        List<PkMember> members=memberDao.selectAllMemberByType(type);
-        members.forEach(member -> {
-            new HttpClientUtil().doPost(smsUrl + "smsMob="+member.getAccount()  + "&smsText=【球王决】" + mesg.getContent(), new HashMap<>(), charset);
-        });
+        List<PkMember> members = memberDao.selectAllMemberByType(type);
+        //开关开启才发送
+        Object switchFlag = redisTemplate.opsForValue().get("sms:switch");
+        if ((switchFlag == null) ? true : (Boolean.parseBoolean(switchFlag.toString()))) {
+            members.forEach(member -> {
+                new HttpClientUtil().doPost(smsUrl + "smsMob=" + member.getAccount() + "&smsText=【球王决】" + mesg.getContent(), new HashMap<>(), charset);
+            });
+        }
         return SUCCESS_TIP;
 
     }
@@ -165,7 +168,7 @@ public class MesgController extends BaseController {
         }
         SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         PkMesg pkMesg = pkMesgMapper.selectById(mesgId);
-        model.addAttribute("creatTime",ss.format(pkMesg.getCreatedate()));
+        model.addAttribute("creatTime", ss.format(pkMesg.getCreatedate()));
         model.addAttribute(pkMesg);
         LogObjectHolder.me().set(pkMesg);
         return PREFIX + "mesg_view.html";

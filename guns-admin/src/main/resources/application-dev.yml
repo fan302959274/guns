@@ -40,7 +40,7 @@ spring:
     password: admin123
     filters: log4j,wall,mergeStat
   redis:
-    host: localhost
+    host: 47.100.175.14
     port: 6379
     password:
   mvc:

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -46,6 +47,8 @@ public class PkBallTask {
     PkParkRelationMapper pkParkRelationMapper;
     @Autowired
     PkParkMapper pkParkMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Value("${sms.url}")
     private String smsUrl;
@@ -140,8 +143,11 @@ public class PkBallTask {
 
         //东道主短信发送
         String msgHost = "【球王决】您好，您选择的" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(),"yyyyMMdd"),"yyyy年MM月dd日") + pkMatch.getTime() + "约战由于没有实力匹配的对手，订单已被系统取消。请您更换约赛时间或约赛区域，祝您约战成功。";
-        String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
-
+        //开关开启才发送
+        Object switchFlag = redisTemplate.opsForValue().get("sms:switch");
+        if ((switchFlag == null) ? true : (Boolean.parseBoolean(switchFlag.toString()))) {
+            String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
+        }
 
     }
 

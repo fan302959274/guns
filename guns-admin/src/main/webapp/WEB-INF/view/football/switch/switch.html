@@ -9,22 +9,26 @@
             </div>
             <div class="ibox-content">
 
-                <div class="control-group">
-                    <label class="control-label" for="sms-switch">短信开关</label>
-                    <div class="controls">
-                        <div class="switch" tabindex="0">
-                            <input type="checkbox" id="sms-switch" checked="checked"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="my-checkbox2">其他开关</label>
-                    <div class="controls">
-                        <div class="switch" tabindex="0">
-                            <input type="checkbox" id="my-checkbox2" checked="checked"/>
-                        </div>
-                    </div>
-                </div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>描述</th>
+                        <th>开关状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>短信开关(约战成功失败短信发送、消息管理短信发送、验证码不做控制)</td>
+                        <th><input type="checkbox" id="sms-switch" checked="checked"/></th>
+                    </tr>
+                   <!-- <tr>
+                        <td>其他开关</td>
+                        <th><input type="checkbox" id="my-checkbox2" checked="checked"/></th>
+                    </tr>-->
+                    </tbody>
+                </table>
+
 
             </div>
         </div>
