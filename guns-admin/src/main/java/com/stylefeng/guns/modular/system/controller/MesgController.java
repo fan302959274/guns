@@ -98,7 +98,7 @@ public class MesgController extends BaseController {
         }
         List<PkMember> members=memberDao.selectAllMemberByType(type);
         members.forEach(member -> {
-            new HttpClientUtil().doPost(smsUrl + "smsMob="+member.getAccount()  + "&smsText=" + mesg.getContent(), new HashMap<>(), charset);
+            new HttpClientUtil().doPost(smsUrl + "smsMob="+member.getAccount()  + "&smsText=【球王决】" + mesg.getContent(), new HashMap<>(), charset);
         });
         return super.SUCCESS_TIP;
     }
@@ -149,7 +149,7 @@ public class MesgController extends BaseController {
         }
         List<PkMember> members=memberDao.selectAllMemberByType(type);
         members.forEach(member -> {
-            new HttpClientUtil().doPost(smsUrl + "smsMob="+member.getAccount()  + "&smsText=" + mesg.getContent(), new HashMap<>(), charset);
+            new HttpClientUtil().doPost(smsUrl + "smsMob="+member.getAccount()  + "&smsText=【球王决】" + mesg.getContent(), new HashMap<>(), charset);
         });
         return SUCCESS_TIP;
 
