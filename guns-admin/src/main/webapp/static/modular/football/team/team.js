@@ -42,6 +42,15 @@ Team.check = function () {
     }
 };
 
+/**
+ * 搜索角色
+ */
+Team.search = function () {
+    var queryData = {};
+    queryData['name'] = $("#name").val();
+    Team.table.refresh({query: queryData});
+}
+
 $(function () {
     var defaultColunms = Team.initColumn();
     var table = new BSTable(Team.id, "/team/list", defaultColunms);

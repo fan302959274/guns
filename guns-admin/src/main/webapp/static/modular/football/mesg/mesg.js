@@ -112,7 +112,7 @@ Mesg.delMesg = function () {
 Mesg.search = function () {
     var queryData = {};
     queryData['mesgname'] = $("#mesgname").val();
-    Park.table.refresh({query: queryData});
+    Mesg.table.refresh({query: queryData});
 }
 /**
  * 初始化信息
