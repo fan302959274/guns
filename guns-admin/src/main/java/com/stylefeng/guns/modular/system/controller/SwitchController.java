@@ -30,6 +30,10 @@ public class SwitchController extends BaseController {
      */
     @RequestMapping("")
     public String index(String type, Model model) {
+        //开关开启才发送
+        Object switchObject = redisTemplate.opsForValue().get("sms:switch");
+        Boolean switchFlag = (switchObject == null) ? false : (Boolean.parseBoolean(switchObject.toString()));
+        model.addAttribute("switchFlag", switchFlag);
         return PREFIX + "switch.html";
     }
 

@@ -20,12 +20,19 @@
                     <tbody>
                     <tr>
                         <td>短信开关(约战成功失败短信发送、消息管理短信发送、验证码不做控制)</td>
-                        <th><input type="checkbox" id="sms-switch" checked="checked"/></th>
+                        <th>
+                            @if(isNotEmpty(switchFlag) && switchFlag == true){
+                            <input type="checkbox" id="sms-switch" checked="checked"/>
+                            @}
+                            @if(isNotEmpty(switchFlag) && switchFlag == false){
+                            <input type="checkbox" id="sms-switch"/>
+                            @}
+                        </th>
                     </tr>
-                   <!-- <tr>
-                        <td>其他开关</td>
-                        <th><input type="checkbox" id="my-checkbox2" checked="checked"/></th>
-                    </tr>-->
+                    <!-- <tr>
+                         <td>其他开关</td>
+                         <th><input type="checkbox" id="my-checkbox2" checked="checked"/></th>
+                     </tr>-->
                     </tbody>
                 </table>
 

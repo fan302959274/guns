@@ -95,7 +95,7 @@ public class MesgController extends BaseController {
         List<PkMember> members = memberDao.selectAllMemberByType(type);
         //开关开启才发送
         Object switchFlag = redisTemplate.opsForValue().get("sms:switch");
-        if ((switchFlag == null) ? true : (Boolean.parseBoolean(switchFlag.toString()))) {
+        if ((switchFlag == null) ? false : (Boolean.parseBoolean(switchFlag.toString()))) {
             members.forEach(member -> {
                 new HttpClientUtil().doPost(smsUrl + "smsMob=" + member.getAccount() + "&smsText=【球王决】" + mesg.getContent(), new HashMap<>(), charset);
             });
@@ -149,7 +149,7 @@ public class MesgController extends BaseController {
         List<PkMember> members = memberDao.selectAllMemberByType(type);
         //开关开启才发送
         Object switchFlag = redisTemplate.opsForValue().get("sms:switch");
-        if ((switchFlag == null) ? true : (Boolean.parseBoolean(switchFlag.toString()))) {
+        if ((switchFlag == null) ? false : (Boolean.parseBoolean(switchFlag.toString()))) {
             members.forEach(member -> {
                 new HttpClientUtil().doPost(smsUrl + "smsMob=" + member.getAccount() + "&smsText=【球王决】" + mesg.getContent(), new HashMap<>(), charset);
             });

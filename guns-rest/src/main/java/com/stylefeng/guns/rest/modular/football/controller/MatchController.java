@@ -463,7 +463,7 @@ public class MatchController {
 
         //开关开启才发送
         Object switchFlag = redisTemplate.opsForValue().get("sms:switch");
-        if ((switchFlag == null) ? true : (Boolean.parseBoolean(switchFlag.toString()))) {
+        if ((switchFlag == null) ? false : (Boolean.parseBoolean(switchFlag.toString()))) {
             String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
             log.info("东道主发送的结果为:{}", resultHost);
         }
@@ -471,7 +471,7 @@ public class MatchController {
         String msgChallge = "【球王决】尊敬的" + pkMemberChallge.getName() + "，您的约战时间：" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(), "yyyyMMdd"), "yyyy年MM月dd日") + pkMatch.getTime() + "；地点：" + getAddress(parkid) + "；对手：" + pkTeamHost.getName() + "(" + TeamLevelEnum.calcLevel(pkTeamHost.getPoint()).getMessage() + ")赛制为7十1，裁判为一主两边，请按时到达。";
         log.info("挑战者发送的信息为:{}", msgHost);
         //开关开启才发送
-        if ((switchFlag == null) ? true : (Boolean.parseBoolean(switchFlag.toString()))) {
+        if ((switchFlag == null) ? false : (Boolean.parseBoolean(switchFlag.toString()))) {
             String resultChallge = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberChallge.getMobile() + "&smsText=" + msgChallge, new HashMap<>(), charset);
             log.info("挑战者发送的结果为:{}", resultChallge);
         }

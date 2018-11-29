@@ -145,7 +145,7 @@ public class PkBallTask {
         String msgHost = "【球王决】您好，您选择的" + DateUtil.formatDate(DateUtil.parse(pkMatch.getDate(),"yyyyMMdd"),"yyyy年MM月dd日") + pkMatch.getTime() + "约战由于没有实力匹配的对手，订单已被系统取消。请您更换约赛时间或约赛区域，祝您约战成功。";
         //开关开启才发送
         Object switchFlag = redisTemplate.opsForValue().get("sms:switch");
-        if ((switchFlag == null) ? true : (Boolean.parseBoolean(switchFlag.toString()))) {
+        if ((switchFlag == null) ? false : (Boolean.parseBoolean(switchFlag.toString()))) {
             String resultHost = new HttpClientUtil().doPost(smsUrl + "smsMob=" + pkMemberHost.getMobile() + "&smsText=" + msgHost, new HashMap<>(), charset);
         }
 
