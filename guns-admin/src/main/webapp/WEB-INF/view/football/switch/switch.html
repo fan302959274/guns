@@ -1,0 +1,34 @@
+@layout("/common/_container.html"){
+<div class="row">
+
+
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>开关管理</h5>
+            </div>
+            <div class="ibox-content">
+
+                <div class="control-group">
+                    <label class="control-label" for="sms-switch">短信开关</label>
+                    <div class="controls">
+                        <div class="switch" tabindex="0">
+                            <input type="checkbox" id="sms-switch" checked="checked"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="my-checkbox2">其他开关</label>
+                    <div class="controls">
+                        <div class="switch" tabindex="0">
+                            <input type="checkbox" id="my-checkbox2" checked="checked"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/football/switch/switch.js"></script>
+@}
