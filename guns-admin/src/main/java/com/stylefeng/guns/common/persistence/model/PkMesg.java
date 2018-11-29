@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-23
+ * @since 2018-11-29
  */
 @TableName("pk_mesg")
 public class PkMesg extends Model<PkMesg> {
@@ -23,7 +23,7 @@ public class PkMesg extends Model<PkMesg> {
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
-	private Integer id;
+	private Long id;
     /**
      * 消息名称
      */
@@ -43,11 +43,11 @@ public class PkMesg extends Model<PkMesg> {
 	private String channel;
 
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

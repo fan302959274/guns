@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-23
+ * @since 2018-11-29
  */
 public class Relation extends Model<Relation> {
 

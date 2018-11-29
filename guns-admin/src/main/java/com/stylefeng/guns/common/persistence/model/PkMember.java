@@ -16,7 +16,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author stylefeng
- * @since 2018-11-23
+ * @since 2018-11-29
  */
 @TableName("pk_member")
 public class PkMember extends Model<PkMember> {
@@ -84,6 +84,10 @@ public class PkMember extends Model<PkMember> {
      * 更新时间
      */
 	private Date updatedate;
+    /**
+     * 最近加入球队的时间
+     */
+	private Date lastjointime;
 
 
 	public Long getId() {
@@ -206,6 +210,14 @@ public class PkMember extends Model<PkMember> {
 		this.updatedate = updatedate;
 	}
 
+	public Date getLastjointime() {
+		return lastjointime;
+	}
+
+	public void setLastjointime(Date lastjointime) {
+		this.lastjointime = lastjointime;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -229,6 +241,7 @@ public class PkMember extends Model<PkMember> {
 			", status=" + status +
 			", createdate=" + createdate +
 			", updatedate=" + updatedate +
+			", lastjointime=" + lastjointime +
 			"}";
 	}
 }
