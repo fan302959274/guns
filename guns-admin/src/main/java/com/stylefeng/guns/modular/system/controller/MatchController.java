@@ -129,15 +129,15 @@ public class MatchController extends BaseController {
             Integer challengePointOld = pkTeamChallenge.getPoint() - calcGoals(pkMatch.getChallengegoals() - pkMatch.getHostgoals());
             pkTeamChallenge.setPoint(challengePointOld);//挑战者积分修改
             //胜负平结果修改
-            if (hostPointOld > challengePointOld) {
-                pkTeamHost.setWinnum(pkTeamHost.getWinnum() + 1);
-                pkTeamChallenge.setDebtnum(pkTeamChallenge.getDebtnum() + 1);
-            } else if (hostPointOld.equals(challengePointOld)) {
-                pkTeamHost.setDrawnum(pkTeamHost.getDrawnum() + 1);
-                pkTeamChallenge.setDrawnum(pkTeamChallenge.getDrawnum() + 1);
+            if (pkMatch.getHostgoals() > pkMatch.getChallengegoals()) {
+                pkTeamHost.setWinnum(pkTeamHost.getWinnum() - 1);
+                pkTeamChallenge.setDebtnum(pkTeamChallenge.getDebtnum() - 1);
+            } else if (pkMatch.getHostgoals().equals(pkMatch.getChallengegoals())) {
+                pkTeamHost.setDrawnum(pkTeamHost.getDrawnum() - 1);
+                pkTeamChallenge.setDrawnum(pkTeamChallenge.getDrawnum() - 1);
             } else {
-                pkTeamHost.setDebtnum(pkTeamHost.getDebtnum() + 1);
-                pkTeamChallenge.setWinnum(pkTeamChallenge.getWinnum() + 1);
+                pkTeamHost.setDebtnum(pkTeamHost.getDebtnum() - 1);
+                pkTeamChallenge.setWinnum(pkTeamChallenge.getWinnum() - 1);
             }
             pkTeamMapper.updateById(pkTeamHost);
             pkTeamMapper.updateById(pkTeamChallenge);
