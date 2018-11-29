@@ -30,12 +30,13 @@ public class BizTest extends BaseJunit {
 
         //testService.testAll();
 
+        redisTemplate.delete("sms:switch");
         Object flag = redisTemplate.opsForValue().get("sms:switch");
-        System.out.println(redisTemplate.opsForValue().get("sms:switch"));
-        System.out.println(Boolean.parseBoolean(flag.toString()));
-        System.out.println((flag == null )? true : (Boolean.parseBoolean(flag.toString())));
-        if ((flag == null )? true : (Boolean.parseBoolean(flag.toString()))) {
-            System.out.println(1);
-        }
+//        System.out.println(redisTemplate.opsForValue().get("sms:switch"));
+//        System.out.println(Boolean.parseBoolean(flag.toString()));
+//        System.out.println((flag == null )? true : (Boolean.parseBoolean(flag.toString())));
+//        if ((flag == null )? true : (Boolean.parseBoolean(flag.toString()))) {
+//            System.out.println(1);
+//        }
     }
 }
