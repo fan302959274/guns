@@ -105,15 +105,15 @@ public class MatchController extends BaseController {
         //没有上传过比赛结果的则操作
         if (!"1".equals(pkMatch.getIsupload() + "")) {
             //东道主和挑战者积分修改
-            Integer hostPoint = pkTeamHost.getPoint() + calcGoals(pkMatchDto.getHostgoals() - pkMatchDto.getChallengegoals());
+            Integer hostPoint = pkTeamHost.getPoint() + calcPoints(pkMatchDto.getHostgoals() - pkMatchDto.getChallengegoals());
             pkTeamHost.setPoint(hostPoint);//东道主积分修改
-            Integer challengePoint = pkTeamChallenge.getPoint() + calcGoals(pkMatchDto.getChallengegoals() - pkMatchDto.getHostgoals());
+            Integer challengePoint = pkTeamChallenge.getPoint() + calcPoints(pkMatchDto.getChallengegoals() - pkMatchDto.getHostgoals());
             pkTeamChallenge.setPoint(challengePoint);//挑战者积分修改
             //胜负平结果修改
-            if (hostPoint > challengePoint) {
+            if (pkMatchDto.getHostgoals() > pkMatchDto.getChallengegoals()) {
                 pkTeamHost.setWinnum(pkTeamHost.getWinnum() + 1);
                 pkTeamChallenge.setDebtnum(pkTeamChallenge.getDebtnum() + 1);
-            } else if (hostPoint.equals(challengePoint)) {
+            } else if (pkMatchDto.getHostgoals().equals(pkMatchDto.getChallengegoals())) {
                 pkTeamHost.setDrawnum(pkTeamHost.getDrawnum() + 1);
                 pkTeamChallenge.setDrawnum(pkTeamChallenge.getDrawnum() + 1);
             } else {
@@ -124,9 +124,9 @@ public class MatchController extends BaseController {
             pkTeamMapper.updateById(pkTeamChallenge);
         } else {
             //上传过结果如果再修改的话就先还原成之前的再修改
-            Integer hostPointOld = pkTeamHost.getPoint() - calcGoals(pkMatch.getHostgoals() - pkMatch.getChallengegoals());
+            Integer hostPointOld = pkTeamHost.getPoint() - calcPoints(pkMatch.getHostgoals() - pkMatch.getChallengegoals());
             pkTeamHost.setPoint(hostPointOld);//东道主积分修改
-            Integer challengePointOld = pkTeamChallenge.getPoint() - calcGoals(pkMatch.getChallengegoals() - pkMatch.getHostgoals());
+            Integer challengePointOld = pkTeamChallenge.getPoint() - calcPoints(pkMatch.getChallengegoals() - pkMatch.getHostgoals());
             pkTeamChallenge.setPoint(challengePointOld);//挑战者积分修改
             //胜负平结果修改
             if (pkMatch.getHostgoals() > pkMatch.getChallengegoals()) {
@@ -142,15 +142,15 @@ public class MatchController extends BaseController {
             pkTeamMapper.updateById(pkTeamHost);
             pkTeamMapper.updateById(pkTeamChallenge);
             //东道主和挑战者积分修改
-            Integer hostPoint = pkTeamHost.getPoint() + calcGoals(pkMatchDto.getHostgoals() - pkMatchDto.getChallengegoals());
+            Integer hostPoint = pkTeamHost.getPoint() + calcPoints(pkMatchDto.getHostgoals() - pkMatchDto.getChallengegoals());
             pkTeamHost.setPoint(hostPoint);//东道主积分修改
-            Integer challengePoint = pkTeamChallenge.getPoint() + calcGoals(pkMatchDto.getChallengegoals() - pkMatchDto.getHostgoals());
+            Integer challengePoint = pkTeamChallenge.getPoint() + calcPoints(pkMatchDto.getChallengegoals() - pkMatchDto.getHostgoals());
             pkTeamChallenge.setPoint(challengePoint);//挑战者积分修改
             //胜负平结果修改
-            if (hostPoint > challengePoint) {
+            if (pkMatchDto.getHostgoals() > pkMatchDto.getChallengegoals()) {
                 pkTeamHost.setWinnum(pkTeamHost.getWinnum() + 1);
                 pkTeamChallenge.setDebtnum(pkTeamChallenge.getDebtnum() + 1);
-            } else if (hostPoint.equals(challengePoint)) {
+            } else if (pkMatchDto.getHostgoals().equals(pkMatchDto.getChallengegoals())) {
                 pkTeamHost.setDrawnum(pkTeamHost.getDrawnum() + 1);
                 pkTeamChallenge.setDrawnum(pkTeamChallenge.getDrawnum() + 1);
             } else {
@@ -206,7 +206,7 @@ public class MatchController extends BaseController {
 
 
     //计算积分points
-    public Integer calcGoals(Integer finalgoals) {
+    public Integer calcPoints(Integer finalgoals) {
         if (finalgoals > 6) {
             return 100;
         } else if (3 < finalgoals && finalgoals <= 6) {
