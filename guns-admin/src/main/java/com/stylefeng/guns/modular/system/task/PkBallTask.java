@@ -60,7 +60,7 @@ public class PkBallTask {
      */
     @Scheduled(fixedRate = 5000)
     public void task() {
-        //所有待比赛的时间一到改成约战中  一过就改为约战完成
+        //所有待比赛的时间一到改成约战中
         Wrapper<PkMatch> wrapper = new EntityWrapper<PkMatch>();
         wrapper = wrapper.eq("status", MatchStatusEnum.WAITING.getCode());
         List<PkMatch> list = pkMatchMapper.selectList(wrapper);
@@ -71,6 +71,17 @@ public class PkBallTask {
             if (start.getTime() < System.currentTimeMillis() && end.getTime() > System.currentTimeMillis()) {
                 status = MatchStatusEnum.MATCHING.getCode();//约战中
             }
+            pkMatch.setStatus(Integer.parseInt(status));
+            pkMatchMapper.updateById(pkMatch);
+        });
+
+        //所有待比赛的时间 一过就改为约战完成
+        wrapper = new EntityWrapper<PkMatch>();
+        wrapper = wrapper.eq("status", MatchStatusEnum.MATCHING.getCode());
+        list = pkMatchMapper.selectList(wrapper);
+        list.forEach(pkMatch -> {
+            String status = MatchStatusEnum.WAITING.getCode();
+            Date end = pkMatch.getEndtime();
             if (end.getTime() < System.currentTimeMillis()) {
                 status = MatchStatusEnum.COMPLETE.getCode();//约战完成
             }
