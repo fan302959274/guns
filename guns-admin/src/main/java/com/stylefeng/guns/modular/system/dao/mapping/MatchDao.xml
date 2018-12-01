@@ -44,7 +44,7 @@
         ELSE
         '未支付'
         END)
-        as challengepaystatus,
+        as hostpaystatus,
         o2.no as o2No,
         tm2.culture as hostculture,
         tm2.ontime as hostontime,
@@ -57,7 +57,7 @@
         ELSE
         '未支付'
         END)
-        as hostpaystatus,
+        as challengepaystatus,
         t.hostgoals,
         t.challengegoals
     </sql>
