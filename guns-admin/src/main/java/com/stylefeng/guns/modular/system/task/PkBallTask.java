@@ -120,7 +120,7 @@ public class PkBallTask {
         List<PkTeam> teamList = pkTeamMapper.selectList(wrapper);
         for (PkTeam pkTeam : teamList) {
             Wrapper<PkTeamReview> pkTeamReviewWrapper = new EntityWrapper<PkTeamReview>();
-            pkTeamReviewWrapper.eq("teamid", pkTeam.getId());
+            pkTeamReviewWrapper.eq("oppoid", pkTeam.getId());
             List<PkTeamReview> reviews = pkTeamReviewMapper.selectList(pkTeamReviewWrapper);
             if (CollectionUtils.isNotEmpty(reviews)) {
                 BigDecimal total = new BigDecimal("" + reviews.size());
