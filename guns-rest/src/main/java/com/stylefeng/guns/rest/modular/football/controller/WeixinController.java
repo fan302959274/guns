@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.core.enums.PayStatusEnum;
-import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
-import com.stylefeng.guns.rest.common.exception.BussinessException;
-import com.stylefeng.guns.rest.common.persistence.dao.PkOrderMapper;
-import com.stylefeng.guns.rest.common.persistence.model.PkMember;
-import com.stylefeng.guns.rest.common.persistence.model.PkOrder;
 import com.stylefeng.guns.core.util.response.CommonListResp;
 import com.stylefeng.guns.core.util.response.CommonResp;
 import com.stylefeng.guns.core.util.response.ResponseCode;
+import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
+import com.stylefeng.guns.rest.common.exception.BussinessException;
+import com.stylefeng.guns.rest.common.persistence.dao.PkOrderMapper;
+import com.stylefeng.guns.rest.common.persistence.model.PkOrder;
 import com.stylefeng.guns.rest.common.wxpay.*;
 import com.stylefeng.guns.rest.common.wxpay.model.OrderInfo;
 import com.stylefeng.guns.rest.common.wxpay.model.OrderReturnInfo;
@@ -92,6 +91,7 @@ public class WeixinController {
         log.info("---------Openid:" + openid);
         return ResponseEntity.ok(new CommonResp<Map>(data));
     }
+
     /**
      * @param
      * @param request
@@ -105,7 +105,7 @@ public class WeixinController {
     public Object wxPay(HttpServletRequest request) {
         String openid = request.getParameter("openid");
         String orderno = request.getParameter("orderno");
-        log.info("支付订单的openid:{};orderno:{}",openid,orderno);
+        log.info("支付订单的openid:{};orderno:{}", openid, orderno);
         if (openid == null || "".equals(openid)) {
             throw new BussinessException(BizExceptionEnum.OPEN_ID_ERROR);
         }
@@ -122,9 +122,9 @@ public class WeixinController {
             order.setNonce_str(nonce_str);
             order.setBody("测试支付啦");
             order.setOut_trade_no(orderno);
-            if (CollectionUtils.isNotEmpty(list)){
+            if (CollectionUtils.isNotEmpty(list)) {
                 order.setTotal_fee(list.get(0).getAmount().multiply(new BigDecimal("100")).intValue());
-            }else{
+            } else {
                 order.setTotal_fee(1);
             }
             //获取本机的ip地址
@@ -135,7 +135,7 @@ public class WeixinController {
             order.setSign_type("MD5");
             //生成签名
             String sign = Signature.getSign(order);
-            log.info("签名后结果是:{}",sign);
+            log.info("签名后结果是:{}", sign);
             order.setSign(sign);
             String result = HttpRequest.sendPost("https://api.mch.weixin.qq.com/pay/unifiedorder", order);
             log.info("---------下单返回:" + result);
@@ -199,7 +199,9 @@ public class WeixinController {
         String returnCode = (String) map.get("return_code");
         if ("SUCCESS".equals(returnCode)) {
             //验证签名是否正确(过滤掉sign和sign_type)
-            String sign = PayUtil.sign(PayUtil.createLinkString(PayUtil.paraFilter(map)), Configure.getKey(),"utf-8").toUpperCase();
+            String sign = PayUtil.sign(PayUtil.createLinkString(PayUtil.paraFilter(map)), Configure.getKey(), "utf-8").toUpperCase();
+            log.info("{}的sign为{}", map.get("out_trade_no"), map.get("sign"));
+            log.info("{}的加工后的sign为{}", map.get("out_trade_no"), sign);
             if (sign.equals((String) map.get("sign"))) {
                 /**此处添加自己的业务逻辑代码start**/
 
@@ -207,7 +209,7 @@ public class WeixinController {
                 Wrapper<PkOrder> pkOrderWrapper = new EntityWrapper<PkOrder>();
                 pkOrderWrapper = pkOrderWrapper.eq("no", orderno);
                 List<PkOrder> orders = pkOrderMapper.selectList(pkOrderWrapper);
-                if (CollectionUtils.isNotEmpty(orders)){
+                if (CollectionUtils.isNotEmpty(orders)) {
                     PkOrder pkOrder = orders.get(0);
                     pkOrder.setStatus(PayStatusEnum.PAYED.getCode());//已支付
                     pkOrderMapper.updateById(pkOrder);
