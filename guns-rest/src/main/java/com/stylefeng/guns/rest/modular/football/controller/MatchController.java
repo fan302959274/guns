@@ -88,12 +88,12 @@ public class MatchController {
             Map map = new HashMap();
             map.put("date", DateUtil.getRecentWeekSixDay());
             map.put("weekid", "6");
-            map.put("weekname", "周六 " + DateUtil.getRecentWeekSixDay());
+            map.put("weekname", DateUtil.formatDate(DateUtil.parse(DateUtil.getRecentWeekSixDay(), "yyyyMMdd"), "yyyy年MM月dd日") + " 周六");
             datas.add(map);
             map = new HashMap();
             map.put("date", DateUtil.getRecentWeekSevenDay());
             map.put("weekid", "7");
-            map.put("weekname", "周日 " + DateUtil.getRecentWeekSevenDay());
+            map.put("weekname", DateUtil.formatDate(DateUtil.parse(DateUtil.getRecentWeekSevenDay(), "yyyyMMdd"), "yyyy年MM月dd日") + " 周日");
             datas.add(map);
             return ResponseEntity.ok(new CommonListResp<Map>(datas));
         } catch (Exception e) {
