@@ -190,6 +190,7 @@ public class MemberController {
             if (0 != type) {
                 pkMatchWrapper = pkMatchWrapper.eq("status", type);
             }
+            pkMatchWrapper.orderBy("createdate",false);
             List<PkMatch> pkMatches = pkMatchMapper.selectList(pkMatchWrapper);
             if (CollectionUtils.isEmpty(pkMatches)) {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "未获取到比赛信息"));
