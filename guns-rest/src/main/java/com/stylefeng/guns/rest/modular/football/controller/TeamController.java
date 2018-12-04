@@ -7,14 +7,14 @@ import com.stylefeng.guns.core.enums.AttachTypeEnum;
 import com.stylefeng.guns.core.enums.PositionEnum;
 import com.stylefeng.guns.core.enums.TeamLevelEnum;
 import com.stylefeng.guns.core.util.DateUtil;
+import com.stylefeng.guns.core.util.response.CommonListResp;
+import com.stylefeng.guns.core.util.response.CommonResp;
+import com.stylefeng.guns.core.util.response.ResponseCode;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.rest.common.persistence.model.PkMember;
 import com.stylefeng.guns.rest.common.persistence.model.PkTeam;
 import com.stylefeng.guns.rest.common.persistence.model.PkTeamMember;
-import com.stylefeng.guns.core.util.response.CommonListResp;
-import com.stylefeng.guns.core.util.response.CommonResp;
-import com.stylefeng.guns.core.util.response.ResponseCode;
 import com.stylefeng.guns.rest.modular.football.transfer.PkTeamDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -148,10 +148,10 @@ public class TeamController {
 
             data.put("mate", members);//队员数组
 
-            data.put("winnum",pkTeam.getWinnum());//胜
-            data.put("debtnum",pkTeam.getDebtnum());//负
-            data.put("drawnum",pkTeam.getDrawnum());//平
-            data.put("point",pkTeam.getPoint());//积分
+            data.put("winnum", pkTeam.getWinnum());//胜
+            data.put("debtnum", pkTeam.getDebtnum());//负
+            data.put("drawnum", pkTeam.getDrawnum());//平
+            data.put("point", pkTeam.getPoint());//积分
 
 
             return ResponseEntity.ok(new CommonResp<Map>(data));
@@ -173,7 +173,7 @@ public class TeamController {
         try {
             Wrapper<PkTeam> wrapper = new EntityWrapper<PkTeam>();
 
-            wrapper.and("point >= {0} and point <= {1}", TeamLevelEnum.valueOfCode(levelid + "").getMin(),TeamLevelEnum.valueOfCode(levelid + "").getMax()).orderBy("point",false);
+            wrapper.and("point >= {0} and point <= {1}", TeamLevelEnum.valueOfCode(levelid + "").getMin(), TeamLevelEnum.valueOfCode(levelid + "").getMax()).orderBy("point", false);
             List<PkTeam> list = pkTeamMapper.selectList(wrapper);
 
             List<Map> datas = new ArrayList<>();
@@ -218,7 +218,7 @@ public class TeamController {
             data.put("teamName", pkTeam.getName());
             data.put("score", pkTeam.getPoint());
             data.put("level", TeamLevelEnum.calcLevel(pkTeam.getPoint()).getMessage());
-            data.put("differValue", (TeamLevelEnum.calcLevel(pkTeam.getPoint()).getMax() - pkTeam.getPoint())+1);
+            data.put("differValue", (TeamLevelEnum.calcLevel(pkTeam.getPoint()).getMax() - pkTeam.getPoint()) + 1);
             Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<>();
             pkAttachmentWrapper = pkAttachmentWrapper.eq("linkid", pkTeam.getId()).eq("category", AttachCategoryEnum.TEAM.getCode()).eq("type", AttachTypeEnum.LOGO.getCode());
             List<PkAttachment> attachmentList = pkAttachmentMapper.selectList(pkAttachmentWrapper);
@@ -304,13 +304,8 @@ public class TeamController {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "该球员已经创建其它球队"));
             }
 
-
-            if (Objects.nonNull(pkMember.getLastjointime()) && DateUtil.getDaySub(pkMember.getLastjointime(),new Date())<=30){
-                return ResponseEntity.ok(new CommonResp<String>("2", "您一个月内加入过球队！"));
-            }
-
-
             pkMember.setType("1");
+            pkMember.setLastjointime(new Date());//队员最后加入球队的时间
             pkMemberMapper.updateById(pkMember);//更新创建球队的人为队长
             PkTeam pkTeam = new PkTeam();
             PropertyUtils.copyProperties(pkTeam, pkTeamDto);
@@ -436,11 +431,6 @@ public class TeamController {
                 return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), "球队人员已满24人"));
             }
 
-            if (Objects.nonNull(pkMember.getLastjointime()) && DateUtil.getDaySub(pkMember.getLastjointime(),new Date())<=30){
-                return ResponseEntity.ok(new CommonResp<String>("3", "您一个月内加入过球队！"));
-            }
-
-
             PkTeamMember pkTeamMember = new PkTeamMember();
             pkTeamMember.setMemberid(pkMember.getId());
             pkTeamMember.setTeamid(teamid);
@@ -543,9 +533,11 @@ public class TeamController {
             pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "manid未获取到用户");
 
+            PkMember pkMember = pkMembers.get(0);
+
 
             Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMembers.get(0).getId()).eq("status", "1");
+            pkTeamMemberWrapper = pkTeamMemberWrapper.eq("memberid", pkMember.getId()).eq("status", "1");
             ;
             List<PkTeamMember> pkTeamMembers = pkTeamMemberMapper.selectList(pkTeamMemberWrapper);
             if (!CollectionUtils.isEmpty(pkTeamMembers)) {
@@ -553,13 +545,16 @@ public class TeamController {
             }
 
             Wrapper<PkTeamMember> pkTeamMemberEntityWrapper = new EntityWrapper<PkTeamMember>();
-            pkTeamMemberEntityWrapper = pkTeamMemberEntityWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
+            pkTeamMemberEntityWrapper = pkTeamMemberEntityWrapper.eq("teamid", teamid).eq("memberid", pkMember.getId());
             List<PkTeamMember> teamMembers = pkTeamMemberMapper.selectList(pkTeamMemberEntityWrapper);
 
             PkTeamMember pkTeamMember = teamMembers.get(0);
             pkTeamMember.setStatus("1");//同意
 
             pkTeamMemberMapper.updateById(pkTeamMember);
+
+            pkMember.setLastjointime(new Date());//队员最后加入球队的时间
+            pkMemberMapper.updateById(pkMember);
             return ResponseEntity.ok(new CommonResp<String>("同意成功"));
         } catch (Exception e) {
             return ResponseEntity.ok(new CommonResp<String>(ResponseCode.SYSTEM_ERROR.getCode(), e.getMessage()));
@@ -583,14 +578,21 @@ public class TeamController {
             wrapper = wrapper.eq("openid", openid);
             List<PkMember> pkMembers = pkMemberMapper.selectList(wrapper);
             Assert.notEmpty(pkMembers, "openid未获取到用户");
+            PkMember pkMember = pkMembers.get(0);
 
             if ("1".equals(type)) {
+                if (Objects.nonNull(pkMember.getLastjointime()) && DateUtil.getDaySub(pkMember.getLastjointime(), new Date()) <= 30) {
+                    return ResponseEntity.ok(new CommonResp<String>("2", "您一个月内加入过球队！无法退出球队"));
+                }
                 Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
                 pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
                 pkTeamMemberMapper.delete(pkTeamMemberWrapper);
             }
 
             if ("2".equals(type)) {
+                if (Objects.nonNull(pkMember.getLastjointime()) && DateUtil.getDaySub(pkMember.getLastjointime(), new Date()) <= 30) {
+                    return ResponseEntity.ok(new CommonResp<String>("3", "您一个月内创建球队！无法解散球队"));
+                }
                 //删除球队
                 Wrapper<PkTeam> pkTeamWrapper = new EntityWrapper<PkTeam>();
                 pkTeamWrapper = pkTeamWrapper.eq("id", teamid);
@@ -600,9 +602,7 @@ public class TeamController {
                 pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
                 pkTeamMemberMapper.delete(pkTeamMemberWrapper);
                 //队长转换为普通球员
-                PkMember pkMember = pkMembers.get(0);
                 pkMember.setType("2");//普通球员
-                pkMember.setLastjointime(new Date());//最近解散球队时间
                 pkMemberMapper.updateById(pkMember);
             }
 
