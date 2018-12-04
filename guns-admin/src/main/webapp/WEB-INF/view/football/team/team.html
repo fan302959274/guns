@@ -17,25 +17,12 @@
                             </div>
                         </div>
                         <div class="hidden-xs" id="teamTableToolbar" role="group">
-                            @if(shiro.hasPermission("/role/add")){
                                 <#button name="查看" icon="fa-eye" clickFun="Team.openTeamDetail()" />
-                            @}
-                            @if(shiro.hasPermission("/role/edit")){
                                 <#button name="修改" icon="fa-edit" clickFun="Team.openEditTeam()" space="true"/>
-                            @}
-                            @if(shiro.hasPermission("/role/remove")){
                                 <#button name="删除" icon="fa-remove" clickFun="Team.delTeam()" space="true"/>
-                            @}
-                            @if(shiro.hasPermission("/role/add")){
-                            <#button name="队员管理" icon="fa-plus" clickFun="Team.teamMember()"  space="true"/>
-                            @}
-                            @if(shiro.hasPermission("/mgr/freeze")){
-                            <#button name="禁用" icon="fa-warning" clickFun="Team.freezeTeam()" space="true"/>
-                            @}
-                            @if(shiro.hasPermission("/mgr/unfreeze")){
-                            <#button name="启用" icon="fa-check-circle" clickFun="Team.unfreezeTeam()" space="true"/>
-                            @}
-
+                                <#button name="队员管理" icon="fa-plus" clickFun="Team.teamMember()"  space="true"/>
+                                <#button name="禁用" icon="fa-warning" clickFun="Team.freezeTeam()" space="true"/>
+                                <#button name="启用" icon="fa-check-circle" clickFun="Team.unfreezeTeam()" space="true"/>
                         </div>
                         <#table id="teamTable"/>
                     </div>
