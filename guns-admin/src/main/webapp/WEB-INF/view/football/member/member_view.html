@@ -30,10 +30,13 @@
                 <div class="col-sm-6 b-r">
                     @if(isNotEmpty(member.habitfeet) && member.habitfeet == '1'){
                     <#label id="habitfeet" name="惯用脚" underline="true" value="左" />
-                    @}else{
+                    @}
+                    @if(isNotEmpty(member.habitfeet) && member.habitfeet == '2'){
                     <#label id="habitfeet" name="惯用脚" underline="true" value="右" />
                     @}
-
+                    @if(isNotEmpty(member.habitfeet) && member.habitfeet == '3'){
+                    <#label id="habitfeet" name="惯用脚" underline="true" value="双脚" />
+                    @}
                     @if(isNotEmpty(type) && type == '1'){
                     <#label id="type" name="状态" underline="true" value="队长" />
                     @}else{
@@ -52,10 +55,10 @@
                     <#avatarview id="teamlogo" name="球队logo" underline="true" avatarImg="${teamInfo.teamLog}"/>
                 </div>
                 <div class="col-sm-6 b-r">
-                    @if(isNotEmpty(teamInfo.areaid) && teamInfo.areaid == '1'){
-                    <#label id="teamname" name="球队区域" underline="true" value="南京" disabled="disabled"/>
+                    @if(isNotEmpty(teamInfo.areaid) && teamInfo.areaid == 1){
+                    <#label id="areaid" name="球队区域" underline="true" value="南京" disabled="disabled"/>
                     @}else{
-                    <#label id="teamname" name="球队区域" underline="true" value="合肥" disabled="disabled"/>
+                    <#label id="areaid" name="球队区域" underline="true" value="合肥" disabled="disabled"/>
                     @}
                 </div>
             </div>
