@@ -599,7 +599,7 @@ public class TeamController {
                 pkTeamMapper.delete(pkTeamWrapper);
                 //删除球队球员关系
                 Wrapper<PkTeamMember> pkTeamMemberWrapper = new EntityWrapper<PkTeamMember>();
-                pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid).eq("memberid", pkMembers.get(0).getId());
+                pkTeamMemberWrapper = pkTeamMemberWrapper.eq("teamid", teamid);
                 pkTeamMemberMapper.delete(pkTeamMemberWrapper);
                 //队长转换为普通球员
                 pkMember.setType("2");//普通球员
