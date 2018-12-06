@@ -60,7 +60,7 @@ public class AdController {
             wrapper.eq("type", ("1".equals(type)) ? "0" : "1");//文档要求
             wrapper.lt("starttime", new Date());
             wrapper.gt("endtime", new Date());
-            wrapper.groupBy("createdate desc");
+            wrapper.orderBy("createdate",false);
             List<PkAd> list = pkAdMapper.selectList(wrapper);
             if (CollectionUtils.isNotEmpty(list)) {
                 for (PkAd pkAd : list) {
@@ -106,6 +106,7 @@ public class AdController {
                 page = count / 10 + 1;
             }
             RowBounds rowBounds = new RowBounds((page - 1) * 10, 10);
+            wrapper.orderBy("createdate",false);
             List<PkAd> list = pkAdMapper.selectPage(rowBounds, wrapper);
             list.forEach(pkAd -> {
                 Wrapper<PkAttachment> pkAttachmentWrapper = new EntityWrapper<PkAttachment>();
