@@ -67,7 +67,7 @@ public class AttachmentController {
             if (file.length() < 51200) {
                 Thumbnails.of(file).scale(1f).toOutputStream(response.getOutputStream());
             } else {
-                Thumbnails.of(file).scale(0.4f).toOutputStream(response.getOutputStream());
+                Thumbnails.of(file).width(200).toOutputStream(response.getOutputStream());
             }
         } catch (Exception e) {
             //如果找不到图片就返回一个默认图片
