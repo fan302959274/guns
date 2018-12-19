@@ -1,12 +1,18 @@
 package com.stylefeng.guns.rest.modular.football.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.stylefeng.guns.core.util.response.CommonListResp;
 import com.stylefeng.guns.core.util.response.CommonResp;
 import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.rest.common.exception.BussinessException;
+import com.stylefeng.guns.rest.common.persistence.dao.PkAttachmentMapper;
+import com.stylefeng.guns.rest.common.persistence.model.PkAttachment;
 import com.stylefeng.guns.rest.config.properties.GunsProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.coobird.thumbnailator.Thumbnails;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -32,6 +39,8 @@ public class AttachmentController {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     @Resource
     private GunsProperties gunsProperties;
+    @Resource
+    private PkAttachmentMapper pkAttachmentMapper;
 
     /**
      * 上传图片(上传到项目的webapp/static/img)
@@ -78,5 +87,26 @@ public class AttachmentController {
             }
         }
     }
+
+    /**
+     * 获取所有的附件
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @ApiOperation(value = "获取所有的附件", notes = "返回码:1成功;")
+    public ResponseEntity list(@RequestParam Integer page) {
+        Wrapper<PkAttachment> wrapper = new EntityWrapper<PkAttachment>();
+        Integer count = pkAttachmentMapper.selectCount(wrapper);
+        if (page <= 0) {
+            page = 1;
+        }
+        if (page > count / 10 + 1) {
+            page = count / 10 + 1;
+        }
+        RowBounds rowBounds = new RowBounds((page - 1) * 10, 10);
+        wrapper.orderBy("createdate", false);
+        List<PkAttachment> list = pkAttachmentMapper.selectPage(rowBounds, wrapper);
+        return ResponseEntity.ok(new CommonListResp<PkAttachment>(list));
+    }
+
 
 }
