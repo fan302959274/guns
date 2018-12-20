@@ -1,18 +1,3 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : localhost
-Source Server Version : 50621
-Source Host           : localhost:3306
-Source Database       : biz
-
-Target Server Type    : MYSQL
-Target Server Version : 50621
-File Encoding         : 65001
-
-Date: 2017-09-04 16:17:33
-*/
-
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1、客户表
@@ -153,8 +138,4 @@ CREATE TABLE `cf_order_detail` (
   ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8
-  COMMENT = '订单表';
-
-
-
-
+  COMMENT = '订单明细表';
