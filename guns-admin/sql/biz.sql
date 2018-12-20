@@ -107,6 +107,53 @@ CREATE TABLE `cf_good` (
   DEFAULT CHARSET = utf8
   COMMENT = '商品表';
 
+-- 4、订单表
+DROP TABLE IF EXISTS `cf_order`;
+CREATE TABLE `cf_order` (
+  `id`         BIGINT(20) NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  `price`      DECIMAL(10, 2)      DEFAULT NULL
+  COMMENT '订单总价',
+  `status`     VARCHAR(1)          DEFAULT NULL
+  COMMENT '订单状态:0:未支付;1:已支付',
+  `createdate` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
+  COMMENT '创建时间',
+  `updatedate` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8
+  COMMENT = '订单表';
+
+-- 5、订单明细表
+DROP TABLE IF EXISTS `cf_order_detail`;
+CREATE TABLE `cf_order_detail` (
+  `id`         BIGINT(20) NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  `orderid`    BIGINT(20) NOT NULL
+  COMMENT '订单id',
+  `name`       VARCHAR(50)         DEFAULT NULL
+  COMMENT '商品名称',
+  `title`      VARCHAR(50)         DEFAULT NULL
+  COMMENT '商品标题',
+  `price`      VARCHAR(50)         DEFAULT NULL
+  COMMENT '商品价格',
+  `desc`       VARCHAR(256)        DEFAULT NULL
+  COMMENT '商品描述',
+  `num`        INT                 DEFAULT 0
+  COMMENT '商品数量',
+  `createdate` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
+  COMMENT '创建时间',
+  `updatedate` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8
+  COMMENT = '订单表';
 
 
 
