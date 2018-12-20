@@ -115,23 +115,23 @@ CREATE TABLE `cf_order` (
 -- 5、订单明细表
 DROP TABLE IF EXISTS `cf_order_detail`;
 CREATE TABLE `cf_order_detail` (
-  `id`         BIGINT(20) NOT NULL AUTO_INCREMENT
+  `id`         BIGINT(20) NOT NULL        AUTO_INCREMENT
   COMMENT '主键',
   `orderid`    BIGINT(20) NOT NULL
   COMMENT '订单id',
-  `name`       VARCHAR(50)         DEFAULT NULL
+  `name`       VARCHAR(50)                DEFAULT NULL
   COMMENT '商品名称',
-  `title`      VARCHAR(50)         DEFAULT NULL
+  `title`      VARCHAR(50)                DEFAULT NULL
   COMMENT '商品标题',
-  `price`      VARCHAR(50)         DEFAULT NULL
+  `price`      VARCHAR(50)                DEFAULT NULL
   COMMENT '商品价格',
-  `desc`       VARCHAR(256)        DEFAULT NULL
+  `desc`       VARCHAR(256)               DEFAULT NULL
   COMMENT '商品描述',
-  `num`        INT                 DEFAULT 0
+  `num`        INT        NOT NULL        DEFAULT 0
   COMMENT '商品数量',
-  `createdate` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `createdate` TIMESTAMP  NOT NULL        DEFAULT CURRENT_TIMESTAMP
   COMMENT '创建时间',
-  `updatedate` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `updatedate` TIMESTAMP  NOT NULL        DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   COMMENT '更新时间',
   PRIMARY KEY (`id`)
 )
@@ -139,3 +139,26 @@ CREATE TABLE `cf_order_detail` (
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8
   COMMENT = '订单明细表';
+
+-- 6、商品库存表
+DROP TABLE IF EXISTS `cf_stock`;
+CREATE TABLE `cf_stock` (
+  `id`         BIGINT(20) NOT NULL        AUTO_INCREMENT
+  COMMENT '主键',
+  `goodid`     BIGINT(20) NOT NULL
+  COMMENT '商品id',
+  `startnum`   INT        NOT NULL        DEFAULT 0
+  COMMENT '起始数量',
+  `remainum`   INT        NOT NULL        DEFAULT 0
+  COMMENT '商品剩余数量',
+  `createdate` TIMESTAMP  NOT NULL        DEFAULT CURRENT_TIMESTAMP
+  COMMENT '创建时间',
+  `updatedate` TIMESTAMP  NOT NULL        DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8
+  COMMENT = '商品库存表';
+
