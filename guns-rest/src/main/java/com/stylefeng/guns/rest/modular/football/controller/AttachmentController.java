@@ -99,10 +99,10 @@ public class AttachmentController {
         if (page <= 0) {
             page = 1;
         }
-        if (page > count / 20 + 1) {
-            page = count / 20 + 1;
+        if (page > count / 5 + 1) {
+            page = count / 5 + 1;
         }
-        RowBounds rowBounds = new RowBounds((page - 1) * 20, 20);
+        RowBounds rowBounds = new RowBounds((page - 1) * 5, 5);
         wrapper.orderBy("createdate", false);
         List<PkAttachment> list = pkAttachmentMapper.selectPage(rowBounds, wrapper);
         return ResponseEntity.ok(new CommonListResp<PkAttachment>(list));
