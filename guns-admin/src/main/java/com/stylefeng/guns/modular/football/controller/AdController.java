@@ -1,4 +1,4 @@
-package com.stylefeng.guns.modular.system.controller;
+package com.stylefeng.guns.modular.football.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -15,9 +15,9 @@ import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.support.BeanKit;
 import com.stylefeng.guns.core.util.ToolUtil;
-import com.stylefeng.guns.modular.system.dao.AdDao;
-import com.stylefeng.guns.modular.system.transfer.PkAdDto;
-import com.stylefeng.guns.modular.system.warpper.AdWarpper;
+import com.stylefeng.guns.modular.football.dao.AdDao;
+import com.stylefeng.guns.modular.football.transfer.PkAdDto;
+import com.stylefeng.guns.modular.football.warpper.AdWarpper;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -63,8 +63,8 @@ public class AdController extends BaseController {
      * 跳转到广告管理首页
      */
     @RequestMapping("")
-    public String index(String type,Model model) {
-        model.addAttribute("type",type);
+    public String index(String type, Model model) {
+        model.addAttribute("type", type);
         return PREFIX + "ad.html";
     }
 
@@ -72,8 +72,8 @@ public class AdController extends BaseController {
      * 跳转到添加广告
      */
     @RequestMapping("/ad_add")
-    public String adAdd(String type,Model model) {
-        model.addAttribute("type",type);
+    public String adAdd(String type, Model model) {
+        model.addAttribute("type", type);
         return PREFIX + "ad_add.html";
     }
 
@@ -86,7 +86,7 @@ public class AdController extends BaseController {
         SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> menuMap = BeanKit.beanToMap(pkAd);
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", adId).eq("category",AttachCategoryEnum.AD.getCode());
+        wrapper = wrapper.eq("linkid", adId).eq("category", AttachCategoryEnum.AD.getCode());
         List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
         String ads = "";
         if (!CollectionUtils.isEmpty(list)) {
@@ -103,7 +103,7 @@ public class AdController extends BaseController {
         menuMap.put("ads", ads);
         model.addAttribute("ad", menuMap);
         model.addAttribute("endtime", ss.format(pkAd.getEndtime()));
-        model.addAttribute( "starttime", ss.format(pkAd.getStarttime()));
+        model.addAttribute("starttime", ss.format(pkAd.getStarttime()));
 //        model.addAttribute(pkAd);
         LogObjectHolder.me().set(pkAd);
         return PREFIX + "ad_edit.html";
@@ -119,7 +119,7 @@ public class AdController extends BaseController {
         SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> menuMap = BeanKit.beanToMap(pkAd);
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", adId).eq("category",AttachCategoryEnum.AD.getCode());
+        wrapper = wrapper.eq("linkid", adId).eq("category", AttachCategoryEnum.AD.getCode());
         List<PkAttachment> list = pkAttachmentMapper.selectList(wrapper);
         String ads = "";
         if (!CollectionUtils.isEmpty(list)) {
@@ -132,11 +132,11 @@ public class AdController extends BaseController {
             }
 
         }
-         menuMap.put("adsImg", list);
+        menuMap.put("adsImg", list);
         menuMap.put("ads", ads);
         model.addAttribute("ad", menuMap);
         model.addAttribute("endtime", ss.format(pkAd.getEndtime()));
-        model.addAttribute( "starttime", ss.format(pkAd.getStarttime()));
+        model.addAttribute("starttime", ss.format(pkAd.getStarttime()));
         model.addAttribute("ad", menuMap);
         LogObjectHolder.me().set(pkAd);
         return PREFIX + "ad_view.html";
@@ -177,8 +177,8 @@ public class AdController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(required = false) String adMainHead,Integer type) {
-        List<Map<String, Object>> ads = this.adDao.selectAds(type,adMainHead);
+    public Object list(@RequestParam(required = false) String adMainHead, Integer type) {
+        List<Map<String, Object>> ads = this.adDao.selectAds(type, adMainHead);
         return super.warpObject(new AdWarpper(ads));
     }
 
@@ -206,7 +206,7 @@ public class AdController extends BaseController {
         pkAdMapper.updateById(record);
         //1、删除
         Wrapper<PkAttachment> wrapper = new EntityWrapper<>();
-        wrapper = wrapper.eq("linkid", record.getId()).eq("category",AttachCategoryEnum.AD.getCode());
+        wrapper = wrapper.eq("linkid", record.getId()).eq("category", AttachCategoryEnum.AD.getCode());
         pkAttachmentMapper.delete(wrapper);
         ///2、保存附件
         if (StringUtils.isNoneBlank(ads)) {
@@ -240,10 +240,11 @@ public class AdController extends BaseController {
      * 跳转到规则管理
      */
     @RequestMapping("/rule")
-    public String rule(String type,Model model) {
-        model.addAttribute("type",type);
+    public String rule(String type, Model model) {
+        model.addAttribute("type", type);
         return PREFIX + "rule.html";
     }
+
     /**
      * 获取所有规则列表
      */

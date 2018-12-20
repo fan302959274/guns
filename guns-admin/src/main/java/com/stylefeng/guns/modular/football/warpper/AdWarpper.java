@@ -1,4 +1,4 @@
-package com.stylefeng.guns.modular.system.warpper;
+package com.stylefeng.guns.modular.football.warpper;
 
 import com.stylefeng.guns.core.base.warpper.BaseControllerWarpper;
 
@@ -11,9 +11,9 @@ import java.util.Map;
  * @author fengshuonan
  * @date 2017年2月19日10:59:02
  */
-public class MemberWarpper extends BaseControllerWarpper {
+public class AdWarpper extends BaseControllerWarpper {
 
-    public MemberWarpper(List<Map<String, Object>> list) {
+    public AdWarpper(List<Map<String, Object>> list) {
         super(list);
     }
 

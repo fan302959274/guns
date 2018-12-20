@@ -1,4 +1,4 @@
-package com.stylefeng.guns.modular.system.dao;
+package com.stylefeng.guns.modular.football.dao;
 
 
 import org.apache.ibatis.annotations.Param;
@@ -20,7 +20,7 @@ public interface AdDao {
      * @return
      * @date 2017年2月12日 下午9:14:34
      */
-    List<Map<String, Object>> selectAds(@Param("type") Integer type,@Param("adMainHead") String adMainHead);
+    List<Map<String, Object>> selectAds(@Param("type") Integer type, @Param("adMainHead") String adMainHead);
     /**
      * 根据规则列表
      *
